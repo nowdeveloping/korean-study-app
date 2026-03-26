@@ -1,0 +1,3581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dylan's Korean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:      #111111;
+    --paper:    #f7f7f5;
+    --surface:  #ffffff;
+    --border:   #e2e2de;
+    --faint:    #ebebea;
+    --muted:    #888884;
+    --subtle:   #c4c4c0;
+    --accent:   #111111;
+    --accent-fg:#ffffff;
+    --ok:       #2a6e3f;
+    --ok-bg:    #eaf4ee;
+    --err:      #b83a1a;
+    --err-bg:   #fdf0ec;
+    --shadow:   0 1px 8px rgba(0,0,0,0.07);
+    --radius:   10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: #ffffff;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.01em;
+    color: #ffffff;
+  }
+  .brand span { color: #ffffff; opacity: 0.55; font-style: italic; }
+  .streak-badge {
+    background: rgba(255,255,255,0.12);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.73rem;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+  .stats-row {
+    display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  }
+  .stat { text-align: center; font-size: 0.68rem; color: rgba(255,255,255,0.45); }
+  .stat strong { display: block; font-size: 0.95rem; color: #ffffff; font-family: 'DM Serif Display', serif; }
+
+  /* ── TIMER BADGE ── */
+  .timer-badge {
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 4px 11px 4px 8px;
+    font-size: 0.73rem;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .timer-badge:hover { background: rgba(255,255,255,0.14); }
+  .timer-badge.goal-done { background: rgba(255,255,255,0.18); color: #ffffff; border-color: rgba(255,255,255,0.4); }
+  .timer-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .timer-dot.active { background: #7dcea0; box-shadow: 0 0 5px #7dcea0; animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+  }
+  nav button {
+    background: none; border: none; cursor: pointer;
+    padding: 12px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.73rem;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    text-transform: uppercase;
+    transition: all 0.15s;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+  nav button.active { color: var(--ink); border-bottom-color: var(--ink); }
+  nav button:hover:not(.active) { color: var(--ink); background: var(--faint); }
+
+  /* ── MAIN ── */
+  main { flex: 1; padding: 24px 20px; max-width: 720px; margin: 0 auto; width: 100%; }
+
+  .screen { display: none; animation: fadeIn 0.25s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink);
+    color: #ffffff;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+  .btn:hover { opacity: 0.8; transform: translateY(-1px); }
+  .btn.secondary { background: var(--faint); color: var(--ink); border: 1px solid var(--border); }
+  .btn.secondary:hover { background: var(--border); opacity: 1; }
+  .btn.green { background: var(--ok); }
+  .btn.blue  { background: #1e4a7a; }
+
+  /* ── FLASHCARD ── */
+  .fc-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+  }
+  .fc-meta .label { font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+  .fc-meta .progress-bar { flex: 1; max-width: 200px; height: 4px; background: var(--faint); border-radius: 2px; overflow: hidden; }
+  .fc-meta .progress-fill { height: 100%; background: var(--ink); border-radius: 2px; transition: width 0.4s; }
+
+  .card-wrap {
+    perspective: 1000px;
+    margin: 0 auto 24px;
+    max-width: 560px;
+    min-height: 280px;
+    cursor: pointer;
+  }
+  .card-inner {
+    position: relative;
+    width: 100%; min-height: 280px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px 28px;
+    backface-visibility: hidden;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .card-face.back { transform: rotateY(180deg); }
+  .card-face .category-tag {
+    position: absolute; top: 14px; left: 14px;
+    background: var(--faint); border-radius: 4px;
+    font-size: 0.65rem; padding: 2px 7px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
+  }
+  .card-face .flip-hint {
+    position: absolute; bottom: 13px;
+    font-size: 0.65rem; color: var(--subtle); letter-spacing: 0.06em;
+  }
+  .card-korean { font-family: 'Noto Sans KR', sans-serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+  .card-romanized { font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+  .card-english { font-size: 1.3rem; color: var(--ink); }
+  .card-example {
+    font-size: 0.8rem; color: var(--muted); margin-top: 16px; line-height: 1.7;
+    border-top: 1px solid var(--border); padding-top: 13px; width: 100%;
+  }
+  .card-example .ko { font-family: 'Noto Sans KR', sans-serif; color: var(--ink); font-size: 0.88rem; }
+  .card-example .en { font-style: italic; }
+
+  .srs-buttons {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 560px; margin: 0 auto;
+  }
+  .srs-btn {
+    border: 1px solid var(--border); border-radius: 7px; padding: 11px 6px; cursor: pointer;
+    background: var(--surface);
+    font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.04em;
+    transition: all 0.15s; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .srs-btn:hover { background: var(--faint); color: var(--ink); transform: translateY(-1px); }
+  .srs-btn.again:hover { border-color: var(--err); color: var(--err); }
+  .srs-btn.good:hover  { border-color: var(--ok);  color: var(--ok); }
+  .srs-btn.easy:hover  { border-color: #1e4a7a;    color: #1e4a7a; }
+  .srs-btn .interval { display: block; font-size: 0.62rem; opacity: 0.6; margin-top: 2px; }
+
+  /* ── GRAMMAR ── */
+  .grammar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .grammar-pattern {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.65rem;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+  .grammar-meaning { font-size: 0.9rem; color: var(--muted); margin-bottom: 18px; }
+  .grammar-examples { display: flex; flex-direction: column; gap: 10px; }
+  .grammar-example {
+    background: var(--faint);
+    border-radius: 7px;
+    padding: 11px 14px;
+  }
+  .grammar-example .ko { font-family: 'Noto Sans KR', sans-serif; font-size: 1rem; margin-bottom: 3px; }
+  .grammar-example .en { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+  .fill-blank-input {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    color: var(--ink);
+    width: 100%;
+    margin: 8px 0;
+    transition: border-color 0.2s;
+  }
+  .fill-blank-input:focus { outline: none; border-color: var(--ink); }
+  .fill-blank-input.correct { border-color: var(--ok); background: var(--ok-bg); }
+  .fill-blank-input.wrong   { border-color: var(--err); background: var(--err-bg); }
+  .feedback { font-size: 0.8rem; margin-top: 5px; font-weight: 500; }
+  .feedback.correct { color: var(--ok); }
+  .feedback.wrong   { color: var(--err); }
+
+  /* ── QUIZ ── */
+  .quiz-question {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .quiz-prompt { font-size: 0.72rem; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 14px; line-height: 1.8; }
+  .quiz-word { font-family: 'Noto Sans KR', sans-serif; font-size: 2.1rem; font-weight: 700; margin-bottom: 6px; }
+  .quiz-word.en-word { font-family: 'DM Serif Display', serif; font-size: 1.7rem; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 22px; }
+  .quiz-option {
+    background: var(--faint);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 13px 10px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    transition: all 0.15s;
+    text-align: center;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .quiz-option:hover:not(.disabled) { background: var(--ink); color: #ffffff; border-color: var(--ink); }
+  .quiz-option.correct { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+  .quiz-option.wrong   { background: var(--err-bg); border-color: var(--err); color: var(--err); }
+  .quiz-option.disabled { cursor: default; }
+  .quiz-score { text-align: center; font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--ink); }
+  .quiz-score small { display: block; font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+
+  /* ── PROGRESS ── */
+  .progress-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 24px; }
+  .progress-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+  }
+  .progress-tile .big { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--ink); }
+  .progress-tile .label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-top: 4px; }
+
+  .category-list { display: flex; flex-direction: column; gap: 9px; }
+  .cat-row { display: flex; align-items: center; gap: 12px; }
+  .cat-name { font-size: 0.78rem; min-width: 150px; color: var(--ink); }
+  .cat-bar { flex: 1; height: 5px; background: var(--faint); border-radius: 3px; overflow: hidden; }
+  .cat-bar-fill { height: 100%; background: var(--ink); border-radius: 3px; transition: width 0.6s ease; }
+  .cat-count { font-size: 0.68rem; color: var(--muted); min-width: 44px; text-align: right; }
+
+  /* ── ROUTINE CARD ── */
+  .routine-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .routine-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
+  }
+  .routine-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; }
+  .routine-subtitle { font-size: 0.68rem; color: var(--muted); margin-top: 2px; letter-spacing: 0.04em; }
+
+  /* Goal ring */
+  .goal-ring-wrap { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+  .goal-ring-wrap svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--faint); stroke-width: 5; }
+  .ring-fill {
+    fill: none; stroke: var(--ink); stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 188.5;
+    stroke-dashoffset: 188.5;
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+  .ring-fill.done { stroke: var(--ok); }
+  .ring-label {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 0.65rem; color: var(--muted); text-align: center; line-height: 1.2;
+  }
+  .ring-label strong { font-size: 0.9rem; color: var(--ink); font-family: 'DM Serif Display', serif; display: block; }
+
+  /* Routine steps */
+  .routine-steps { display: flex; flex-direction: column; gap: 7px; }
+  .routine-step {
+    display: flex; align-items: center; gap: 11px;
+    padding: 9px 13px;
+    border-radius: 7px;
+    background: var(--faint);
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .routine-step.active-step { border-color: var(--ink); background: var(--surface); }
+  .routine-step.done-step { opacity: 0.45; }
+  .step-check { font-size: 0.9rem; width: 18px; text-align: center; flex-shrink: 0; }
+  .step-info { flex: 1; }
+  .step-name { font-size: 0.8rem; font-weight: 500; }
+  .step-desc { font-size: 0.67rem; color: var(--muted); margin-top: 1px; }
+  .step-duration {
+    font-size: 0.67rem; color: var(--muted);
+    background: var(--border); border-radius: 9px; padding: 2px 7px; flex-shrink: 0;
+  }
+
+  /* ── MODE PICKER ── */
+  .mode-picker-grid { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+  .mode-pick-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+    min-width: 160px;
+  }
+  .mode-pick-card:hover { border-color: var(--ink); background: var(--ink); color: #ffffff; }
+  .mode-pick-card:hover .mode-pick-sub { color: rgba(255,255,255,0.55); }
+  .mode-pick-title { font-size: 0.85rem; font-weight: 500; margin-top: 8px; }
+  .mode-pick-sub { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+
+  /* ── UTIL ── */
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: 14px; }
+
+  /* ── LESSON FILTER ── */
+  .lesson-filter-btn {
+    background: var(--faint);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 13px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .lesson-filter-btn:hover { background: var(--border); color: var(--ink); }
+  .lesson-filter-btn.active { background: var(--ink); color: #ffffff; border-color: var(--ink); }
+
+  /* ── ACTIVITY TIMER BAR ── */
+  #activity-timer-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .activity-bar-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 8px 20px 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .activity-bar-track {
+    flex: 1;
+    height: 3px;
+    background: var(--faint);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .activity-bar-fill {
+    height: 100%;
+    background: var(--ink);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1s linear;
+  }
+  .activity-bar-fill.done { background: var(--ok); }
+  .activity-bar-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .activity-bar-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+  }
+  .activity-bar-time {
+    font-size: 0.72rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    min-width: 70px;
+    text-align: right;
+  }
+  .activity-nudge {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 6px 20px 8px;
+    font-size: 0.75rem;
+    color: var(--ok);
+    font-style: italic;
+    animation: fadeIn 0.4s ease;
+  }
+
+  /* ── WORD BANK DRILL ── */
+  .drill-prompt {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .drill-english {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem; color: var(--ink);
+    margin-bottom: 18px; line-height: 1.5;
+  }
+  .drill-answer-slots {
+    display: flex; flex-wrap: wrap; gap: 6px; min-height: 44px;
+    padding: 10px 12px;
+    background: var(--faint); border-radius: 8px;
+    border: 2px solid var(--border);
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+    align-items: center;
+  }
+  .drill-answer-slots.correct { border-color: var(--ok); background: var(--ok-bg); }
+  .drill-answer-slots.wrong   { border-color: var(--err); background: var(--err-bg);
+    animation: shake 0.35s ease; }
+  @keyframes shake {
+    0%,100%{ transform: translateX(0); }
+    20%    { transform: translateX(-6px); }
+    40%    { transform: translateX(6px); }
+    60%    { transform: translateX(-4px); }
+    80%    { transform: translateX(4px); }
+  }
+  .drill-slot-placeholder {
+    font-size: 0.75rem; color: var(--subtle); font-style: italic;
+  }
+  .drill-bank {
+    display: flex; flex-wrap: wrap; gap: 7px;
+    margin-bottom: 14px;
+  }
+  .drill-tile {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95rem;
+    padding: 7px 13px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .drill-tile:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .drill-tile.placed {
+    background: var(--ink); color: #fff; border-color: var(--ink);
+    cursor: pointer;
+  }
+  .drill-tile.placed:hover { opacity: 0.7; }
+  .drill-tile.used { opacity: 0; pointer-events: none; }
+  .drill-feedback-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 4px; flex-wrap: wrap;
+  }
+
+  /* ── IMPORT ── */
+  .import-textarea {
+    width: 100%;
+    min-height: 180px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--ink);
+    resize: vertical;
+    line-height: 1.7;
+    transition: border-color 0.2s;
+  }
+  .import-textarea:focus { outline: none; border-color: var(--ink); }
+  .import-example {
+    background: var(--faint);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    font-size: 0.78rem;
+    line-height: 2;
+    color: var(--ink);
+  }
+  .import-example code { font-family: 'DM Mono', monospace; }
+  .import-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+  }
+  .import-row.error { border-color: var(--err); background: var(--err-bg); }
+  .import-row-ko { font-family: 'Noto Sans KR', sans-serif; font-size: 1rem; min-width: 100px; }
+  .import-row-en { color: var(--muted); flex: 1; }
+  .import-row-meta { font-size: 0.68rem; color: var(--subtle); white-space: nowrap; }
+  .import-badge {
+    font-size: 0.65rem; padding: 2px 6px; border-radius: 4px;
+    background: var(--faint); color: var(--muted);
+    white-space: nowrap;
+  }
+  .import-badge.new { background: var(--ink); color: #fff; }
+
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 24px;
+    font-size: 0.67rem;
+    color: var(--subtle);
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ROUTINE FOOTER ── */
+  .routine-footer {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .routine-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+  }
+  .routine-actions .btn { flex: 1; max-width: 180px; justify-content: center; }
+  .routine-pool {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pool-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+  }
+  .pool-btns { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+  .pool-count { font-size: 0.68rem; color: var(--muted); min-width: 52px; }
+
+  /* ── RESPONSIVE ── */
+  /* Tablet and up: routine footer goes side-by-side */
+  @media (min-width: 560px) {
+    .routine-footer {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .routine-actions { width: auto; }
+    .routine-actions .btn { flex: none; }
+    .routine-pool { justify-content: flex-start; }
+  }
+
+  /* Mobile: tighter padding, single-column quiz options, 2-col SRS */
+  @media (max-width: 520px) {
+    header { padding: 12px 16px; gap: 10px; }
+    .stat { display: none; } /* hide Due/Known/Total on very small screens */
+    nav button { padding: 11px 14px; font-size: 0.7rem; }
+    main { padding: 14px 12px; }
+    .routine-card { padding: 16px; }
+    .card-wrap { min-height: 240px; }
+    .card-inner { min-height: 240px; }
+    .card-korean { font-size: 2rem; }
+    .card-english { font-size: 1.1rem; }
+    .srs-buttons { grid-template-columns: repeat(2, 1fr); }
+    .quiz-options { grid-template-columns: 1fr; }
+    .quiz-question { padding: 22px 16px; }
+    .quiz-word { font-size: 1.7rem; }
+    .grammar-card { padding: 18px; }
+    .progress-grid { grid-template-columns: repeat(2, 1fr); }
+    .cat-name { min-width: 120px; font-size: 0.73rem; }
+    .pool-count { display: none; }
+  }
+
+  /* Very small phones */
+  @media (max-width: 360px) {
+    .brand { font-size: 1rem; }
+    .timer-badge { display: none; }
+    nav button { padding: 10px 10px; font-size: 0.65rem; letter-spacing: 0.04em; }
+    .lesson-filter-btn { padding: 4px 9px; font-size: 0.67rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Dylan's <span>한국어</span></div>
+  <div class="stats-row">
+    <div class="stat"><strong id="hdr-due">0</strong>Due</div>
+    <div class="stat"><strong id="hdr-known">0</strong>Known</div>
+    <div class="stat"><strong id="hdr-total">0</strong>Total</div>
+    <div class="timer-badge" id="timer-badge" title="Today's study time — click to pause/resume">
+      <div class="timer-dot" id="timer-dot"></div>
+      <span id="timer-display">0:00</span>
+    </div>
+    <div class="streak-badge" id="streak-badge">🔥 0 day streak</div>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="showScreen('home')">Home</button>
+  <button onclick="navFlashcards()">Flashcards</button>
+  <button onclick="navGrammar()">Grammar</button>
+  <button onclick="navQuiz()">Quiz</button>
+  <button onclick="showScreen('progress')">Progress</button>
+  <button onclick="showScreen('import')">+ Import</button>
+</nav>
+
+<!-- ACTIVITY TIMER BAR — shown on study screens -->
+<div id="activity-timer-bar" style="display:none;">
+  <div class="activity-bar-inner">
+    <div class="activity-bar-track">
+      <div class="activity-bar-fill" id="activity-bar-fill"></div>
+    </div>
+    <div class="activity-bar-meta">
+      <span class="activity-bar-label" id="activity-bar-label">Flashcards</span>
+      <span class="activity-bar-time" id="activity-bar-time">0:00 / 5:00</span>
+    </div>
+  </div>
+  <div class="activity-nudge" id="activity-nudge" style="display:none;">
+    Time's up — ready to move on? 👉
+  </div>
+</div>
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+
+    <!-- DAILY ROUTINE CARD -->
+    <div class="routine-card">
+      <div class="routine-header">
+        <div>
+          <div class="routine-title" id="routine-title">Today's Routine</div>
+          <div class="routine-subtitle" id="routine-subtitle">Loading…</div>
+        </div>
+        <div class="goal-ring-wrap">
+          <svg width="64" height="64" viewBox="0 0 72 72">
+            <circle class="ring-bg" cx="36" cy="36" r="30"/>
+            <circle class="ring-fill" id="goal-ring" cx="36" cy="36" r="30"/>
+          </svg>
+          <div class="ring-label"><strong id="ring-time">0:00</strong><span id="ring-goal-label">/ 15min</span></div>
+        </div>
+      </div>
+      <div class="routine-steps" id="routine-steps"></div>
+      <div class="routine-footer">
+        <div class="routine-pool">
+          <span class="pool-label">Pool</span>
+          <div class="pool-btns">
+            <button class="lesson-filter-btn active" data-filter="all" onclick="setLessonFilter('all')">All</button>
+            <button class="lesson-filter-btn" data-filter="recent5" onclick="setLessonFilter('recent5')">Last 5</button>
+            <button class="lesson-filter-btn" data-filter="recent10" onclick="setLessonFilter('recent10')">Last 10</button>
+            <button class="lesson-filter-btn" data-filter="recent15" onclick="setLessonFilter('recent15')">Last 15</button>
+          </div>
+          <span class="pool-count" id="filter-count-label"></span>
+        </div>
+        <div class="routine-actions">
+          <button class="btn secondary" onclick="skipRoutineStep()">Skip →</button>
+          <button class="btn" id="routine-start-btn" onclick="startRoutineStep()">▶ Start</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div class="screen" id="screen-flashcard">
+
+    <!-- Mode picker — shown when arriving via nav tab -->
+    <div id="fc-mode-picker" style="display:none; text-align:center; padding: 32px 0 24px;">
+      <div style="font-family:'DM Serif Display',serif; font-size:1.4rem; margin-bottom:6px;">Choose a direction</div>
+      <div style="font-size:0.78rem; color:var(--muted); margin-bottom:24px;">Which way do you want to study?</div>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <div class="mode-card" style="max-width:200px;" onclick="pickMode('ko-en')">
+          <div class="icon">🃏</div>
+          <h3>Korean → English</h3>
+          <p>See Korean, recall the meaning.</p>
+        </div>
+        <div class="mode-card" style="max-width:200px;" onclick="pickMode('en-ko')">
+          <div class="icon">✍️</div>
+          <h3>English → Korean</h3>
+          <p>See English, produce Korean.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actual flashcard UI -->
+    <div id="fc-study-area">
+      <div class="fc-meta">
+        <span class="label" id="fc-mode-label">Korean → English</span>
+        <div class="progress-bar"><div class="progress-fill" id="fc-progress-fill" style="width:0%"></div></div>
+        <span class="label" id="fc-counter">0 / 0</span>
+      </div>
+
+    <div class="card-wrap" onclick="flipCard()">
+      <div class="card-inner" id="card-inner">
+        <div class="card-face front">
+          <span class="category-tag" id="fc-category">—</span>
+          <div class="card-korean" id="fc-front-text">—</div>
+          <div class="card-romanized" id="fc-romanized"></div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="card-face back">
+          <span class="category-tag" id="fc-category-back">—</span>
+          <div class="card-english" id="fc-back-text">—</div>
+          <div class="card-example" id="fc-example" style="display:none"></div>
+          <span class="flip-hint">rate your recall ↓</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="srs-buttons" id="srs-buttons" style="opacity:0;pointer-events:none;transition:opacity 0.25s;">
+      <button class="srs-btn again" onclick="rateSRS(0)">Again<span class="interval" id="int-0">< 1m</span></button>
+      <button class="srs-btn hard"  onclick="rateSRS(1)">Hard<span class="interval" id="int-1">6m</span></button>
+      <button class="srs-btn good"  onclick="rateSRS(2)">Good<span class="interval" id="int-2">10m</span></button>
+      <button class="srs-btn easy"  onclick="rateSRS(3)">Easy<span class="interval" id="int-3">4d</span></button>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;">
+      <button class="btn secondary" onclick="showScreen('home')">← Back</button>
+    </div>
+    </div><!-- end fc-study-area -->
+  </div>
+
+  <!-- GRAMMAR -->
+  <div class="screen" id="screen-grammar">
+    <div class="fc-meta">
+      <span class="label" id="gr-counter">Grammar 1 / 50</span>
+      <div class="progress-bar"><div class="progress-fill" id="gr-progress-fill" style="width:0%"></div></div>
+      <button class="btn" style="padding:6px 14px;font-size:0.72rem;" onclick="nextGrammar()">Next →</button>
+    </div>
+
+    <div class="grammar-card" id="grammar-card">
+      <div class="grammar-pattern" id="gr-pattern">—</div>
+      <div class="grammar-meaning" id="gr-meaning">—</div>
+      <div id="gr-drill-area"></div>
+      <div class="grammar-examples" id="gr-examples"></div>
+    </div>
+    <div style="text-align:center;margin-top:12px;">
+      <button class="btn secondary" onclick="showScreen('home')">← Back</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="screen-quiz">
+    <div class="fc-meta">
+      <span class="label">Quiz</span>
+      <div class="progress-bar"><div class="progress-fill" id="qz-progress-fill" style="width:0%"></div></div>
+      <span class="label" id="qz-counter">0 / 20</span>
+    </div>
+
+    <div class="quiz-question" id="quiz-question-card">
+      <div class="quiz-prompt" id="qz-prompt">What does this mean?</div>
+      <div class="quiz-word" id="qz-word">—</div>
+      <div class="quiz-options" id="qz-options"></div>
+    </div>
+
+    <div id="quiz-result" style="display:none;text-align:center;padding:40px 20px;">
+      <div class="quiz-score" id="qz-score">—<small></small></div>
+      <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn" onclick="startQuiz()">Try Again</button>
+        <button class="btn secondary" onclick="showScreen('home')">← Home</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:14px;" id="qz-back">
+      <button class="btn secondary" onclick="showScreen('home')">← Back</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="screen" id="screen-progress">
+    <h2 class="section-title">Your Progress</h2>
+    <div class="progress-grid">
+      <div class="progress-tile"><div class="big" id="pg-total">0</div><div class="label">Vocab Cards</div></div>
+      <div class="progress-tile"><div class="big" id="pg-known">0</div><div class="label">Known (SRS)</div></div>
+      <div class="progress-tile"><div class="big" id="pg-due">0</div><div class="label">Due Today</div></div>
+      <div class="progress-tile"><div class="big" id="pg-streak">0</div><div class="label">Day Streak</div></div>
+      <div class="progress-tile"><div class="big" id="pg-time">0:00</div><div class="label">Study Time Today</div></div>
+      <div class="progress-tile"><div class="big" id="pg-reviews">0</div><div class="label">Cards Reviewed</div></div>
+      <div class="progress-tile"><div class="big" id="pg-quiz">0</div><div class="label">Quiz Correct</div></div>
+      <div class="progress-tile"><div class="big" id="pg-grammar">0</div><div class="label">Grammar Drills ✓</div></div>
+    </div>
+    <div class="divider"></div>
+    <h2 class="section-title">Vocab by Category</h2>
+    <div class="category-list" id="category-list"></div>
+    <div class="divider"></div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="btn secondary" onclick="if(confirm('Reset ALL progress?')){resetProgress();}">Reset Progress</button>
+    </div>
+  </div>
+
+  <!-- IMPORT -->
+  <div class="screen" id="screen-import">
+    <h2 class="section-title">Import Lesson Vocab</h2>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:20px;line-height:1.7;">
+      Paste your new vocab below — one word per line.<br>
+      Format: <code>Korean | English | Category | Conjugation | Note | Lesson</code><br>
+      Only <strong>Korean</strong> and <strong>English</strong> are required. Category defaults to <em>General</em>.
+    </p>
+
+    <div class="import-example">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:8px;">Example</div>
+      <code>벚꽃 | cherry blossoms | Nature | | | 62</code><br>
+      <code>피다 | to bloom | Verbs | 피어요 | | 62</code><br>
+      <code>맵다 | spicy | Food | 매워요 | ㅂ irregular | 62</code>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <label style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);display:block;margin-bottom:6px;">Lesson Number <span style="color:var(--muted);font-weight:normal;">(used if not specified per-line)</span></label>
+      <input type="number" id="import-lesson-num" placeholder="e.g. 63" min="1" style="font-family:'DM Mono',monospace;font-size:0.9rem;padding:8px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--ink);width:140px;">
+    </div>
+
+    <textarea id="import-textarea" class="import-textarea" placeholder="Paste vocab here…
+벚꽃 | cherry blossoms | Nature
+피다 | to bloom | Verbs | 피어요
+맵다 | spicy | Food | 매워요 | ㅂ irregular"></textarea>
+
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+      <button class="btn" onclick="previewImport()">Preview</button>
+      <button class="btn secondary" onclick="clearImport()">Clear</button>
+    </div>
+
+    <!-- Preview area -->
+    <div id="import-preview" style="display:none;margin-top:22px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <h3 class="section-title" style="margin-bottom:0;" id="import-preview-title">Preview</h3>
+        <button class="btn" onclick="confirmImport()">✓ Add to App</button>
+      </div>
+      <div id="import-preview-list"></div>
+    </div>
+
+    <!-- Imported lessons list -->
+    <div class="divider"></div>
+    <h3 class="section-title">Imported Lessons</h3>
+    <div id="imported-lessons-list" style="font-size:0.82rem;color:var(--muted);">None yet.</div>
+    <div style="margin-top:12px;">
+      <button class="btn secondary" onclick="if(confirm('Remove all imported vocab?')){clearImported();}">Remove All Imported</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>Dylan's Korean Study App · Lessons with Jenna · SRS powered · v1.0</footer>
+
+<script>
+// ═══════════════════════════════════════════
+//  DATA — all vocab + grammar from the MD file
+// ═══════════════════════════════════════════
+const VOCAB = [
+  // Emotions & Feelings
+  {k:"신나요",e:"excited / thrilling",cat:"Emotions",lesson:41},
+  {k:"기대하고 있어요",e:"I'm looking forward to it",cat:"Emotions",lesson:41},
+  {k:"긴장해요",e:"I'm nervous",cat:"Emotions",lesson:41},
+  {k:"걱정해요",e:"I'm worried",cat:"Emotions",lesson:41},
+  {k:"슬프다",e:"to be sad",cat:"Emotions",conj:"슬퍼요",note:"ㅂ irregular",lesson:41},
+  {k:"슬픔",e:"sadness",cat:"Emotions",lesson:41},
+  {k:"기쁘다",e:"to be happy",cat:"Emotions",conj:"기뻐요",note:"ㅂ irregular",lesson:41},
+  {k:"기쁨",e:"joy",cat:"Emotions",lesson:41},
+  {k:"질투",e:"jealousy",cat:"Emotions",lesson:41},
+  {k:"부러워요",e:"I'm envious",cat:"Emotions",lesson:41},
+  {k:"존경",e:"respect",cat:"Emotions",lesson:41},
+  {k:"실망하다",e:"to be disappointed",cat:"Emotions",conj:"실망해요",lesson:41},
+  {k:"흥분하다",e:"to get excited",cat:"Emotions",conj:"흥분해요",lesson:41},
+  {k:"외롭다",e:"to be lonely",cat:"Emotions",conj:"외로워요",note:"ㅂ irregular",lesson:41},
+  {k:"혼자이다",e:"to be alone",cat:"Emotions",conj:"혼자예요",lesson:41},
+  {k:"탓하다",e:"to blame",cat:"Emotions",conj:"탓해요",lesson:41},
+  {k:"불평하다",e:"to complain",cat:"Emotions",conj:"불평해요",lesson:41},
+  {k:"우울하다",e:"to be depressed",cat:"Emotions",conj:"우울해요",lesson:41},
+  {k:"우울해져요",e:"becoming depressed",cat:"Emotions",lesson:41},
+  {k:"신경 안 써요",e:"I don't care",cat:"Emotions",lesson:41},
+  {k:"남을 의식하다",e:"to be conscious of others",cat:"Emotions",conj:"남을 의식해요",lesson:41},
+  {k:"부끄러워요",e:"I'm embarrassed",cat:"Emotions",lesson:41},
+  {k:"심각하다",e:"serious",cat:"Emotions",conj:"심각해요",lesson:41},
+  {k:"긍정적",e:"positive",cat:"Emotions",lesson:41},
+  {k:"부정적",e:"negative",cat:"Emotions",lesson:41},
+  {k:"만족",e:"satisfaction",cat:"Emotions",lesson:41},
+  {k:"기대",e:"expectation",cat:"Emotions",lesson:41},
+  {k:"평화적",e:"peaceful",cat:"Emotions",lesson:41},
+  {k:"자신감",e:"confidence",cat:"Emotions",lesson:41},
+  {k:"궁금했어요",e:"I was curious",cat:"Emotions",lesson:41},
+  {k:"궁금해요",e:"I'm curious",cat:"Emotions",lesson:41},
+  {k:"질렸어요",e:"I'm sick of it",cat:"Emotions",lesson:41},
+  {k:"지긋지긋해요",e:"I'm really fed up",cat:"Emotions",lesson:41},
+  {k:"지쳤어요",e:"I'm exhausted",cat:"Emotions",lesson:41},
+  {k:"설레요",e:"heart flutters / excited (romantic)",cat:"Emotions",lesson:41},
+  {k:"짜증나게 하다",e:"to annoy",cat:"Emotions",conj:"짜증나게 해요",lesson:41},
+  {k:"패닉하다",e:"to panic",cat:"Emotions",conj:"패닉해요",lesson:41},
+  {k:"멍청해요",e:"dumb / foolish",cat:"Emotions",lesson:41},
+  {k:"깨닫다",e:"to realize",cat:"Emotions",conj:"깨달아요",note:"ㄷ irregular",lesson:41},
+  {k:"순수하다",e:"to be pure",cat:"Emotions",conj:"순수해요",lesson:41},
+  {k:"아깝다",e:"what a waste / too bad",cat:"Emotions",conj:"아까워요",note:"ㅂ irregular",lesson:41},
+  {k:"개운하다",e:"refreshed / feeling clean",cat:"Emotions",conj:"개운해요",lesson:41},
+  {k:"피곤하다",e:"to be tired",cat:"Emotions",conj:"피곤해요",lesson:41},
+  {k:"배부르다",e:"to be full",cat:"Emotions",conj:"배불러요",note:"르 irregular",lesson:41},
+  {k:"심심하다",e:"to be bored",cat:"Emotions",conj:"심심해요",lesson:41},
+  {k:"독특해요",e:"unique",cat:"Emotions",lesson:41},
+  // 감 Family
+  {k:"감",e:"feeling / sense / intuition",cat:"감(感) Family",lesson:41},
+  {k:"감동",e:"being emotionally moved",cat:"감(感) Family",lesson:41},
+  {k:"감동했어요",e:"I was moved",cat:"감(感) Family",lesson:41},
+  {k:"감명",e:"deep impression",cat:"감(感) Family",lesson:41},
+  {k:"공감",e:"empathy",cat:"감(感) Family",lesson:41},
+  {k:"공감할 수 없어요",e:"I can't empathize",cat:"감(感) Family",lesson:41},
+  {k:"동감",e:"agreement",cat:"감(感) Family",lesson:41},
+  {k:"동감해요",e:"I agree",cat:"감(感) Family",lesson:41},
+  {k:"민감",e:"sensitive",cat:"감(感) Family",lesson:41},
+  {k:"감정",e:"emotion",cat:"감(感) Family",lesson:41},
+  {k:"감정적",e:"emotional",cat:"감(感) Family",lesson:41},
+  {k:"이성적",e:"rational / logical",cat:"감(感) Family",lesson:41},
+  {k:"실감",e:"vivid realization",cat:"감(感) Family",lesson:41},
+  {k:"예감",e:"premonition / intuition",cat:"감(感) Family",lesson:41},
+  // Personality
+  {k:"성격",e:"personality",cat:"Personality",lesson:41},
+  {k:"성격 차이",e:"personality difference",cat:"Personality",lesson:41},
+  {k:"외모",e:"appearance",cat:"Personality",lesson:41},
+  {k:"닮다",e:"to resemble",cat:"Personality",conj:"닮아요",lesson:41},
+  {k:"집돌이",e:"homebody (male)",cat:"Personality",lesson:41},
+  {k:"집순이",e:"homebody (female)",cat:"Personality",lesson:41},
+  {k:"이상형",e:"ideal type",cat:"Personality",lesson:41},
+  {k:"눈 높아요",e:"has high standards",cat:"Personality",lesson:41},
+  {k:"부지런하다",e:"to be diligent",cat:"Personality",conj:"부지런해요",lesson:41},
+  {k:"게으르다",e:"to be lazy",cat:"Personality",conj:"게을러요",note:"르 irregular",lesson:41},
+  {k:"짠순이",e:"frugal woman",cat:"Personality",lesson:41},
+  {k:"짠돌이",e:"frugal man",cat:"Personality",lesson:41},
+  {k:"야행성",e:"night owl",cat:"Personality",lesson:41},
+  {k:"아침형",e:"morning person",cat:"Personality",lesson:41},
+  {k:"가면 증후군",e:"imposter syndrome",cat:"Personality",lesson:41},
+  // Daily Life
+  {k:"집안일",e:"housework",cat:"Daily Life",lesson:41},
+  {k:"설거지하다",e:"to do the dishes",cat:"Daily Life",conj:"설거지해요",lesson:41},
+  {k:"청소하다",e:"to clean",cat:"Daily Life",conj:"청소해요",lesson:41},
+  {k:"빨래하다",e:"to do laundry",cat:"Daily Life",conj:"빨래해요",lesson:41},
+  {k:"홈트",e:"home training (exercise at home)",cat:"Daily Life",lesson:41},
+  {k:"푹 자다",e:"to sleep deeply",cat:"Daily Life",conj:"푹 자요",lesson:41},
+  {k:"뒤척뒤척하다",e:"to toss and turn",cat:"Daily Life",conj:"뒤척뒤척해요",lesson:41},
+  {k:"일상",e:"daily life",cat:"Daily Life",lesson:41},
+  {k:"아점",e:"brunch",cat:"Daily Life",lesson:41},
+  {k:"간식",e:"snack",cat:"Daily Life",lesson:41},
+  {k:"원두",e:"coffee beans",cat:"Daily Life",lesson:41},
+  {k:"이력서",e:"résumé",cat:"Daily Life",lesson:41},
+  {k:"면접",e:"interview",cat:"Daily Life",lesson:41},
+  {k:"방콕하다",e:"to stay home / hole up inside",cat:"Daily Life",conj:"방콕해요",lesson:41},
+  {k:"평소하고 같아요",e:"same as usual",cat:"Daily Life",lesson:41},
+  {k:"말도 안 돼요",e:"that makes no sense",cat:"Daily Life",lesson:41},
+  {k:"힘든 하루예요",e:"it's a hard day",cat:"Daily Life",lesson:41},
+  // Health
+  {k:"독감",e:"flu",cat:"Health",lesson:41},
+  {k:"감기",e:"cold",cat:"Health",lesson:41},
+  {k:"증상",e:"symptom",cat:"Health",lesson:41},
+  {k:"열 나요",e:"I have a fever",cat:"Health",lesson:41},
+  {k:"기침 나요",e:"I'm coughing",cat:"Health",lesson:41},
+  {k:"재채기 나요",e:"I'm sneezing",cat:"Health",lesson:41},
+  {k:"콧물 나요",e:"I have a runny nose",cat:"Health",lesson:41},
+  {k:"코 막혔어요",e:"my nose is stuffed",cat:"Health",lesson:41},
+  {k:"몸살 나요",e:"I have body aches",cat:"Health",lesson:41},
+  {k:"백신",e:"vaccine",cat:"Health",lesson:41},
+  {k:"주사 맞았어요",e:"I got a shot",cat:"Health",lesson:41},
+  {k:"링거",e:"IV drip",cat:"Health",lesson:41},
+  {k:"빨리 나으세요",e:"get well soon",cat:"Health",lesson:41},
+  {k:"물리치료",e:"physical therapy",cat:"Health",lesson:41},
+  {k:"통증",e:"pain",cat:"Health",lesson:41},
+  {k:"근육",e:"muscle",cat:"Health",lesson:41},
+  {k:"유산소 운동",e:"cardio exercise",cat:"Health",lesson:41},
+  {k:"수술",e:"surgery",cat:"Health",lesson:41},
+  {k:"숙취",e:"hangover",cat:"Health",lesson:41},
+  {k:"술 취하다",e:"to get drunk",cat:"Health",conj:"술 취해요",lesson:41},
+  {k:"끊다",e:"to quit (drinking/smoking)",cat:"Health",conj:"끊어요",lesson:41},
+  {k:"식중독",e:"food poisoning",cat:"Health",lesson:41},
+  {k:"토하다",e:"to vomit",cat:"Health",conj:"토해요",lesson:41},
+  {k:"설사",e:"diarrhea",cat:"Health",lesson:41},
+  // Sports
+  {k:"금메달 따다",e:"to win a gold medal",cat:"Sports",conj:"금메달 따요",lesson:41},
+  {k:"금 / 은 / 동",e:"gold / silver / bronze",cat:"Sports",lesson:41},
+  {k:"올림픽 선수",e:"Olympic athlete",cat:"Sports",lesson:41},
+  {k:"결승전",e:"final match",cat:"Sports",lesson:41},
+  {k:"역전",e:"comeback / reversal",cat:"Sports",lesson:41},
+  {k:"연장전",e:"overtime",cat:"Sports",lesson:41},
+  {k:"아슬아슬하다",e:"nail-biting / barely",cat:"Sports",conj:"아슬아슬해요",lesson:41},
+  {k:"이겼어요",e:"we won",cat:"Sports",lesson:41},
+  {k:"졌어요",e:"we lost",cat:"Sports",lesson:41},
+  {k:"비겼어요",e:"it was a tie",cat:"Sports",lesson:41},
+  {k:"투수",e:"pitcher",cat:"Sports",lesson:41},
+  {k:"포수",e:"catcher",cat:"Sports",lesson:41},
+  {k:"타자",e:"batter",cat:"Sports",lesson:41},
+  {k:"선수",e:"athlete / player",cat:"Sports",lesson:41},
+  // Food
+  {k:"맛집",e:"famous restaurant",cat:"Food",lesson:41},
+  {k:"미식가",e:"food connoisseur / gourmet",cat:"Food",lesson:41},
+  {k:"생선 구이",e:"grilled fish",cat:"Food",lesson:41},
+  {k:"땡겨요",e:"I'm craving it",cat:"Food",lesson:41},
+  {k:"충분해요",e:"enough / sufficient",cat:"Food",lesson:41},
+  {k:"기름",e:"oil",cat:"Food",lesson:41},
+  {k:"야채",e:"vegetables",cat:"Food",lesson:41},
+  {k:"참치",e:"tuna",cat:"Food",lesson:41},
+  {k:"단백질",e:"protein",cat:"Food",lesson:41},
+  {k:"디저트",e:"dessert",cat:"Food",lesson:41},
+  // Travel
+  {k:"봄방학",e:"spring break",cat:"Travel",lesson:41},
+  {k:"연휴",e:"long weekend / holiday break",cat:"Travel",lesson:41},
+  {k:"휴가",e:"vacation",cat:"Travel",lesson:41},
+  {k:"왕복",e:"round trip",cat:"Travel",lesson:41},
+  {k:"공항",e:"airport",cat:"Travel",lesson:41},
+  {k:"비행",e:"flight",cat:"Travel",lesson:41},
+  {k:"자전거 여행",e:"bicycle trip",cat:"Travel",lesson:41},
+  {k:"자전거 도로",e:"bike path",cat:"Travel",lesson:41},
+  {k:"가볍게 짐 싸다",e:"pack lightly",cat:"Travel",conj:"가볍게 짐 싸요",lesson:41},
+  {k:"탐험",e:"exploration",cat:"Travel",lesson:41},
+  {k:"경험",e:"experience",cat:"Travel",lesson:41},
+  {k:"독특한 장소",e:"unique place",cat:"Travel",lesson:41},
+  // Time
+  {k:"얼마나 자주",e:"how often",cat:"Time",lesson:41},
+  {k:"하루에 한 번",e:"once a day",cat:"Time",lesson:41},
+  {k:"일주일에 두 번",e:"twice a week",cat:"Time",lesson:41},
+  {k:"한 달에 세 번",e:"three times a month",cat:"Time",lesson:41},
+  {k:"일주일에 한두 번",e:"once or twice a week",cat:"Time",lesson:41},
+  {k:"이틀에 한 번",e:"once every two days",cat:"Time",lesson:41},
+  {k:"언젠가",e:"someday",cat:"Time",lesson:41},
+  {k:"어딘가",e:"somewhere",cat:"Time",lesson:41},
+  {k:"일년 내내",e:"all year round",cat:"Time",lesson:41},
+  {k:"평일",e:"weekday",cat:"Time",lesson:41},
+  {k:"불금",e:"TGIF / Fire Friday",cat:"Time",lesson:41},
+  {k:"오래전에",e:"a long time ago",cat:"Time",lesson:41},
+  {k:"오랫동안",e:"for a long time",cat:"Time",lesson:41},
+  {k:"오랜만에",e:"after a long time",cat:"Time",lesson:41},
+  {k:"곧",e:"soon",cat:"Time",lesson:41},
+  {k:"최근에",e:"recently",cat:"Time",lesson:41},
+  // Work
+  {k:"근무시간",e:"working hours",cat:"Work",lesson:41},
+  {k:"월급",e:"salary",cat:"Work",lesson:41},
+  {k:"경쟁",e:"competition",cat:"Work",lesson:41},
+  {k:"경쟁적",e:"competitive",cat:"Work",lesson:41},
+  {k:"장점",e:"advantage / strength",cat:"Work",lesson:41},
+  {k:"단점",e:"disadvantage / weakness",cat:"Work",lesson:41},
+  {k:"장단점",e:"pros and cons",cat:"Work",lesson:41},
+  {k:"그만두다",e:"to quit",cat:"Work",conj:"그만둬요",note:"ㅜ contraction",lesson:41},
+  {k:"계약",e:"contract",cat:"Work",lesson:41},
+  {k:"상사",e:"boss",cat:"Work",lesson:41},
+  {k:"퇴직하다",e:"to retire",cat:"Work",conj:"퇴직해요",lesson:41},
+  {k:"워라벨",e:"work-life balance",cat:"Work",lesson:41},
+  {k:"일 중독",e:"workaholic",cat:"Work",lesson:41},
+  {k:"생산적인",e:"productive",cat:"Work",lesson:41},
+  {k:"출퇴근 시간",e:"commute time",cat:"Work",lesson:41},
+  // School
+  {k:"교실",e:"classroom",cat:"School",lesson:41},
+  {k:"교장 선생님",e:"principal",cat:"School",lesson:41},
+  {k:"담임",e:"homeroom teacher",cat:"School",lesson:41},
+  {k:"과목",e:"subject",cat:"School",lesson:41},
+  {k:"학기말 시험",e:"end-of-term exam",cat:"School",lesson:41},
+  {k:"시험 치다",e:"to take an exam",cat:"School",conj:"시험 쳐요",note:"이+어 contraction",lesson:41},
+  {k:"성적",e:"grades",cat:"School",lesson:41},
+  {k:"부서",e:"department",cat:"School",lesson:41},
+  {k:"책임",e:"responsibility",cat:"School",lesson:41},
+  {k:"새학기",e:"new semester",cat:"School",lesson:41},
+  {k:"남녀공학",e:"co-ed school",cat:"School",lesson:41},
+  // Politics
+  {k:"대통령",e:"president",cat:"Politics",lesson:41},
+  {k:"수도",e:"capital city",cat:"Politics",lesson:41},
+  {k:"국회",e:"national assembly / parliament",cat:"Politics",lesson:41},
+  {k:"정치",e:"politics",cat:"Politics",lesson:41},
+  {k:"경제",e:"economy",cat:"Politics",lesson:41},
+  {k:"관세",e:"tariff",cat:"Politics",lesson:41},
+  {k:"세금",e:"tax",cat:"Politics",lesson:41},
+  {k:"투자",e:"investment",cat:"Politics",lesson:41},
+  {k:"주식",e:"stocks",cat:"Politics",lesson:41},
+  {k:"사회",e:"society",cat:"Politics",lesson:41},
+  {k:"문화",e:"culture",cat:"Politics",lesson:41},
+  {k:"역사",e:"history",cat:"Politics",lesson:41},
+  {k:"인구",e:"population",cat:"Politics",lesson:41},
+  {k:"부동산",e:"real estate",cat:"Politics",lesson:41},
+  {k:"찬성하다",e:"to agree / support",cat:"Politics",conj:"찬성해요",lesson:41},
+  {k:"반대하다",e:"to oppose",cat:"Politics",conj:"반대해요",lesson:41},
+  {k:"전쟁",e:"war",cat:"Politics",lesson:41},
+  {k:"기후 변화",e:"climate change",cat:"Politics",lesson:41},
+  // Arts
+  {k:"예술",e:"art",cat:"Arts",lesson:41},
+  {k:"예술가",e:"artist",cat:"Arts",lesson:41},
+  {k:"독립 영화",e:"independent film",cat:"Arts",lesson:41},
+  {k:"단편 영화",e:"short film",cat:"Arts",lesson:41},
+  {k:"배우",e:"actor",cat:"Arts",lesson:41},
+  {k:"연기",e:"acting",cat:"Arts",lesson:41},
+  {k:"소설",e:"novel",cat:"Arts",lesson:41},
+  {k:"영감",e:"inspiration",cat:"Arts",lesson:41},
+  {k:"작품",e:"work of art",cat:"Arts",lesson:41},
+  {k:"흑백사진",e:"black-and-white photo",cat:"Arts",lesson:41},
+  {k:"현상하다",e:"to develop (film)",cat:"Arts",conj:"현상해요",lesson:41},
+  {k:"영화관",e:"movie theater",cat:"Arts",lesson:41},
+  {k:"가사",e:"lyrics",cat:"Arts",lesson:41},
+  // Nature
+  {k:"자연",e:"nature",cat:"Nature",lesson:41},
+  {k:"경치",e:"scenery",cat:"Nature",lesson:41},
+  {k:"우주",e:"space / universe",cat:"Nature",lesson:41},
+  {k:"별",e:"star",cat:"Nature",lesson:41},
+  {k:"사막",e:"desert",cat:"Nature",lesson:41},
+  {k:"계곡",e:"valley",cat:"Nature",lesson:41},
+  {k:"정상",e:"summit",cat:"Nature",lesson:41},
+  {k:"습도",e:"humidity",cat:"Nature",lesson:41},
+  {k:"건조해요",e:"it's dry",cat:"Nature",lesson:41},
+  {k:"흐렸어요",e:"it was cloudy",cat:"Nature",lesson:41},
+  {k:"바다",e:"ocean",cat:"Nature",lesson:41},
+  // Conversation
+  {k:"그렇게 생각해요",e:"I think so",cat:"Conversation",lesson:41},
+  {k:"그렇게 생각 안 해요",e:"I don't think so",cat:"Conversation",lesson:41},
+  {k:"그러기 바래요",e:"I hope so",cat:"Conversation",lesson:41},
+  {k:"안 그러기 바래요",e:"I hope not",cat:"Conversation",lesson:41},
+  {k:"익숙해졌어요",e:"I got used to it",cat:"Conversation",lesson:41},
+  {k:"잘 지내",e:"take care / stay well",cat:"Conversation",lesson:41},
+  {k:"당연하지",e:"of course",cat:"Conversation",lesson:41},
+  {k:"내 잘못이야",e:"it's my fault",cat:"Conversation",lesson:41},
+  {k:"요약하자면",e:"in summary",cat:"Conversation",lesson:41},
+  {k:"확실히",e:"definitely",cat:"Conversation",lesson:41},
+  {k:"왠지",e:"somehow / for some reason",cat:"Conversation",lesson:41},
+  {k:"내 말이",e:"exactly / that's what I mean",cat:"Conversation",lesson:41},
+  {k:"그러니까",e:"so / therefore",cat:"Conversation",lesson:41},
+  {k:"결국",e:"eventually / in the end",cat:"Conversation",lesson:41},
+  {k:"특히",e:"especially",cat:"Conversation",lesson:41},
+  {k:"어쨌든",e:"anyway",cat:"Conversation",lesson:41},
+  {k:"두 말하면 잔소리예요",e:"it goes without saying",cat:"Conversation",lesson:41},
+  {k:"삼천포로 빠지다",e:"to go off topic",cat:"Conversation",conj:"삼천포로 빠져요",lesson:41},
+  // Intensifiers
+  {k:"훨씬",e:"much / far more",cat:"Intensifiers",lesson:41},
+  {k:"거의",e:"almost",cat:"Intensifiers",lesson:41},
+  {k:"별로",e:"not really (negative nuance)",cat:"Intensifiers",lesson:41},
+  {k:"전혀",e:"not at all",cat:"Intensifiers",lesson:41},
+  {k:"꽤",e:"quite / fairly",cat:"Intensifiers",lesson:41},
+  {k:"약간",e:"a little / slightly",cat:"Intensifiers",lesson:41},
+  // Verbs
+  {k:"이사하다",e:"to move (houses)",cat:"Verbs",conj:"이사해요",lesson:41},
+  {k:"정하다",e:"to decide",cat:"Verbs",conj:"정해요",lesson:41},
+  {k:"찾다",e:"to find / look for",cat:"Verbs",conj:"찾아요",lesson:41},
+  {k:"바꾸다",e:"to change",cat:"Verbs",conj:"바꿔요",note:"ㅜ contraction",lesson:41},
+  {k:"서두르다",e:"to hurry",cat:"Verbs",conj:"서둘러요",note:"르 irregular",lesson:41},
+  {k:"출발하다",e:"to depart",cat:"Verbs",conj:"출발해요",lesson:41},
+  {k:"도착하다",e:"to arrive",cat:"Verbs",conj:"도착해요",lesson:41},
+  {k:"연락하다",e:"to contact",cat:"Verbs",conj:"연락해요",lesson:41},
+  {k:"고치다",e:"to fix",cat:"Verbs",conj:"고쳐요",note:"이+어 contraction",lesson:41},
+  {k:"입양하다",e:"to adopt",cat:"Verbs",conj:"입양해요",lesson:41},
+  {k:"연기하다",e:"to postpone",cat:"Verbs",conj:"연기해요",lesson:41},
+  {k:"취소하다",e:"to cancel",cat:"Verbs",conj:"취소해요",lesson:41},
+  {k:"팔다",e:"to sell",cat:"Verbs",conj:"팔아요",lesson:41},
+  {k:"모아요",e:"to collect",cat:"Verbs",lesson:41},
+  {k:"버려요",e:"to throw away",cat:"Verbs",lesson:41},
+  {k:"계속하다",e:"to continue",cat:"Verbs",conj:"계속해요",lesson:41},
+  {k:"낭비하다",e:"to waste",cat:"Verbs",conj:"낭비해요",lesson:41},
+  {k:"챙기다",e:"to take care of / make sure to get",cat:"Verbs",conj:"챙겨요",note:"이+어 contraction",lesson:41},
+  {k:"연결하다",e:"to connect",cat:"Verbs",conj:"연결해요",lesson:41},
+  {k:"알아내다",e:"to find out",cat:"Verbs",conj:"알아내요",lesson:41},
+  {k:"회복하다",e:"to recover",cat:"Verbs",conj:"회복해요",lesson:41},
+  {k:"통제하다",e:"to control",cat:"Verbs",conj:"통제해요",lesson:41},
+  {k:"존중하다",e:"to respect",cat:"Verbs",conj:"존중해요",lesson:41},
+  {k:"포기하다",e:"to give up",cat:"Verbs",conj:"포기해요",lesson:41},
+  {k:"사랑에 빠지다",e:"to fall in love",cat:"Verbs",conj:"사랑에 빠져요",lesson:41},
+  {k:"헤어졌어요",e:"broke up",cat:"Verbs",lesson:41},
+  // Abstract
+  {k:"통계",e:"statistics",cat:"Abstract",lesson:41},
+  {k:"연구",e:"research",cat:"Abstract",lesson:41},
+  {k:"이유",e:"reason",cat:"Abstract",lesson:41},
+  {k:"운명",e:"fate / destiny",cat:"Abstract",lesson:41},
+  {k:"목표",e:"goal",cat:"Abstract",lesson:41},
+  {k:"목적",e:"purpose",cat:"Abstract",lesson:41},
+  {k:"논문",e:"thesis / dissertation",cat:"Abstract",lesson:41},
+  {k:"비결",e:"secret / key to success",cat:"Abstract",lesson:41},
+  {k:"비밀",e:"secret",cat:"Abstract",lesson:41},
+  {k:"공통점",e:"common point",cat:"Abstract",lesson:41},
+  {k:"유사점",e:"similarity",cat:"Abstract",lesson:41},
+  {k:"차이점",e:"difference",cat:"Abstract",lesson:41},
+
+  // ── CLASS 001 — Feelings & Mood ──
+  {k:"오늘 기분 어때요?",e:"How is your mood today?",cat:"Mood",lesson:1},
+  {k:"좋아요",e:"good",cat:"Mood",lesson:1},
+  {k:"괜찮아요",e:"okay",cat:"Mood",lesson:1},
+  {k:"그저그래요",e:"so-so",cat:"Mood",lesson:1},
+  {k:"안 좋아요",e:"not good",cat:"Mood",lesson:1},
+  {k:"힘들어요",e:"difficult / hard / tough",cat:"Mood",lesson:1},
+  {k:"아파요",e:"sick / hurt / painful",cat:"Mood",lesson:1},
+  {k:"바빠요",e:"busy",cat:"Mood",lesson:1},
+  {k:"화나요",e:"mad / angry",cat:"Mood",lesson:1},
+  {k:"짜증나요",e:"annoying / irritating",cat:"Mood",lesson:1},
+  {k:"답답해요",e:"frustrating / suffocating feeling",cat:"Mood",lesson:1},
+
+  // ── CLASS 001 — How Often ──
+  {k:"항상",e:"always",cat:"Frequency",lesson:1},
+  {k:"보통",e:"usually",cat:"Frequency",lesson:1},
+  {k:"자주",e:"often",cat:"Frequency",lesson:1},
+  {k:"가끔",e:"sometimes",cat:"Frequency",lesson:1},
+  {k:"거의 안",e:"seldom / hardly",cat:"Frequency",lesson:1},
+  {k:"절대로 안",e:"never",cat:"Frequency",lesson:1},
+
+  // ── CLASS 001 — Transitions ──
+  {k:"하고",e:"and (nouns)",cat:"Transitions",lesson:1},
+  {k:"이/랑",e:"and (nouns, casual)",cat:"Transitions",lesson:1},
+  {k:"그리고",e:"and (connecting sentences/verbs)",cat:"Transitions",lesson:1},
+  {k:"그래서",e:"so / therefore",cat:"Transitions",lesson:1},
+  {k:"그러면",e:"then / in that case",cat:"Transitions",lesson:1},
+  {k:"하지만",e:"but",cat:"Transitions",lesson:1},
+  {k:"왜냐하면",e:"because",cat:"Transitions",lesson:1},
+
+  // ── CLASS 001 — Vocab ──
+  {k:"어제",e:"yesterday",cat:"Time",lesson:1},
+  {k:"드디어",e:"finally",cat:"Conversation",lesson:1},
+  {k:"사진작가",e:"photo artist / photographer",cat:"Arts",lesson:1},
+  {k:"방학",e:"school vacation",cat:"School",lesson:1},
+  {k:"많이",e:"many / a lot",cat:"Intensifiers",lesson:1},
+  {k:"가족",e:"family",cat:"People",lesson:1},
+  {k:"동료",e:"coworker / colleague",cat:"Work",lesson:1},
+  {k:"추천해요",e:"recommend",cat:"Conversation",lesson:1},
+  {k:"무슨",e:"what kind of",cat:"Conversation",lesson:1},
+
+  // ── CLASS 002 — Weather ──
+  {k:"비",e:"rain",cat:"Weather",lesson:2},
+  {k:"눈",e:"snow",cat:"Weather",lesson:2},
+  {k:"맑아요",e:"sunny / clear",cat:"Weather",lesson:2},
+  {k:"흐려요",e:"overcast / cloudy",cat:"Weather",lesson:2},
+  {k:"습도 높아요",e:"the humidity is high / humid",cat:"Weather",lesson:2},
+  {k:"찐득해요",e:"sticky / muggy",cat:"Weather",lesson:2},
+
+  // ── CLASS 002 — Transportation ──
+  {k:"차",e:"car",cat:"Transport",lesson:2},
+  {k:"지하철",e:"subway",cat:"Transport",lesson:2},
+
+  // ── CLASS 002 — Comparisons ──
+  {k:"같아요",e:"same",cat:"Comparison",lesson:2},
+  {k:"달라요",e:"different",cat:"Comparison",lesson:2},
+
+  // ── CLASS 002 — Expressions ──
+  {k:"시간 빨리 가요",e:"time goes fast",cat:"Expressions",lesson:2},
+  {k:"시간 천천히 가요",e:"time goes slow",cat:"Expressions",lesson:2},
+  {k:"특별한 거 없어요",e:"nothing special",cat:"Expressions",lesson:2},
+  {k:"평소 하고 같아요",e:"same old same old",cat:"Expressions",lesson:2},
+  {k:"대단하다",e:"awesome / amazing",cat:"Expressions",conj:"대단해요",lesson:2},
+  {k:"그냥",e:"just / simply",cat:"Conversation",lesson:2},
+  {k:"있는 그대로",e:"the way it is / as is",cat:"Expressions",lesson:2},
+  {k:"사실은",e:"actually / in fact",cat:"Conversation",lesson:2},
+  {k:"부러워요",e:"I'm jealous / envious",cat:"Emotions",lesson:2},
+  {k:"죽겠다",e:"...that I'm dying (hyperbole)",cat:"Expressions",lesson:2},
+
+  // ── CLASS 002 — Time ──
+  {k:"주말",e:"weekend",cat:"Time",lesson:2},
+  {k:"학기",e:"semester",cat:"School",lesson:2},
+  {k:"이번",e:"this (time/week/month)",cat:"Time",lesson:2},
+  {k:"지난",e:"last (time period)",cat:"Time",lesson:2},
+  {k:"다음",e:"next",cat:"Time",lesson:2},
+
+  // ── CLASS 002 — Food ──
+  {k:"음식",e:"food",cat:"Food",lesson:2},
+  {k:"아침",e:"breakfast / morning",cat:"Food",lesson:2},
+  {k:"점심",e:"lunch / afternoon",cat:"Food",lesson:2},
+  {k:"저녁",e:"dinner / evening",cat:"Food",lesson:2},
+  {k:"건강한",e:"healthy",cat:"Food",lesson:2},
+  {k:"해물",e:"seafood",cat:"Food",lesson:2},
+  {k:"물고기",e:"fish",cat:"Food",lesson:2},
+
+  // ── CLASS 002 — Intensifiers ──
+  {k:"엄청",e:"super / extremely / very much",cat:"Intensifiers",lesson:2},
+  {k:"제일",e:"most / number one",cat:"Intensifiers",lesson:2},
+  {k:"다",e:"all / everything",cat:"Intensifiers",lesson:2},
+  {k:"진짜",e:"really / truly",cat:"Intensifiers",lesson:2},
+
+  // ── CLASS 002 — Vocab ──
+  {k:"질문",e:"question",cat:"Abstract",lesson:2},
+  {k:"문제",e:"problem",cat:"Abstract",lesson:2},
+  {k:"고향",e:"hometown",cat:"People",lesson:2},
+
+  // ── CLASS 003 — Sick ──
+  {k:"감기 걸렸어요?",e:"Did you catch a cold?",cat:"Health",lesson:3},
+  {k:"걸렸어요",e:"caught (an illness)",cat:"Health",lesson:3},
+
+  // ── CLASS 003 — Countries ──
+  {k:"나라",e:"country",cat:"Places",lesson:3},
+  {k:"인도",e:"India",cat:"Places",lesson:3},
+  {k:"독일",e:"Germany",cat:"Places",lesson:3},
+  {k:"태국",e:"Thailand",cat:"Places",lesson:3},
+
+  // ── CLASS 003 — Location Particles ──
+  {k:"에",e:"to (place) / at (place) / on (time)",cat:"Grammar Particles",lesson:3},
+  {k:"에서",e:"from / at (place where action happens)",cat:"Grammar Particles",lesson:3},
+
+  // ── CLASS 003 — Sleep/Wake Up ──
+  {k:"밤",e:"night",cat:"Time",lesson:3},
+  {k:"어제 밤",e:"last night",cat:"Time",lesson:3},
+  {k:"일찍",e:"early",cat:"Time",lesson:3},
+  {k:"늦게",e:"late",cat:"Time",lesson:3},
+  {k:"일어나다",e:"to get up",cat:"Daily Life",conj:"일어나요",lesson:3},
+
+  // ── CLASS 003 — Vocab ──
+  {k:"요즘",e:"these days / lately",cat:"Time",lesson:3},
+  {k:"글쎄요",e:"well... / hmm...",cat:"Conversation",lesson:3},
+  {k:"전",e:"ex (boyfriend/girlfriend)",cat:"People",lesson:3},
+  {k:"어느",e:"which",cat:"Conversation",lesson:3},
+  {k:"먼저",e:"firstly / first",cat:"Conversation",lesson:3},
+  {k:"첫 번째 날",e:"first day",cat:"Time",lesson:3},
+  {k:"예뻐요",e:"pretty",cat:"Adjectives",lesson:3},
+  {k:"이상해요",e:"strange / weird",cat:"Adjectives",lesson:3},
+  {k:"조상",e:"ancestors",cat:"People",lesson:3},
+  {k:"교육",e:"education",cat:"School",lesson:3},
+  {k:"느낌",e:"feeling / vibe",cat:"Emotions",lesson:3},
+
+  // ── CLASS 004 — Days of the Week ──
+  {k:"일요일",e:"Sunday",cat:"Days",lesson:4},
+  {k:"월요일",e:"Monday",cat:"Days",lesson:4},
+  {k:"화요일",e:"Tuesday",cat:"Days",lesson:4},
+  {k:"수요일",e:"Wednesday",cat:"Days",lesson:4},
+  {k:"목요일",e:"Thursday",cat:"Days",lesson:4},
+  {k:"금요일",e:"Friday",cat:"Days",lesson:4},
+  {k:"토요일",e:"Saturday",cat:"Days",lesson:4},
+  {k:"월요병",e:"Monday blues",cat:"Days",lesson:4},
+
+  // ── CLASS 004 — Particles ──
+  {k:"전에",e:"before (nouns + verbs)",cat:"Grammar Particles",lesson:4},
+  {k:"후에",e:"after (nouns + verbs)",cat:"Grammar Particles",lesson:4},
+  {k:"부터",e:"from (starting point)",cat:"Grammar Particles",lesson:4},
+  {k:"까지",e:"until / up to",cat:"Grammar Particles",lesson:4},
+
+  // ── CLASS 004 — Vocab ──
+  {k:"물론",e:"of course",cat:"Conversation",lesson:4},
+  {k:"호수",e:"lake",cat:"Nature",lesson:4},
+  {k:"돈",e:"money",cat:"Daily Life",lesson:4},
+  {k:"장마",e:"monsoon / rainy season",cat:"Weather",lesson:4},
+  {k:"공주병",e:"princess complex",cat:"Personality",lesson:4},
+  {k:"왕자병",e:"prince complex",cat:"Personality",lesson:4},
+  {k:"마음에 들어요",e:"I like it (enters my heart)",cat:"Expressions",lesson:4},
+
+  // ── CLASS 005 — Sports ──
+  {k:"야구",e:"baseball",cat:"Sports",lesson:5},
+  {k:"축구",e:"soccer",cat:"Sports",lesson:5},
+  {k:"미식축구",e:"American football",cat:"Sports",lesson:5},
+  {k:"농구",e:"basketball",cat:"Sports",lesson:5},
+  {k:"배구",e:"volleyball",cat:"Sports",lesson:5},
+  {k:"수영",e:"swimming",cat:"Sports",lesson:5},
+  {k:"이기다",e:"to win",cat:"Sports",conj:"이겨요",note:"이+어 contraction",lesson:5},
+  {k:"비기다",e:"to tie",cat:"Sports",conj:"비겨요",note:"이+어 contraction",lesson:5},
+  {k:"지다",e:"to lose",cat:"Sports",conj:"져요",lesson:5},
+  {k:"이야기",e:"story",cat:"Conversation",lesson:5},
+  {k:"재미있어요",e:"interesting / fun",cat:"Adjectives",lesson:5},
+  {k:"이번 주말 계획 있어요?",e:"Do you have plans this weekend?",cat:"Expressions",lesson:5},
+  {k:"직업",e:"job / occupation",cat:"Work",lesson:5},
+
+  // ── CLASS 005 — Seasons ──
+  {k:"여름",e:"summer",cat:"Seasons",lesson:5},
+  {k:"가을",e:"fall / autumn",cat:"Seasons",lesson:5},
+  {k:"겨울",e:"winter",cat:"Seasons",lesson:5},
+  {k:"봄",e:"spring",cat:"Seasons",lesson:5},
+  {k:"오전",e:"AM / morning",cat:"Time",lesson:5},
+  {k:"오후",e:"PM / afternoon",cat:"Time",lesson:5},
+  {k:"꽃",e:"flowers",cat:"Nature",lesson:5},
+  {k:"우산",e:"umbrella",cat:"Daily Life",lesson:5},
+  {k:"더워요",e:"hot / it's hot",cat:"Weather",lesson:5},
+
+  // ── CLASS 005 — Vocab ──
+  {k:"중에서",e:"among / out of",cat:"Grammar Particles",lesson:5},
+  {k:"인기",e:"popularity",cat:"Abstract",lesson:5},
+  {k:"근처에",e:"around / near / nearby",cat:"Places",lesson:5},
+  {k:"같이",e:"together",cat:"Conversation",lesson:5},
+  {k:"어려워요",e:"difficult / hard",cat:"Adjectives",lesson:5},
+  {k:"싫어요",e:"hate / dislike",cat:"Emotions",lesson:5},
+  {k:"걷다",e:"to walk",cat:"Verbs",conj:"걸어요",note:"ㄷ irregular",lesson:5},
+
+  // ── CLASS 006 — Food/Drink ──
+  {k:"신선한",e:"fresh",cat:"Food",lesson:6},
+  {k:"술집",e:"bar / pub",cat:"Food",lesson:6},
+  {k:"주문하다",e:"to order",cat:"Food",conj:"주문해요",lesson:6},
+  {k:"계란",e:"egg",cat:"Food",lesson:6},
+
+  // ── CLASS 006 — Slang ──
+  {k:"음치",e:"tone-deaf / music idiot",cat:"Slang",lesson:6},
+  {k:"몸치",e:"can't dance / body idiot",cat:"Slang",lesson:6},
+  {k:"길치",e:"bad with directions / street idiot",cat:"Slang",lesson:6},
+
+  // ── CLASS 006 — Activity ──
+  {k:"산책하다",e:"to take a stroll",cat:"Daily Life",conj:"산책해요",lesson:6},
+  {k:"놀다",e:"to hang out / play",cat:"Daily Life",conj:"놀아요",lesson:6},
+  {k:"수업 후에",e:"after class",cat:"School",lesson:6},
+
+  // ── CLASS 006 — Vocab ──
+  {k:"분위기",e:"ambience / atmosphere / vibe",cat:"Abstract",lesson:6},
+  {k:"마다",e:"every / each",cat:"Grammar Particles",lesson:6},
+  {k:"처음",e:"first time / beginning",cat:"Time",lesson:6},
+  {k:"주다",e:"to give",cat:"Verbs",conj:"줘요",note:"ㅜ contraction",lesson:6},
+  {k:"작아요",e:"small",cat:"Adjectives",lesson:6},
+  {k:"관심있어요",e:"interested in / has interest",cat:"Emotions",lesson:6},
+  {k:"준비하다",e:"to prepare / get ready",cat:"Verbs",conj:"준비해요",lesson:6},
+  {k:"어색해요",e:"awkward",cat:"Emotions",lesson:6},
+  {k:"멋있어요",e:"cool / stylish / awesome",cat:"Adjectives",lesson:6},
+
+  // ── CLASS 007 — Open/Close ──
+  {k:"몇 시에",e:"at what time",cat:"Time",lesson:7},
+  {k:"열어요",e:"open",cat:"Daily Life",lesson:7},
+  {k:"닫아요",e:"close",cat:"Daily Life",lesson:7},
+
+  // ── CLASS 007 — Days relative to today ──
+  {k:"그저께",e:"two days ago",cat:"Time",lesson:7},
+  {k:"오늘",e:"today",cat:"Time",lesson:7},
+  {k:"내일",e:"tomorrow",cat:"Time",lesson:7},
+  {k:"모레",e:"two days later / the day after tomorrow",cat:"Time",lesson:7},
+
+  // ── CLASS 007 — Vocab ──
+  {k:"전시회",e:"exhibition",cat:"Arts",lesson:7},
+  {k:"하루 종일",e:"all day long",cat:"Time",lesson:7},
+  {k:"중요해요",e:"important",cat:"Adjectives",lesson:7},
+  {k:"계획",e:"plan / plans",cat:"Abstract",lesson:7},
+  {k:"만들다",e:"to make / create",cat:"Verbs",conj:"만들어요",lesson:7},
+  {k:"넣다",e:"to put in / insert",cat:"Verbs",conj:"넣어요",lesson:7},
+  {k:"돌다",e:"to go around / return",cat:"Verbs",conj:"돌아요",lesson:7},
+  {k:"제 생각에는",e:"in my opinion / I think...",cat:"Conversation",lesson:7},
+
+  // ── CLASS 008 — Start/Finish ──
+  {k:"시작하다",e:"to start",cat:"Verbs",conj:"시작해요",lesson:8},
+  {k:"끝나다",e:"to finish / end",cat:"Verbs",conj:"끝나요",lesson:8},
+  {k:"잘하다",e:"to do well",cat:"Verbs",conj:"잘해요",lesson:8},
+  {k:"연습하다",e:"to practice",cat:"Verbs",conj:"연습해요",lesson:8},
+
+  // ── CLASS 008 — Negation ──
+  {k:"안",e:"don't / not (choice)",cat:"Grammar Particles",lesson:8},
+  {k:"못",e:"can't (inability)",cat:"Grammar Particles",lesson:8},
+  {k:"잘못해요",e:"can't do well / do poorly",cat:"Expressions",lesson:8},
+
+  // ── CLASS 008 — Reactions ──
+  {k:"잘됐어요",e:"good for you! / that worked out well",cat:"Expressions",lesson:8},
+  {k:"안됐어요",e:"sorry to hear / that's too bad",cat:"Expressions",lesson:8},
+
+  // ── CLASS 008 — Estimation ──
+  {k:"로",e:"by (means of transport)",cat:"Grammar Particles",lesson:8},
+  {k:"쯤",e:"about / approximately",cat:"Grammar Particles",lesson:8},
+
+  // ── CLASS 008 — Verbs ──
+  {k:"고장났어요",e:"broken / out of order",cat:"Daily Life",lesson:8},
+  {k:"살다",e:"to live",cat:"Verbs",conj:"살아요",lesson:8},
+  {k:"받다",e:"to get / receive",cat:"Verbs",conj:"받아요",lesson:8},
+
+  // ── CLASS 008 — Vocab ──
+  {k:"우리 둘다",e:"both of us",cat:"People",lesson:8},
+  {k:"작가",e:"artist / author / writer",cat:"Arts",lesson:8},
+  {k:"문자",e:"text message",cat:"Daily Life",lesson:8},
+  {k:"매운 음식",e:"spicy food",cat:"Food",lesson:8},
+  {k:"시간 많이 걸리다",e:"takes a long time",cat:"Expressions",lesson:8},
+  {k:"뭐에 관심있어요?",e:"What are you interested in?",cat:"Expressions",lesson:8},
+
+  // ── CLASS 009 — Demonstratives ──
+  {k:"이런",e:"like this / this kind of",cat:"Conversation",lesson:9},
+  {k:"그런",e:"like that / that kind of",cat:"Conversation",lesson:9},
+  {k:"저런",e:"like that over there",cat:"Conversation",lesson:9},
+
+  // ── CLASS 009 — Directions ──
+  {k:"북",e:"north",cat:"Places",lesson:9},
+  {k:"남",e:"south",cat:"Places",lesson:9},
+  {k:"동",e:"east",cat:"Places",lesson:9},
+  {k:"서",e:"west",cat:"Places",lesson:9},
+
+  // ── CLASS 009 — Verbs ──
+  {k:"기억나요",e:"I remember",cat:"Verbs",lesson:9},
+  {k:"기억 안 나요",e:"I don't remember",cat:"Verbs",lesson:9},
+  {k:"축하합니다",e:"congratulations",cat:"Expressions",lesson:9},
+  {k:"이상하다",e:"strange / weird",cat:"Adjectives",conj:"이상해요",lesson:9},
+
+  // ── CLASS 009 — Vocab ──
+  {k:"다른",e:"other / another / different",cat:"Conversation",lesson:9},
+  {k:"숙제",e:"homework",cat:"School",lesson:9},
+  {k:"단골",e:"regular customer",cat:"Conversation",lesson:9},
+  {k:"생일",e:"birthday",cat:"People",lesson:9},
+  {k:"어떤",e:"what kind of / some",cat:"Conversation",lesson:9},
+  {k:"예를 들면",e:"for example",cat:"Conversation",lesson:9},
+  {k:"냉장고",e:"fridge / refrigerator",cat:"Daily Life",lesson:9},
+  {k:"까지",e:"until / up to / by (deadline)",cat:"Grammar Particles",lesson:9},
+
+  // ── CLASS 010 — Beach ──
+  {k:"파도",e:"waves",cat:"Nature",lesson:10},
+  {k:"차가워요",e:"cold (to the touch / temperature)",cat:"Adjectives",lesson:10},
+
+  // ── CLASS 010 — Personality ──
+  {k:"취향",e:"taste / preference (in things)",cat:"Personality",lesson:10},
+  {k:"유명해요",e:"famous",cat:"Adjectives",lesson:10},
+  {k:"인기 있어요",e:"popular",cat:"Adjectives",lesson:10},
+  {k:"서양사람",e:"Westerner",cat:"People",lesson:10},
+
+  // ── CLASS 010 — Talking ──
+  {k:"특히",e:"especially / particularly",cat:"Conversation",lesson:10},
+  {k:"솔직히",e:"honestly / frankly",cat:"Conversation",lesson:10},
+  {k:"솔직히 말하면",e:"if I speak honestly / to be frank",cat:"Expressions",lesson:10},
+
+  // ── CLASS 010 — Sounds ──
+  {k:"바삭바삭",e:"crispy (sound/texture)",cat:"Food",lesson:10},
+  {k:"아삭아삭",e:"crunchy (sound/texture)",cat:"Food",lesson:10},
+
+  // ── CLASS 010 — Numbers ──
+  {k:"하나, 둘, 셋",e:"1, 2, 3 (native Korean numbers)",cat:"Numbers",lesson:10},
+  {k:"일, 이, 삼",e:"1, 2, 3 (Sino-Korean numbers)",cat:"Numbers",lesson:10},
+
+  // ── CLASS 010 — Verbs ──
+  {k:"걸리다",e:"to take (time)",cat:"Verbs",conj:"걸려요",lesson:10},
+  {k:"말하다",e:"to speak / tell / say",cat:"Verbs",conj:"말해요",lesson:10},
+  {k:"이야기하다",e:"to talk / chat",cat:"Verbs",conj:"이야기해요",lesson:10},
+  {k:"기대하다",e:"to look forward to",cat:"Verbs",conj:"기대해요",lesson:10},
+
+  // ── CLASS 010 — Vocab ──
+  {k:"우체국",e:"post office",cat:"Places",lesson:10},
+  {k:"만",e:"only (after nouns)",cat:"Grammar Particles",lesson:10},
+
+  // ── CLASS 010 — Verb table ──
+  {k:"가다",e:"to go",cat:"Verbs",conj:"가요",lesson:10},
+  {k:"사다",e:"to buy",cat:"Verbs",conj:"사요",lesson:10},
+  {k:"자다",e:"to sleep",cat:"Verbs",conj:"자요",lesson:10},
+  {k:"만나다",e:"to meet",cat:"Verbs",conj:"만나요",lesson:10},
+  {k:"마시다",e:"to drink",cat:"Verbs",conj:"마셔요",note:"이+어 contraction",lesson:10},
+  {k:"보다",e:"to see / watch",cat:"Verbs",conj:"봐요",note:"ㅗ+아 contraction",lesson:10},
+  {k:"오다",e:"to come",cat:"Verbs",conj:"와요",note:"ㅗ+아 contraction",lesson:10},
+  {k:"타다",e:"to ride",cat:"Verbs",conj:"타요",lesson:10},
+  {k:"배우다",e:"to learn",cat:"Verbs",conj:"배워요",note:"ㅜ+어 contraction",lesson:10},
+  {k:"가르치다",e:"to teach",cat:"Verbs",conj:"가르쳐요",note:"이+어 contraction",lesson:10},
+  {k:"쉬다",e:"to rest",cat:"Verbs",conj:"쉬어요",lesson:10},
+  {k:"하다",e:"to do",cat:"Verbs",conj:"해요",lesson:10},
+  {k:"일하다",e:"to work",cat:"Verbs",conj:"일해요",lesson:10},
+  {k:"공부하다",e:"to study",cat:"Verbs",conj:"공부해요",lesson:10},
+  {k:"운동하다",e:"to exercise",cat:"Verbs",conj:"운동해요",lesson:10},
+  {k:"요리하다",e:"to cook",cat:"Verbs",conj:"요리해요",lesson:10},
+  {k:"사랑하다",e:"to love",cat:"Verbs",conj:"사랑해요",lesson:10},
+  {k:"먹다",e:"to eat",cat:"Verbs",conj:"먹어요",lesson:10},
+  {k:"입다",e:"to wear",cat:"Verbs",conj:"입어요",lesson:10},
+  {k:"읽다",e:"to read",cat:"Verbs",conj:"읽어요",lesson:10},
+  {k:"원하다",e:"to want",cat:"Verbs",conj:"원해요",lesson:10},
+  {k:"끝나다",e:"to finish / be over",cat:"Verbs",conj:"끝나요",lesson:10},
+
+  // ── CLASS 011 — Smart/Stupid ──
+  {k:"똑똑해요",e:"smart / clever",cat:"Adjectives",lesson:11},
+  {k:"버릇없어요",e:"spoiled / rude / bad-mannered",cat:"Adjectives",lesson:11},
+  {k:"무례해요",e:"rude / impolite",cat:"Adjectives",lesson:11},
+  {k:"실수",e:"mistake",cat:"Abstract",lesson:11},
+  {k:"다시",e:"again",cat:"Conversation",lesson:11},
+
+  // ── CLASS 011 — Age ──
+  {k:"나이",e:"age",cat:"People",lesson:11},
+  {k:"몇 살이에요?",e:"How old are you?",cat:"Expressions",lesson:11},
+  {k:"살",e:"age counter (years old)",cat:"Grammar Particles",lesson:11},
+  {k:"열",e:"10 (native Korean)",cat:"Numbers",lesson:11},
+  {k:"스물",e:"20 (native Korean)",cat:"Numbers",lesson:11},
+  {k:"서른",e:"30 (native Korean)",cat:"Numbers",lesson:11},
+  {k:"마흔",e:"40 (native Korean)",cat:"Numbers",lesson:11},
+
+  // ── CLASS 011 — Vocab ──
+  {k:"에너지",e:"energy",cat:"Abstract",lesson:11},
+  {k:"선택",e:"choice",cat:"Abstract",lesson:11},
+  {k:"주인",e:"owner",cat:"People",lesson:11},
+  {k:"경우에 따라 달라요",e:"it depends on the case/situation",cat:"Expressions",lesson:11},
+
+  // ── CLASS 012 — Body ──
+  {k:"가슴",e:"chest",cat:"Body",lesson:12},
+  {k:"다리",e:"legs",cat:"Body",lesson:12},
+  {k:"귀",e:"ears",cat:"Body",lesson:12},
+  {k:"입",e:"mouth",cat:"Body",lesson:12},
+  {k:"목",e:"throat / neck",cat:"Body",lesson:12},
+  {k:"어깨",e:"shoulder",cat:"Body",lesson:12},
+  {k:"얼굴",e:"face",cat:"Body",lesson:12},
+  {k:"팔",e:"arm",cat:"Body",lesson:12},
+  {k:"등",e:"upper back",cat:"Body",lesson:12},
+  {k:"허리",e:"lower back / waist",cat:"Body",lesson:12},
+  {k:"미소",e:"smile",cat:"Body",lesson:12},
+  {k:"손",e:"hand",cat:"Body",lesson:12},
+  {k:"손가락",e:"fingers",cat:"Body",lesson:12},
+  {k:"허벅지",e:"thighs",cat:"Body",lesson:12},
+  {k:"손목",e:"wrist",cat:"Body",lesson:12},
+  {k:"발목",e:"ankle",cat:"Body",lesson:12},
+  {k:"배",e:"stomach / belly",cat:"Body",lesson:12},
+  {k:"종아리",e:"calves",cat:"Body",lesson:12},
+  {k:"엉덩이",e:"butt",cat:"Body",lesson:12},
+  {k:"발가락",e:"toes",cat:"Body",lesson:12},
+  {k:"-에 끌려요",e:"attracted to (body part)",cat:"Expressions",lesson:12},
+
+  // ── CLASS 012 — Sweat / Clothes ──
+  {k:"땀",e:"sweat",cat:"Health",lesson:12},
+  {k:"땀 나요",e:"sweating",cat:"Health",lesson:12},
+  {k:"깎다",e:"to cut (hair)",cat:"Verbs",conj:"깎아요",lesson:12},
+  {k:"반바지",e:"shorts / half pants",cat:"Daily Life",lesson:12},
+  {k:"벌써",e:"already",cat:"Time",lesson:12},
+  {k:"아직",e:"still (positive) / yet (negative)",cat:"Time",lesson:12},
+  {k:"아직 안 했어요",e:"not yet done / not decided yet",cat:"Expressions",lesson:12},
+  {k:"해봐요",e:"try it / give it a try",cat:"Expressions",lesson:12},
+
+  // ── CLASS 012 — Vocab ──
+  {k:"전화하다",e:"to call (phone)",cat:"Verbs",conj:"전화해요",lesson:12},
+  {k:"전화",e:"phone / phone call",cat:"Daily Life",lesson:12},
+
+  // ── CLASS 013 — Travel ──
+  {k:"불편하다",e:"uncomfortable",cat:"Travel",conj:"불편해요",lesson:13},
+  {k:"편하다",e:"comfortable / convenient",cat:"Travel",conj:"편해요",lesson:13},
+  {k:"비행기",e:"airplane",cat:"Transport",lesson:13},
+  {k:"시차",e:"time difference / jet lag",cat:"Travel",lesson:13},
+  {k:"배",e:"boat / ship",cat:"Transport",lesson:13},
+  {k:"교통",e:"traffic / transportation",cat:"Transport",lesson:13},
+  {k:"공원",e:"park",cat:"Places",lesson:13},
+  {k:"수영장",e:"swimming pool",cat:"Places",lesson:13},
+  {k:"가지고 오다",e:"to bring (something)",cat:"Verbs",conj:"가지고 와요",lesson:13},
+  {k:"안에",e:"inside of",cat:"Grammar Particles",lesson:13},
+  {k:"구경하다",e:"to look around / browse",cat:"Verbs",conj:"구경해요",lesson:13},
+  {k:"낮잠 자다",e:"to take a nap",cat:"Daily Life",conj:"낮잠 자요",lesson:13},
+  {k:"-아/어 보여요",e:"looks like / appears to be",cat:"Grammar Particles",lesson:13},
+  {k:"오리",e:"duck",cat:"Nature",lesson:13},
+  {k:"벌레",e:"bug / insect / worm",cat:"Nature",lesson:13},
+  {k:"자정",e:"midnight",cat:"Time",lesson:13},
+
+  // ── CLASS 014 — Gym/Health ──
+  {k:"탄수화물",e:"carbohydrates / carbs",cat:"Health",lesson:14},
+  {k:"지방",e:"fat (dietary)",cat:"Health",lesson:14},
+  {k:"행복해요",e:"happy",cat:"Emotions",conj:"행복해요",lesson:14},
+  {k:"기분 좋아요",e:"mood is good / feeling good",cat:"Mood",lesson:14},
+  {k:"인생",e:"life",cat:"Abstract",lesson:14},
+  {k:"결혼식",e:"wedding ceremony",cat:"People",lesson:14},
+  {k:"의자",e:"chair",cat:"Daily Life",lesson:14},
+  {k:"늦어서 죄송합니다",e:"sorry I'm late (formal)",cat:"Expressions",lesson:14},
+
+  // ── CLASS 015 — Believe/Trust ──
+  {k:"믿다",e:"to believe / trust",cat:"Verbs",conj:"믿어요",lesson:15},
+  {k:"믿을 수 없어요",e:"I can't believe it",cat:"Expressions",lesson:15},
+  {k:"제일 친한 친구",e:"best friend",cat:"People",lesson:15},
+  {k:"이따가",e:"later (soon)",cat:"Time",lesson:15},
+  {k:"나중에",e:"later (more distant future)",cat:"Time",lesson:15},
+  {k:"미래",e:"future",cat:"Time",lesson:15},
+  {k:"초등학교",e:"elementary school",cat:"School",lesson:15},
+  {k:"중학교",e:"middle school",cat:"School",lesson:15},
+  {k:"고등학교",e:"high school",cat:"School",lesson:15},
+  {k:"기회",e:"opportunity / chance",cat:"Abstract",lesson:15},
+  {k:"상황",e:"situation",cat:"Abstract",lesson:15},
+  {k:"암실",e:"darkroom",cat:"Arts",lesson:15},
+  {k:"호주",e:"Australia",cat:"Places",lesson:15},
+  {k:"과학",e:"science",cat:"School",lesson:15},
+  {k:"과학자",e:"scientist",cat:"People",lesson:15},
+  {k:"태어나다",e:"to be born",cat:"Verbs",conj:"태어나요",lesson:15},
+  {k:"생각 많이 하지 마",e:"stop overthinking (casual)",cat:"Expressions",lesson:15},
+
+  // ── CLASS 016 — Scary/House ──
+  {k:"무서워요",e:"scary / scared",cat:"Adjectives",lesson:16},
+  {k:"위험해요",e:"dangerous",cat:"Adjectives",lesson:16},
+  {k:"화분",e:"potted plant",cat:"Daily Life",lesson:16},
+  {k:"뒹굴뒹굴해요",e:"lying around / lazing about",cat:"Daily Life",lesson:16},
+  {k:"개학",e:"start of school / back to school",cat:"School",lesson:16},
+  {k:"어릴 때",e:"when (I was) a kid",cat:"Time",lesson:16},
+  {k:"날씬해요",e:"slim / slender",cat:"Adjectives",lesson:16},
+  {k:"여행하다",e:"to travel / take a trip",cat:"Travel",conj:"여행해요",lesson:16},
+  {k:"에게",e:"to (a person)",cat:"Grammar Particles",lesson:16},
+  {k:"듣다",e:"to listen / hear",cat:"Verbs",conj:"들어요",note:"ㄷ irregular",lesson:16},
+  {k:"과/와",e:"and / with (formal)",cat:"Grammar Particles",lesson:16},
+  {k:"랑/이랑",e:"and / with (casual)",cat:"Grammar Particles",lesson:16},
+
+  // ── CLASS 017 — Know/Don't Know ──
+  {k:"알아요",e:"I know",cat:"Expressions",lesson:17},
+  {k:"알겠어요",e:"I got it / I understand",cat:"Expressions",lesson:17},
+  {k:"이해해요",e:"I understand / I know what you mean",cat:"Expressions",lesson:17},
+  {k:"몰라요",e:"I don't know",cat:"Expressions",lesson:17},
+  {k:"모르겠어요",e:"I don't understand / I have no idea",cat:"Expressions",lesson:17},
+  {k:"이해 못 해요",e:"I can't understand",cat:"Expressions",lesson:17},
+
+  // ── CLASS 017 — Family ──
+  {k:"부모님",e:"parents",cat:"People",lesson:17},
+  {k:"아버님",e:"father (formal)",cat:"People",lesson:17},
+  {k:"어머님",e:"mother (formal)",cat:"People",lesson:17},
+  {k:"형제",e:"brothers / siblings",cat:"People",lesson:17},
+
+  // ── CLASS 017 — Vocab ──
+  {k:"반반",e:"half and half",cat:"Conversation",lesson:17},
+  {k:"안경",e:"glasses / spectacles",cat:"Daily Life",lesson:17},
+  {k:"시계",e:"watch / clock",cat:"Daily Life",lesson:17},
+  {k:"복잡해요",e:"crowded / complicated",cat:"Adjectives",lesson:17},
+  {k:"결혼하다",e:"to marry / get married",cat:"Verbs",conj:"결혼해요",lesson:17},
+  {k:"마트",e:"supermarket / mart",cat:"Places",lesson:17},
+
+  // ── CLASS 018 ──
+  {k:"하이킹",e:"hiking",cat:"Sports",lesson:18},
+  {k:"아름다워요",e:"beautiful",cat:"Adjectives",lesson:18},
+  {k:"특별한 날",e:"special day",cat:"Time",lesson:18},
+  {k:"다양한",e:"diverse / all kinds of",cat:"Adjectives",lesson:18},
+  {k:"친척",e:"relatives",cat:"People",lesson:18},
+  {k:"검정",e:"black",cat:"Adjectives",lesson:18},
+  {k:"시골",e:"countryside / rural area",cat:"Places",lesson:18},
+  {k:"도시",e:"city",cat:"Places",lesson:18},
+
+  // ── CLASS 019 — Wedding ──
+  {k:"신랑",e:"groom",cat:"People",lesson:19},
+  {k:"신부",e:"bride",cat:"People",lesson:19},
+  {k:"주례",e:"wedding officiant",cat:"People",lesson:19},
+  {k:"사회자",e:"MC / emcee",cat:"People",lesson:19},
+  {k:"박수",e:"applause / clapping",cat:"Expressions",lesson:19},
+  {k:"하객",e:"wedding guests",cat:"People",lesson:19},
+  {k:"피로연",e:"wedding reception",cat:"People",lesson:19},
+  {k:"사위",e:"son-in-law",cat:"People",lesson:19},
+  {k:"잘 살겠습니다",e:"we will live well (wedding phrase)",cat:"Expressions",lesson:19},
+  {k:"그 다음에",e:"after that",cat:"Transitions",lesson:19},
+  {k:"쓰다",e:"to write / use / spend / wear (hat)",cat:"Verbs",conj:"써요",lesson:19},
+  {k:"되다",e:"to become",cat:"Verbs",conj:"돼요",lesson:19},
+  {k:"울다",e:"to cry",cat:"Verbs",conj:"울어요",lesson:19},
+  {k:"벗다",e:"to take off (clothes)",cat:"Verbs",conj:"벗어요",lesson:19},
+  {k:"떠나다",e:"to leave / depart",cat:"Verbs",conj:"떠나요",lesson:19},
+
+  // ── CLASS 020 ──
+  {k:"설명하다",e:"to explain",cat:"Verbs",conj:"설명해요",lesson:20},
+  {k:"친절하다",e:"to be kind / friendly",cat:"Adjectives",conj:"친절해요",lesson:20},
+  {k:"필요하다",e:"to need / be necessary",cat:"Verbs",conj:"필요해요",lesson:20},
+  {k:"수영복",e:"swimsuit",cat:"Daily Life",lesson:20},
+  {k:"현재",e:"currently / the present",cat:"Time",lesson:20},
+  {k:"원래",e:"originally / by nature",cat:"Conversation",lesson:20},
+
+  // ── CLASS 021 — Dyeing Hair ──
+  {k:"염색하다",e:"to dye (hair)",cat:"Daily Life",conj:"염색해요",lesson:21},
+  {k:"갑자기",e:"suddenly",cat:"Conversation",lesson:21},
+  {k:"어울리다",e:"to suit / match / go well",cat:"Verbs",conj:"어울려요",lesson:21},
+  {k:"웃다",e:"to laugh / smile",cat:"Verbs",conj:"웃어요",lesson:21},
+  {k:"놀리다",e:"to tease",cat:"Verbs",conj:"놀려요",lesson:21},
+  {k:"잘 되다",e:"to go well / work out",cat:"Expressions",lesson:21},
+  {k:"부탁하다",e:"to request / ask a favour",cat:"Verbs",conj:"부탁해요",lesson:21},
+  {k:"자세히",e:"in detail",cat:"Conversation",lesson:21},
+  {k:"마지막으로",e:"lastly / finally",cat:"Conversation",lesson:21},
+
+  // ── CLASS 024 — Adjectives / Taste ──
+  {k:"크다",e:"big / large",cat:"Adjectives",conj:"커요",lesson:24},
+  {k:"많다",e:"many / a lot",cat:"Adjectives",conj:"많아요",lesson:24},
+  {k:"단어",e:"word / vocabulary item",cat:"Abstract",lesson:24},
+  {k:"싸다",e:"cheap / inexpensive",cat:"Adjectives",conj:"싸요",lesson:24},
+  {k:"맛있다",e:"tasty / delicious",cat:"Food",conj:"맛있어요",lesson:24},
+  {k:"맵다",e:"spicy / hot (taste)",cat:"Food",conj:"매워요",note:"ㅂ irregular",lesson:24},
+  {k:"따뜻하다",e:"warm",cat:"Weather",conj:"따뜻해요",lesson:24},
+  {k:"잘생겼어요",e:"handsome",cat:"Adjectives",lesson:24},
+  {k:"평범하다",e:"ordinary / average",cat:"Adjectives",conj:"평범해요",lesson:24},
+  {k:"뚱뚱하다",e:"fat / overweight",cat:"Adjectives",conj:"뚱뚱해요",lesson:24},
+  {k:"더럽다",e:"dirty",cat:"Adjectives",conj:"더러워요",note:"ㅂ irregular",lesson:24},
+  {k:"짜다",e:"salty",cat:"Food",conj:"짜요",lesson:24},
+  {k:"달다",e:"sweet",cat:"Food",conj:"달아요",lesson:24},
+  {k:"시다",e:"sour",cat:"Food",conj:"셔요",lesson:24},
+  {k:"싱겁다",e:"bland / tasteless",cat:"Food",conj:"싱거워요",note:"ㅂ irregular",lesson:24},
+  {k:"고소하다",e:"nutty / savory / toasty",cat:"Food",conj:"고소해요",lesson:24},
+  {k:"촉촉하다",e:"moist",cat:"Adjectives",conj:"촉촉해요",lesson:24},
+  {k:"뜨겁다",e:"hot to the touch",cat:"Adjectives",conj:"뜨거워요",note:"ㅂ irregular",lesson:24},
+  {k:"무겁다",e:"heavy",cat:"Adjectives",conj:"무거워요",note:"ㅂ irregular",lesson:24},
+  {k:"가볍다",e:"light (weight)",cat:"Adjectives",conj:"가벼워요",note:"ㅂ irregular",lesson:24},
+  {k:"행복하다",e:"to be happy",cat:"Emotions",conj:"행복해요",lesson:24},
+  {k:"친근하다",e:"friendly / approachable",cat:"Adjectives",conj:"친근해요",lesson:24},
+
+  // ── CLASS 025 ──
+  {k:"젖다",e:"to get wet",cat:"Verbs",conj:"젖어요",lesson:25},
+  {k:"병원",e:"hospital / clinic",cat:"Health",lesson:25},
+  {k:"신문",e:"newspaper",cat:"Daily Life",lesson:25},
+  {k:"연달아",e:"back to back / in a row",cat:"Conversation",lesson:25},
+  {k:"집들이",e:"housewarming party",cat:"Daily Life",lesson:25},
+  {k:"수제",e:"handmade",cat:"Adjectives",lesson:25},
+  {k:"즐거운 시간",e:"enjoyable time / fun time",cat:"Expressions",lesson:25},
+
+  // ── CLASS 026 ──
+  {k:"아내",e:"wife",cat:"People",lesson:26},
+  {k:"남편",e:"husband",cat:"People",lesson:26},
+  {k:"연어",e:"salmon",cat:"Food",lesson:26},
+  {k:"도와주다",e:"to help",cat:"Verbs",conj:"도와줘요",lesson:26},
+  {k:"그런데",e:"but / by the way / however",cat:"Transitions",lesson:26},
+
+  // ── CLASS 027 ──
+  {k:"잡지",e:"magazine",cat:"Arts",lesson:27},
+  {k:"대부분",e:"mostly / the majority",cat:"Intensifiers",lesson:27},
+  {k:"보수적",e:"conservative",cat:"Abstract",lesson:27},
+  {k:"진보적",e:"liberal / progressive",cat:"Abstract",lesson:27},
+  {k:"이빨",e:"tooth / teeth",cat:"Body",lesson:27},
+  {k:"늘리다",e:"to extend / expand / increase",cat:"Verbs",conj:"늘려요",lesson:27},
+  {k:"착하다",e:"good-hearted / kind / nice",cat:"Adjectives",conj:"착해요",lesson:27},
+
+  // ── CLASS 028 ──
+  {k:"공공장소",e:"public place",cat:"Places",lesson:28},
+  {k:"세대 차이",e:"generation gap",cat:"Abstract",lesson:28},
+  {k:"나이 차이",e:"age difference",cat:"Abstract",lesson:28},
+
+  // ── CLASS 029 ──
+  {k:"학년",e:"school year / grade level",cat:"School",lesson:29},
+  {k:"어린이집",e:"daycare",cat:"School",lesson:29},
+  {k:"유치원",e:"kindergarten",cat:"School",lesson:29},
+  {k:"매일 밤",e:"every night",cat:"Time",lesson:29},
+  {k:"매일 아침",e:"every morning",cat:"Time",lesson:29},
+  {k:"매주 토요일",e:"every Saturday",cat:"Time",lesson:29},
+  {k:"매달",e:"every month",cat:"Time",lesson:29},
+  {k:"승진",e:"promotion (at work)",cat:"Work",lesson:29},
+  {k:"어른",e:"adult / grown-up",cat:"People",lesson:29},
+  {k:"깨끗한 공기",e:"clean air",cat:"Nature",lesson:29},
+  {k:"정부",e:"government",cat:"Politics",lesson:29},
+  {k:"보조금",e:"subsidy / grant",cat:"Politics",lesson:29},
+  {k:"정규",e:"regular / standard",cat:"Abstract",lesson:29},
+
+  // ── CLASS 030 — Weather/Photography ──
+  {k:"태풍",e:"typhoon",cat:"Weather",lesson:30},
+  {k:"바람",e:"wind",cat:"Weather",lesson:30},
+  {k:"바람 불어요",e:"it's windy",cat:"Weather",lesson:30},
+  {k:"천둥",e:"thunder",cat:"Weather",lesson:30},
+  {k:"번개",e:"lightning",cat:"Weather",lesson:30},
+  {k:"안개",e:"fog",cat:"Weather",lesson:30},
+  {k:"초상화",e:"portrait (photography)",cat:"Arts",lesson:30},
+  {k:"풍경",e:"landscape / scenery (photography)",cat:"Arts",lesson:30},
+  {k:"정물",e:"still life (photography)",cat:"Arts",lesson:30},
+  {k:"취미",e:"hobby",cat:"Daily Life",lesson:30},
+  {k:"침술",e:"acupuncture",cat:"Health",lesson:30},
+  {k:"전문가",e:"expert / specialist",cat:"Work",lesson:30},
+  {k:"점수",e:"score / points",cat:"Sports",lesson:30},
+
+  // ── CLASS 032 ──
+  {k:"잊다",e:"to forget",cat:"Verbs",conj:"잊어요",lesson:32},
+  {k:"잃다",e:"to lose (something)",cat:"Verbs",conj:"잃어요",lesson:32},
+  {k:"길다",e:"long",cat:"Adjectives",conj:"길어요",lesson:32},
+  {k:"짧다",e:"short",cat:"Adjectives",conj:"짧아요",lesson:32},
+
+  // ── CLASS 033 ──
+  {k:"추천서",e:"recommendation letter",cat:"School",lesson:33},
+  {k:"규정",e:"rules / policy / regulation",cat:"Abstract",lesson:33},
+  {k:"숫자",e:"number / digit / figure",cat:"Abstract",lesson:33},
+  {k:"상상하다",e:"to imagine",cat:"Verbs",conj:"상상해요",lesson:33},
+  {k:"트림하다",e:"to burp",cat:"Daily Life",conj:"트림해요",lesson:33},
+  {k:"코 풀다",e:"to blow one's nose",cat:"Health",conj:"코 풀어요",lesson:33},
+  {k:"짐작하다",e:"to guess / make an educated guess",cat:"Verbs",conj:"짐작해요",lesson:33},
+
+  // ── CLASS 034 — Work/Commute ──
+  {k:"출퇴근하다",e:"to commute",cat:"Work",conj:"출퇴근해요",lesson:34},
+  {k:"편리하다",e:"convenient",cat:"Adjectives",conj:"편리해요",lesson:34},
+  {k:"참여하다",e:"to participate",cat:"Verbs",conj:"참여해요",lesson:34},
+  {k:"동의하다",e:"to agree",cat:"Verbs",conj:"동의해요",lesson:34},
+  {k:"약하다",e:"weak",cat:"Adjectives",conj:"약해요",lesson:34},
+  {k:"술 마시다",e:"to drink alcohol",cat:"Daily Life",conj:"술 마셔요",lesson:34},
+  {k:"취해요",e:"tipsy / drunk",cat:"Health",lesson:34},
+  {k:"만취하다",e:"to be blackout drunk",cat:"Health",conj:"만취해요",lesson:34},
+  {k:"정장",e:"formal clothes / suit",cat:"Daily Life",lesson:34},
+  {k:"운동화",e:"sneakers / trainers",cat:"Daily Life",lesson:34},
+  {k:"구두",e:"dress shoes",cat:"Daily Life",lesson:34},
+  {k:"전자제품",e:"electronics",cat:"Daily Life",lesson:34},
+
+  // ── CLASS 036 — Looks ──
+  {k:"못생겼어요",e:"ugly / unattractive",cat:"Adjectives",lesson:36},
+  {k:"내성적",e:"introverted",cat:"Personality",lesson:36},
+  {k:"외향적",e:"extroverted",cat:"Personality",lesson:36},
+
+  // ── CLASS 037 ──
+  {k:"미루다",e:"to postpone / put off",cat:"Verbs",conj:"미뤄요",note:"ㅜ contraction",lesson:37},
+  {k:"놀라다",e:"to be surprised",cat:"Emotions",conj:"놀라요",lesson:37},
+  {k:"끔찍하다",e:"terrible / awful / horrific",cat:"Adjectives",conj:"끔찍해요",lesson:37},
+  {k:"사고",e:"accident / incident",cat:"Abstract",lesson:37},
+  {k:"모임",e:"meeting / gathering / get-together",cat:"Daily Life",lesson:37},
+  {k:"어느 정도",e:"to a certain extent / somewhat",cat:"Conversation",lesson:37},
+
+  // ── CLASS 039 — Weather ──
+  {k:"선선하다",e:"cool (weather)",cat:"Weather",conj:"선선해요",lesson:39},
+  {k:"쌀쌀하다",e:"chilly",cat:"Weather",conj:"쌀쌀해요",lesson:39},
+  {k:"가치",e:"value / worth",cat:"Abstract",lesson:39},
+  {k:"얼룩",e:"stain / spot",cat:"Daily Life",lesson:39},
+
+  // ── CLASS 040 ──
+  {k:"정돈하다",e:"to tidy up / organize",cat:"Daily Life",conj:"정돈해요",lesson:40},
+  {k:"복도",e:"hallway / corridor",cat:"Places",lesson:40},
+  {k:"여가 시간",e:"free time / leisure time",cat:"Daily Life",lesson:40},
+
+  // ── CLASS 041 ──
+  {k:"체육",e:"P.E. / physical education",cat:"School",lesson:41},
+  {k:"노동절",e:"Labor Day",cat:"Time",lesson:41},
+  {k:"어린이날",e:"Children's Day",cat:"Time",lesson:41},
+  {k:"부처님 오신 날",e:"Buddha's Birthday (public holiday)",cat:"Time",lesson:41},
+
+  // ── CLASS 042 ──
+  {k:"여름 방학",e:"summer break / summer vacation",cat:"School",lesson:42},
+  {k:"날씨 예보",e:"weather forecast",cat:"Weather",lesson:42},
+  {k:"시험 기간",e:"exam period",cat:"School",lesson:42},
+  {k:"달리기",e:"running",cat:"Sports",lesson:42},
+  {k:"살을 빼다",e:"to lose weight",cat:"Health",conj:"살을 빼요",lesson:42},
+  {k:"효과적인",e:"effective",cat:"Adjectives",lesson:42},
+  {k:"도전",e:"challenge",cat:"Abstract",lesson:42},
+  {k:"반대",e:"opposite / against",cat:"Abstract",lesson:42},
+  {k:"잘 어울리는 사람",e:"compatible person / good match",cat:"People",lesson:42},
+  {k:"제가 보기에는",e:"as I see it / in my view",cat:"Conversation",lesson:42},
+  {k:"헤어진 후",e:"after breaking up",cat:"Expressions",lesson:42},
+  {k:"같이 살다",e:"to live together",cat:"Daily Life",conj:"같이 살아요",lesson:42},
+  {k:"럭셔리",e:"luxury",cat:"Adjectives",lesson:42},
+
+  // ── CLASS 043 ──
+  {k:"감동적인",e:"moving / touching / emotional",cat:"Adjectives",lesson:43},
+  {k:"유명해지다",e:"to become famous",cat:"Verbs",conj:"유명해져요",lesson:43},
+
+  // ── CLASS 044 ──
+  {k:"나빠졌어요",e:"got worse",cat:"Expressions",lesson:44},
+  {k:"예뻐졌어요",e:"got prettier",cat:"Expressions",lesson:44},
+  {k:"바빠졌어요",e:"got busy",cat:"Expressions",lesson:44},
+
+  // ── CLASS 056 — Time/Travel ──
+  {k:"한파",e:"cold wave / cold snap",cat:"Weather",lesson:56},
+  {k:"난기류",e:"turbulence",cat:"Travel",lesson:56},
+  {k:"항공사",e:"airline",cat:"Travel",lesson:56},
+  {k:"현지 시간",e:"local time",cat:"Time",lesson:56},
+  {k:"문화 충격",e:"culture shock",cat:"Abstract",lesson:56},
+  {k:"관광객",e:"tourist",cat:"Travel",lesson:56},
+  {k:"직장인",e:"office worker / working adult",cat:"Work",lesson:56},
+  {k:"미국",e:"USA / America",cat:"Places",lesson:56},
+  {k:"완벽주의자",e:"perfectionist",cat:"Personality",lesson:56},
+  {k:"이해하다",e:"to understand",cat:"Verbs",conj:"이해해요",lesson:56},
+  {k:"보장하다",e:"to guarantee",cat:"Verbs",conj:"보장해요",lesson:56},
+
+  // ── CLASS 057 ──
+  {k:"말이 없다",e:"tight-lipped / quiet / reserved",cat:"Personality",lesson:57},
+  {k:"관련이 있다",e:"related / connected",cat:"Conversation",lesson:57},
+  {k:"초대하다",e:"to invite",cat:"Verbs",conj:"초대해요",lesson:57},
+  {k:"초대받다",e:"to be invited / receive an invitation",cat:"Verbs",conj:"초대받아요",lesson:57},
+  {k:"사무실",e:"office",cat:"Work",lesson:57},
+  {k:"재료",e:"materials / ingredients",cat:"Abstract",lesson:57},
+  {k:"담당",e:"in charge of / responsible for",cat:"Work",lesson:57},
+
+  // ── CLASS 058 ──
+  {k:"채식주의자",e:"vegetarian",cat:"People",lesson:58},
+  {k:"긴 하루",e:"long / hard day",cat:"Expressions",lesson:58},
+
+  // ── CLASS 059 — Personality/Traits ──
+  {k:"섭씨",e:"Celsius",cat:"Weather",lesson:59},
+  {k:"화씨",e:"Fahrenheit",cat:"Weather",lesson:59},
+  {k:"질기다",e:"tough (food or personality)",cat:"Adjectives",conj:"질겨요",lesson:59},
+  {k:"지루하다",e:"boring",cat:"Adjectives",conj:"지루해요",lesson:59},
+  {k:"잘생긴 남자",e:"handsome man",cat:"People",lesson:59},
+  {k:"예쁜 여자",e:"beautiful woman",cat:"People",lesson:59},
+  {k:"열린 마음",e:"open-minded",cat:"Personality",lesson:59},
+  {k:"좁은 마음",e:"narrow-minded",cat:"Personality",lesson:59},
+  {k:"피부색",e:"skin tone / complexion",cat:"Body",lesson:59},
+  {k:"탈모",e:"hair loss",cat:"Health",lesson:59},
+  {k:"평발",e:"flat feet",cat:"Health",lesson:59},
+  {k:"응원하다",e:"to cheer / root for",cat:"Verbs",conj:"응원해요",lesson:59},
+  {k:"유전적인",e:"genetic / inherited",cat:"Abstract",lesson:59},
+  {k:"환경",e:"environment",cat:"Abstract",lesson:59},
+  {k:"결정하다",e:"to decide / determine",cat:"Verbs",conj:"결정해요",lesson:59},
+  {k:"확률",e:"probability / chance",cat:"Abstract",lesson:59},
+  {k:"비율",e:"ratio / proportion",cat:"Abstract",lesson:59},
+  {k:"압도적으로",e:"overwhelmingly / by a large margin",cat:"Intensifiers",lesson:59},
+  {k:"분명히",e:"definitely / clearly",cat:"Intensifiers",lesson:59},
+  {k:"놀랍게도",e:"surprisingly",cat:"Intensifiers",lesson:59},
+  {k:"대략",e:"approximately / roughly",cat:"Intensifiers",lesson:59},
+  {k:"~에 관해 말하자면",e:"speaking of... / on the topic of...",cat:"Conversation",lesson:59},
+
+  // ── CLASS 060 ──
+  {k:"습관의 동물",e:"creature of habit",cat:"Personality",lesson:60},
+  {k:"심리",e:"psychology / mindset",cat:"Abstract",lesson:60},
+  {k:"자연스럽게",e:"naturally",cat:"Conversation",lesson:60},
+  {k:"조언",e:"advice",cat:"Conversation",lesson:60},
+  {k:"용서하다",e:"to forgive",cat:"Verbs",conj:"용서해요",lesson:60},
+  {k:"우연히",e:"by chance / coincidentally",cat:"Conversation",lesson:60},
+  {k:"이루다",e:"to achieve / accomplish",cat:"Verbs",conj:"이뤄요",note:"ㅜ contraction",lesson:60},
+
+  // ── CLASS 061 ──
+  {k:"제목",e:"title (of a work)",cat:"Arts",lesson:61},
+  {k:"건축가",e:"architect",cat:"People",lesson:61},
+  {k:"십대",e:"teenager",cat:"People",lesson:61},
+  {k:"갈등",e:"conflict",cat:"Abstract",lesson:61},
+  {k:"욕망",e:"desire / craving",cat:"Emotions",lesson:61},
+  {k:"수집하다",e:"to collect",cat:"Verbs",conj:"수집해요",lesson:61},
+  {k:"혼자 사는 것",e:"living alone",cat:"Daily Life",lesson:61},
+  {k:"나만의 공간",e:"my own space / personal space",cat:"Daily Life",lesson:61},
+
+  // ── CLASS 062 (2026.03.26) — Travel, Quality, Health, Abstract ──
+  {k:"배경",e:"background / setting",cat:"Abstract",lesson:62},
+  {k:"설명하기 어려워요",e:"it's hard to explain",cat:"Expressions",lesson:62},
+  {k:"몇 박 며칠",e:"how many nights and days",cat:"Travel",lesson:62},
+  {k:"4박5일",e:"4 nights, 5 days",cat:"Travel",lesson:62},
+  {k:"벚꽃",e:"cherry blossoms",cat:"Nature",lesson:62},
+  {k:"피다",e:"to bloom",cat:"Verbs",conj:"피어요",lesson:62},
+  {k:"질",e:"quality",cat:"Abstract",lesson:62},
+  {k:"양",e:"quantity",cat:"Abstract",lesson:62},
+  {k:"양보다 질",e:"quality over quantity",cat:"Expressions",lesson:62},
+  {k:"-에 관해서",e:"regarding ~ / about ~",cat:"Grammar Particles",lesson:62},
+  {k:"장수",e:"longevity / long life",cat:"Health",lesson:62},
+  {k:"오래 사는 사람",e:"a person who lives long",cat:"People",lesson:62},
+  {k:"식단",e:"diet / meal plan",cat:"Health",lesson:62},
+  {k:"고기 중심 식단",e:"meat-centered diet",cat:"Health",lesson:62},
+  {k:"건강한 음식",e:"healthy food",cat:"Food",lesson:62},
+  {k:"활동적",e:"active",cat:"Adjectives",lesson:62},
+  {k:"사회 복지",e:"social welfare",cat:"Politics",lesson:62},
+  {k:"만족하다",e:"to be satisfied",cat:"Verbs",conj:"만족해요",lesson:62},
+  {k:"학생 중심 수업",e:"student-centered class",cat:"School",lesson:62},
+  {k:"기록",e:"record",cat:"Abstract",lesson:62},
+  {k:"행복의 정의",e:"the definition of happiness",cat:"Expressions",lesson:62},
+  {k:"사랑의 정의",e:"the definition of love",cat:"Expressions",lesson:62},
+  {k:"확신할 수 없어요",e:"I can't be certain",cat:"Expressions",lesson:62},
+  {k:"안전하다",e:"to be safe",cat:"Adjectives",conj:"안전해요",lesson:62},
+  {k:"지역",e:"region / area",cat:"Places",lesson:62},
+  {k:"진하다",e:"thick / strong (flavor or color)",cat:"Adjectives",conj:"진해요",lesson:62},
+  {k:"연하다",e:"light / mild (flavor or color)",cat:"Adjectives",conj:"연해요",lesson:62},
+  {k:"독하다",e:"strong / harsh",cat:"Adjectives",conj:"독해요",lesson:62},
+  {k:"순하다",e:"mild / gentle",cat:"Adjectives",conj:"순해요",lesson:62},
+  {k:"힘 세다",e:"physically strong",cat:"Adjectives",conj:"힘 세요",lesson:62},
+  {k:"피는 물보다 진하다",e:"blood is thicker than water",cat:"Expressions",lesson:62},
+  {k:"제한",e:"limit / restriction",cat:"Abstract",lesson:62},
+  {k:"백만",e:"one million",cat:"Numbers",lesson:62},
+  {k:"백만장자",e:"millionaire",cat:"People",lesson:62},
+  {k:"억만장자",e:"billionaire",cat:"People",lesson:62},
+  {k:"물가",e:"prices / cost of living",cat:"Abstract",lesson:62},
+  {k:"비치발리볼",e:"beach volleyball",cat:"Sports",lesson:62},
+  {k:"먹기 대회",e:"eating competition",cat:"Expressions",lesson:62},
+  {k:"애교",e:"cuteness / affectionate behavior",cat:"Personality",lesson:62},
+];
+
+const GRAMMAR = [
+  {pattern:"-아/어야 해요", meaning:"Have to / Must", examples:[
+    {k:"수업 준비해야 해요.",e:"I have to prepare for class."},
+    {k:"한국어 공부를 더 해야 해요.",e:"I need to study more Korean."},
+    {k:"약을 먹어야 해요.",e:"I must take medicine."}
+  ]},
+  {pattern:"안 -아/어도 돼요", meaning:"Don't have to", examples:[
+    {k:"오늘 운동 안 해도 돼요.",e:"I don't have to work out today."},
+    {k:"주말에는 일 안 해도 돼요.",e:"I don't have to work on weekends."},
+    {k:"안 와도 돼요.",e:"You don't have to come."}
+  ]},
+  {pattern:"-(으)면 안 돼요", meaning:"Must not / Not allowed", examples:[
+    {k:"수업 중에 핸드폰 쓰면 안 돼요.",e:"You can't use your phone during class."},
+    {k:"너무 늦게 자면 안 돼요.",e:"I shouldn't go to bed too late."},
+    {k:"여기서 담배 피우면 안 돼요.",e:"You must not smoke here."}
+  ]},
+  {pattern:"-아/어도 돼요", meaning:"It's okay to / May I", examples:[
+    {k:"지금 커피 마셔도 돼요?",e:"Can I drink coffee now?"},
+    {k:"사진 찍어도 돼요.",e:"You're allowed to take photos."}
+  ]},
+  {pattern:"-아/어도", meaning:"Even if", examples:[
+    {k:"바빠도 운동해요.",e:"Even if I'm busy, I work out."},
+    {k:"피곤해도 출근해요.",e:"Even if I'm tired, I go to work."},
+    {k:"비가 와도 갈 거예요.",e:"Even if it rains, I'll go."}
+  ]},
+  {pattern:"-더라도", meaning:"Even if (stronger)", examples:[
+    {k:"피곤하더라도 한국어 공부해요.",e:"Even if I'm tired, I study Korean."},
+    {k:"비싸더라도 사고 싶어요.",e:"Even if it's expensive, I want to buy it."}
+  ]},
+  {pattern:"아무리 -아/어도", meaning:"No matter how", examples:[
+    {k:"아무리 바빠도 커피는 마셔요.",e:"No matter how busy I am, I drink coffee."},
+    {k:"아무리 배불러도 디저트는 먹어요.",e:"No matter how full I am, I eat dessert."}
+  ]},
+  {pattern:"-(으)면 -ㄹ/을수록 더", meaning:"The more... the more...", examples:[
+    {k:"많으면 많을수록 더 좋아요.",e:"The more the better."},
+    {k:"공부할수록 더 어려워요.",e:"The more I study, the harder it gets."}
+  ]},
+  {pattern:"-(으)려고 해요", meaning:"Plan / intend to", examples:[
+    {k:"다음 주에 제주도에 가려고 해요.",e:"I plan to go to Jeju next week."},
+    {k:"이력서를 업데이트하려고 해요.",e:"I'm trying to update my résumé."},
+    {k:"이사하려고 해요.",e:"I'm planning to move."}
+  ]},
+  {pattern:"-기로 했어요", meaning:"Decided to", examples:[
+    {k:"사진 찍기로 했어요.",e:"I decided to take photos."},
+    {k:"이사하기로 했어요.",e:"I decided to move."},
+    {k:"5일 동안 가기로 했어요.",e:"I decided to go for 5 days."}
+  ]},
+  {pattern:"-ㄹ/을까 해요", meaning:"Thinking of / considering", examples:[
+    {k:"친구 만날까 해요.",e:"I'm thinking of meeting a friend."},
+    {k:"여행 갈까 해요.",e:"I'm considering going on a trip."}
+  ]},
+  {pattern:"-ㄹ/을 생각이에요", meaning:"Planning to", examples:[
+    {k:"이번 주말에 쉴 생각이에요.",e:"I'm planning to rest this weekend."},
+    {k:"한국어 더 공부할 생각이에요.",e:"I'm planning to study more Korean."}
+  ]},
+  {pattern:"-ㄹ/을 예정이에요", meaning:"Scheduled / planned to", examples:[
+    {k:"내일 면접 볼 예정이에요.",e:"I'm scheduled to have an interview tomorrow."},
+    {k:"다음 달에 이사할 예정이에요.",e:"I'm planned to move next month."}
+  ]},
+  {pattern:"-ㄹ/을지도 몰라요", meaning:"Might / maybe", examples:[
+    {k:"비 올지도 몰라요.",e:"It might rain."},
+    {k:"늦을지도 몰라요.",e:"I might be late."},
+    {k:"취소될지도 몰라요.",e:"It might get cancelled."}
+  ]},
+  {pattern:"-곤 했어요", meaning:"Used to (past habit)", examples:[
+    {k:"대학교 때 많이 쓰곤 했어요.",e:"I used to write a lot in college."},
+    {k:"학교 끝나고 친구랑 놀곤 했어요.",e:"I used to hang out with friends after school."}
+  ]},
+  {pattern:"-아/어지다", meaning:"Become / get (change of state)", examples:[
+    {k:"좋아졌어요.",e:"It got better."},
+    {k:"비싸졌어요.",e:"It became expensive."},
+    {k:"날씬해졌어요.",e:"Became slimmer."}
+  ]},
+  {pattern:"-게 되다", meaning:"Ended up / came to", examples:[
+    {k:"한국에서 오래 살게 됐어요.",e:"I ended up living in Korea for a long time."},
+    {k:"한국말하게 됐어요.",e:"I ended up speaking Korean."}
+  ]},
+  {pattern:"-자마자", meaning:"As soon as", examples:[
+    {k:"집에 오자마자 샤워해요.",e:"I shower as soon as I get home."},
+    {k:"일어나자마자 커피 마셔요.",e:"I drink coffee as soon as I wake up."},
+    {k:"보자마자 사랑에 빠졌어요.",e:"I fell in love as soon as I saw it."}
+  ]},
+  {pattern:"-기로는 / 알기로는", meaning:"As far as I know / remember / heard", examples:[
+    {k:"제가 알기로는…",e:"As far as I know…"},
+    {k:"제가 기억하기로는…",e:"As far as I remember…"},
+    {k:"제가 듣기로는…",e:"As far as I heard…"}
+  ]},
+  {pattern:"-에 까다로워요", meaning:"Picky about", examples:[
+    {k:"저는 커피에 까다로워요.",e:"I'm picky about coffee."},
+    {k:"저는 음식에 까다로워요.",e:"I'm picky about food."}
+  ]},
+  {pattern:"-ㄴ/은 적 있어요", meaning:"Have ever done", examples:[
+    {k:"부산 불꽃 축제를 본 적 있어요.",e:"I've seen the Busan Fireworks Festival."},
+    {k:"제주도에 간 적 있어요.",e:"I've been to Jeju."}
+  ]},
+  {pattern:"-았/었을 거예요", meaning:"Probably did / Must have", examples:[
+    {k:"그 사람은 이미 갔을 거예요.",e:"That person probably already left."},
+    {k:"피곤했을 거예요.",e:"You must have been tired."}
+  ]},
+  {pattern:"-ㄹ/을 때마다", meaning:"Every time", examples:[
+    {k:"바닷가에 갈 때마다 사진을 찍어요.",e:"Every time I go to the beach, I take photos."},
+    {k:"한국어 공부할 때마다 새로운 걸 배워요.",e:"Every time I study Korean, I learn something new."}
+  ]},
+  {pattern:"-면에서", meaning:"In terms of / from the perspective of", examples:[
+    {k:"건강 면에서 운동이 중요해요.",e:"Exercise is important in terms of health."},
+    {k:"월급 면에서 그 학교가 더 좋아요.",e:"In terms of salary, that school is better."}
+  ]},
+  {pattern:"상황에 따라 달라요", meaning:"It depends on the situation", examples:[
+    {k:"상황에 따라 달라요.",e:"It depends on the situation."},
+    {k:"날에 따라 달라요.",e:"It depends on the day."}
+  ]},
+  {pattern:"A보다 B를 선호해요", meaning:"I prefer B over A", examples:[
+    {k:"커피보다 차를 선호해요.",e:"I prefer tea over coffee."},
+    {k:"단체 활동보다 혼자 있는 걸 선호해요.",e:"I prefer being alone to group activities."}
+  ]},
+  {pattern:"-에 따르면", meaning:"According to", examples:[
+    {k:"기사에 따르면 내일 비가 와요.",e:"According to the article, it will rain tomorrow."},
+    {k:"친구 말에 따르면 그 카페가 좋아요.",e:"According to my friend, that café is good."}
+  ]},
+  {pattern:"제 경우에는", meaning:"In my case / In the case of", examples:[
+    {k:"제 경우에는 아침에 공부가 잘 돼요.",e:"In my case, studying works best in the morning."},
+    {k:"늦을 경우에는 미리 연락할게요.",e:"If I'm late, I'll contact you in advance."}
+  ]},
+  {pattern:"가지고 가다 / 데리고 가다", meaning:"Take / Bring (things vs people)", examples:[
+    {k:"노트북 가지고 가요.",e:"I'll take my laptop."},
+    {k:"아이들을 데리고 가요.",e:"I'll take the kids."}
+  ]},
+  {pattern:"-(으)니까", meaning:"Because / So (therefore)", examples:[
+    {k:"금요일이니까 한 잔 하자.",e:"It's Friday, so let's have a drink."},
+    {k:"배고프니까 밥 먹자.",e:"I'm hungry, so let's eat."}
+  ]},
+  {pattern:"-기 때문에", meaning:"Because of / Due to", examples:[
+    {k:"비가 오기 때문에 밖에 나갈 수 없어요.",e:"I can't go out because it's raining."},
+    {k:"열심히 공부했기 때문에 시험을 잘 봤어요.",e:"I did well on the exam because I studied hard."}
+  ]},
+  {pattern:"-ㄴ/은지 됐어요", meaning:"How long has it been since", examples:[
+    {k:"감기 걸린 지 얼마나 됐어요?",e:"How long has it been since you caught a cold?"},
+    {k:"한국에 온 지 얼마나 됐어요?",e:"How long has it been since you came to Korea?"}
+  ]},
+  {pattern:"-는 것 같아요", meaning:"Seems like / I think", examples:[
+    {k:"학생인 것 같아요.",e:"They seem like a student."},
+    {k:"비가 오는 것 같아요.",e:"It seems like it's raining."},
+    {k:"슬픈 것 같아요.",e:"They seem sad."}
+  ]},
+  {pattern:"-기에는 너무", meaning:"Too... to", examples:[
+    {k:"이 카메라는 매일 쓰기에는 너무 무거워요.",e:"This camera is too heavy to use every day."},
+    {k:"이 가방은 여행하기에는 너무 작아요.",e:"This bag is too small to travel with."}
+  ]},
+  {pattern:"-는 동안", meaning:"While", examples:[
+    {k:"영화 보는 동안 많이 감동했어요.",e:"While watching the movie, I was very moved."},
+    {k:"사진 찍는 동안 음악을 들어요.",e:"I listen to music while taking photos."}
+  ]},
+  {pattern:"-기 위해서", meaning:"In order to", examples:[
+    {k:"한국어를 잘하기 위해서 매일 공부해요.",e:"I study every day in order to improve my Korean."},
+    {k:"건강하기 위해서 운동해요.",e:"I exercise in order to be healthy."}
+  ]},
+  {pattern:"A(이)라는 B", meaning:"B called A", examples:[
+    {k:"딜런이라는 미국 남자예요.",e:"He's an American man called Dylan."},
+    {k:"BHA라는 학교에 다녀요.",e:"I go to a school called BHA."}
+  ]},
+  {pattern:"-는 한 / (으)ㄴ 한", meaning:"As long as", examples:[
+    {k:"열심히 공부하는 한 좋은 결과가 있을 거예요.",e:"As long as I study hard, there will be good results."},
+    {k:"건강이 괜찮은 한 계속 일할 수 있어요.",e:"As long as my health is okay, I can keep working."}
+  ]},
+  {pattern:"-(이/가) 아니라", meaning:"Not A but B", examples:[
+    {k:"영어 선생님이 아니라 코딩 선생님이에요.",e:"I'm not an English teacher, I'm a coding teacher."},
+    {k:"화난 게 아니라 피곤해요.",e:"I'm not angry, I'm tired."}
+  ]},
+  {pattern:"말고 / 말고는 / 말고도", meaning:"Except / Instead of / Besides", examples:[
+    {k:"월요일 말고 화요일 만나요.",e:"Let's meet Tuesday instead of Monday."},
+    {k:"커피 말고도 차도 좋아해요.",e:"Besides coffee, I also like tea."}
+  ]},
+  {pattern:"-에 관심 있어요", meaning:"Interested in", examples:[
+    {k:"과학에 제법 관심 있어요.",e:"I'm fairly interested in science."},
+    {k:"정치에 별로 관심 없어요.",e:"I'm not really interested in politics."}
+  ]},
+  {pattern:"-게 하다", meaning:"Make someone do / cause to", examples:[
+    {k:"학생들이 발표하게 했어요.",e:"I made the students present."},
+    {k:"선생님이 저를 웃게 했어요.",e:"The teacher made me laugh."}
+  ]},
+  {pattern:"-ㄴ/은지 알다/모르다", meaning:"Know whether / Indirect questions", examples:[
+    {k:"누구인지 몰라요.",e:"I don't know who it is."},
+    {k:"언제 오는지 알아요?",e:"Do you know when they're coming?"}
+  ]},
+  {pattern:"꼭 그런 건 아니에요", meaning:"It's not necessarily like that", examples:[
+    {k:"한국 사람들이 다 경쟁적인 건 아니에요.",e:"Not all Koreans are competitive."},
+    {k:"항상 그런 건 아니에요.",e:"It's not always like that."}
+  ]},
+  {pattern:"-아/어 보다", meaning:"To try doing", examples:[
+    {k:"피아노 해 봤어요.",e:"I tried playing the piano."},
+    {k:"한국 음식 먹어 봤어요?",e:"Have you tried Korean food?"}
+  ]},
+  {pattern:"실수로 vs 고의로", meaning:"By mistake vs on purpose", examples:[
+    {k:"실수로 이메일을 보냈어요.",e:"I sent the email by mistake."},
+    {k:"고의로 그런 건 아니에요.",e:"I didn't do it on purpose."}
+  ]},
+  {pattern:"초/중/말", meaning:"Early / Mid / Late (periods)", examples:[
+    {k:"11월 초 — early November",e:"11월 말 — late November"},
+    {k:"20대 초반 — early 20s",e:"30대 중반 — mid-30s"}
+  ]},
+  {pattern:"-ㄴ/는/ㄹ 줄 알다/모르다", meaning:"I thought / I didn't know (assumption)", examples:[
+    {k:"캐나다 사람인 줄 알았어요.",e:"I thought you were Canadian."},
+    {k:"바쁜 줄 알았어요.",e:"I thought you were busy."},
+    {k:"고기 먹는 줄 알았어요.",e:"I thought you ate meat."},
+    {k:"결혼한 줄 몰랐어요.",e:"I didn't know you were married."},
+    {k:"비 올 줄 몰랐어요.",e:"I didn't know it would rain."}
+  ]},
+];
+
+// ═══════════════════════════════════════════
+//  SRS ENGINE  (SM-2 simplified)
+// ═══════════════════════════════════════════
+const STORAGE_KEY = 'dylan_korean_srs_v2';
+const STREAK_KEY  = 'dylan_korean_streak_v2';
+
+function loadSRS() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+function saveSRS(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function loadStreak() {
+  try { return JSON.parse(localStorage.getItem(STREAK_KEY)) || {streak:0, lastDate:''}; } catch { return {streak:0,lastDate:''}; }
+}
+function saveStreak(s) { localStorage.setItem(STREAK_KEY, JSON.stringify(s)); }
+
+function todayStr() { return new Date().toISOString().slice(0,10); }
+
+function updateStreak() {
+  const s = loadStreak();
+  const today = todayStr();
+  if (s.lastDate === today) return s.streak;
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yStr = yesterday.toISOString().slice(0,10);
+  if (s.lastDate === yStr) { s.streak++; } else { s.streak = 1; }
+  s.lastDate = today;
+  saveStreak(s);
+  return s.streak;
+}
+
+// SRS card state: { interval, easeFactor, due, lapses }
+function defaultCard() { return { interval:0, easeFactor:2.5, due: todayStr(), lapses:0, reviews:0 }; }
+function cardId(item) { return item.k || item.pattern; }
+
+function getCard(id) {
+  const srs = loadSRS();
+  return srs[id] || defaultCard();
+}
+
+function nextIntervals(card) {
+  const ef = card.easeFactor || 2.5;
+  const iv = card.interval || 0;
+  const again = '<1m';
+  const hard  = iv < 1 ? '6m' : Math.max(1, Math.round(iv * 1.2)) + 'd';
+  const good  = iv < 1 ? '10m' : Math.max(1, Math.round(iv * ef)) + 'd';
+  const easy  = iv < 1 ? '4d'  : Math.max(1, Math.round(iv * ef * 1.3)) + 'd';
+  return [again, hard, good, easy];
+}
+
+function rateCard(id, rating) {
+  const srs = loadSRS();
+  const card = srs[id] || defaultCard();
+  const ef = card.easeFactor || 2.5;
+  const iv = card.interval || 0;
+  const now = new Date();
+
+  let newIv, newEf;
+  const efDelta = [0.3, 0.15, 0, -0.15];
+  newEf = Math.max(1.3, ef - efDelta[rating]);
+
+  if (rating === 0) { newIv = 0; card.lapses++; }
+  else if (iv === 0) { newIv = rating >= 2 ? (rating === 3 ? 4 : 1) : 0; }
+  else if (iv === 1) { newIv = rating >= 2 ? (rating === 3 ? 4 : 2) : 1; }
+  else { newIv = rating === 1 ? Math.max(1, Math.round(iv * 1.2)) : Math.round(iv * newEf); }
+
+  now.setDate(now.getDate() + (rating === 0 ? 0 : newIv));
+  card.interval = newIv;
+  card.easeFactor = newEf;
+  card.due = now.toISOString().slice(0,10);
+  card.reviews = (card.reviews||0) + 1;
+  srs[id] = card;
+  saveSRS(srs);
+}
+
+function getDueItems(pool) {
+  const today = todayStr();
+  return pool.filter(item => {
+    const c = getCard(cardId(item));
+    return c.due <= today;
+  });
+}
+
+function getNewItems(pool, limit=5) {
+  const srs = loadSRS();
+  return pool.filter(item => !srs[cardId(item)]).slice(0, limit);
+}
+
+// ═══════════════════════════════════════════
+//  APP STATE
+// ═══════════════════════════════════════════
+let state = {
+  mode: 'ko-en',
+  queue: [],
+  qIdx: 0,
+  flipped: false,
+  grammarIdx: 0,
+  quizQ: [], quizIdx: 0, quizScore: 0,
+};
+
+// ═══════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.querySelectorAll('nav button').forEach((b,i) => {
+    const names = ['home','flashcard','grammar','quiz','progress','import'];
+    b.classList.toggle('active', names[i] === name);
+  });
+  if (name === 'progress') renderProgress();
+  if (name === 'import') renderImportedLessons();
+  updateHeader();
+}
+
+// ═══════════════════════════════════════════
+//  HEADER
+// ═══════════════════════════════════════════
+function updateHeader() {
+  const all = VOCAB;
+  const srs = loadSRS();
+  const today = todayStr();
+  const due = all.filter(v => (srs[v.k]||defaultCard()).due <= today).length;
+  const known = Object.values(srs).filter(c => c.interval >= 4).length;
+  document.getElementById('hdr-due').textContent = due;
+  document.getElementById('hdr-known').textContent = known;
+  document.getElementById('hdr-total').textContent = all.length;
+  const streak = loadStreak().streak;
+  document.getElementById('streak-badge').textContent = `🔥 ${streak} day streak`;
+}
+
+// ═══════════════════════════════════════════
+//  FLASHCARDS
+// ═══════════════════════════════════════════
+function startFlashcards(mode, customQueue) {
+  state.mode = mode || 'ko-en';
+  state.flipped = false;
+
+  const pool = customQueue || buildDailyPool();
+  state.queue = shuffle(pool);
+  state.qIdx = 0;
+
+  document.getElementById('fc-mode-label').textContent =
+    state.mode === 'ko-en' ? 'Korean → English' : 'English → Korean';
+  // always show study area, hide picker
+  document.getElementById('fc-mode-picker').style.display = 'none';
+  document.getElementById('fc-study-area').style.display = 'block';
+  showScreen('flashcard');
+  renderCard();
+  updateStreak();
+}
+
+function buildDailyPool() {
+  const pool = getFilteredVocab();
+  const due = getDueItems(pool);
+  const nw  = getNewItems(pool, 5);
+  const combined = [...new Set([...due, ...nw])];
+  return combined.length > 0 ? combined : shuffle(pool).slice(0, 20);
+}
+
+function startDaily() { startFlashcards('ko-en'); }
+
+function renderCard() {
+  if (state.qIdx >= state.queue.length) {
+    // Done!
+    document.getElementById('card-inner').classList.remove('flipped');
+    document.getElementById('fc-front-text').innerHTML = '✅';
+    document.getElementById('fc-romanized').textContent = '';
+    document.getElementById('fc-category').textContent = 'Done!';
+    document.getElementById('fc-category-back').textContent = '';
+    document.getElementById('fc-back-text').textContent = `Session complete! ${state.queue.length} cards reviewed.`;
+    document.getElementById('fc-example').style.display = 'none';
+    document.getElementById('fc-counter').textContent = `${state.queue.length} / ${state.queue.length}`;
+    document.getElementById('fc-progress-fill').style.width = '100%';
+    return;
+  }
+
+  const item = state.queue[state.qIdx];
+  const pct = Math.round((state.qIdx / state.queue.length) * 100);
+  document.getElementById('fc-counter').textContent = `${state.qIdx + 1} / ${state.queue.length}`;
+  document.getElementById('fc-progress-fill').style.width = pct + '%';
+
+  document.getElementById('fc-category').textContent = item.cat || '—';
+  document.getElementById('fc-category-back').textContent = item.cat || '—';
+
+  const ci = document.getElementById('card-inner');
+  ci.classList.remove('flipped');
+  state.flipped = false;
+  setSRSButtonsVisible(false);
+
+  const ex = document.getElementById('fc-example');
+  ex.style.display = 'none';
+
+  if (state.mode === 'ko-en') {
+    document.getElementById('fc-front-text').innerHTML = `<span style="font-family:'Noto Sans KR',sans-serif">${item.k}</span>`;
+    document.getElementById('fc-romanized').textContent = '';
+    document.getElementById('fc-back-text').textContent = item.e;
+  } else {
+    document.getElementById('fc-front-text').textContent = item.e;
+    document.getElementById('fc-romanized').textContent = '';
+    document.getElementById('fc-back-text').innerHTML = `<span style="font-family:'Noto Sans KR',sans-serif;font-size:2rem">${item.k}</span>`;
+  }
+
+  // Show conjugation note if present
+  const conjEl = document.getElementById('fc-example');
+  if (item.conj) {
+    const irregularBadge = item.note
+      ? `<span style="display:inline-block;margin-left:8px;background:var(--accent);color:white;border-radius:4px;padding:1px 7px;font-size:0.68rem;letter-spacing:0.04em;">${item.note}</span>`
+      : '';
+    conjEl.style.display = 'block';
+    conjEl.innerHTML = `<span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);">Present tense</span><br><span class="ko" style="font-size:1.15rem;">${item.conj}</span>${irregularBadge}`;
+  } else {
+    conjEl.style.display = 'none';
+  }
+
+  // Update interval hints
+  const card = getCard(cardId(item));
+  const ivs = nextIntervals(card);
+  ['int-0','int-1','int-2','int-3'].forEach((id,i) => {
+    document.getElementById(id).textContent = ivs[i];
+  });
+}
+
+let _cardBusy = false;
+
+function setSRSButtonsVisible(visible) {
+  const el = document.getElementById('srs-buttons');
+  el.style.opacity = visible ? '1' : '0';
+  el.style.pointerEvents = visible ? 'auto' : 'none';
+}
+
+function flipCard() {
+  if (_cardBusy) return;
+  if (state.qIdx >= state.queue.length) return;
+  const ci = document.getElementById('card-inner');
+  if (!state.flipped) {
+    // First flip — reveal back and show rating buttons
+    ci.classList.add('flipped');
+    state.flipped = true;
+    setTimeout(() => setSRSButtonsVisible(true), 550);
+  } else {
+    // Toggle freely after first flip
+    ci.classList.toggle('flipped');
+  }
+}
+
+function rateSRS(rating) {
+  if (_cardBusy) return;
+  if (!state.flipped) { flipCard(); return; }
+  if (state.qIdx >= state.queue.length) return;
+  _cardBusy = true;
+  setSRSButtonsVisible(false);
+  const item = state.queue[state.qIdx];
+  rateCard(cardId(item), rating);
+  bumpStat('reviews');
+  state.qIdx++;
+  state.flipped = false;
+  renderCard();
+  updateHeader();
+  setTimeout(() => { _cardBusy = false; }, 600);
+}
+
+// ═══════════════════════════════════════════
+//  GRAMMAR — word-bank drill
+// ═══════════════════════════════════════════
+function startGrammar() {
+  state.grammarIdx = Math.floor(Math.random() * GRAMMAR.length);
+  _drillState = null;
+  showScreen('grammar');
+  renderGrammarCard();
+}
+
+let _drillState = null;
+let _drillAdvanceTimer = null;
+
+function renderGrammarCard() {
+  const g = GRAMMAR[state.grammarIdx];
+  const pct = Math.round(((state.grammarIdx + 1) / GRAMMAR.length) * 100);
+  document.getElementById('gr-counter').textContent = `Grammar ${state.grammarIdx + 1} / ${GRAMMAR.length}`;
+  document.getElementById('gr-progress-fill').style.width = pct + '%';
+  document.getElementById('gr-pattern').textContent = g.pattern;
+  document.getElementById('gr-meaning').textContent = '"' + g.meaning + '"';
+
+  clearTimeout(_drillAdvanceTimer);
+  _drillAdvanceTimer = null;
+
+  const drillArea = document.getElementById('gr-drill-area');
+  const exDiv     = document.getElementById('gr-examples');
+
+  if (g.examples.length > 0) {
+    // Pick a random example for this drill
+    const ex = g.examples[Math.floor(Math.random() * g.examples.length)];
+
+    const correctTiles = ex.k
+      .replace(/[.。?？!！]+$/, '')
+      .split(' ')
+      .filter(w => w.length > 0);
+
+    // Build distractors from other patterns
+    const distractorPool = [];
+    for (const og of GRAMMAR) {
+      if (og.pattern === g.pattern) continue;
+      for (const oex of og.examples) {
+        oex.k.split(' ').forEach(w => {
+          const clean = w.replace(/[.。?？!！,，]+$/, '');
+          if (clean && !correctTiles.includes(clean)) distractorPool.push(clean);
+        });
+      }
+    }
+    const distractors = shuffle(distractorPool)
+      .filter((w, i, a) => a.indexOf(w) === i)
+      .slice(0, Math.min(3, correctTiles.length));
+
+    const allTiles = shuffle([
+      ...correctTiles.map(t => ({ w: t, type: 'correct' })),
+      ...(state.grammarIdx >= 5 ? distractors.map(t => ({ w: t, type: 'distractor' })) : []),
+    ]);
+
+    _drillState = { correct: correctTiles, placed: [], allTiles, ex, done: false };
+
+    drillArea.innerHTML = `
+      <div style="margin-bottom:20px;">
+        <div class="drill-prompt">Build the sentence</div>
+        <div class="drill-english">${ex.e}</div>
+        <div class="drill-answer-slots" id="drill-slots">
+          <span class="drill-slot-placeholder">Tap tiles below…</span>
+        </div>
+        <div class="drill-bank" id="drill-bank"></div>
+        <div class="drill-feedback-row">
+          <div class="feedback" id="drill-feedback"></div>
+          <button class="btn secondary" id="drill-clear-btn" onclick="drillClear()" style="padding:5px 12px;font-size:0.72rem;display:none;">Clear</button>
+        </div>
+      </div>`;
+
+    renderDrillBank();
+  } else {
+    drillArea.innerHTML = '';
+    _drillState = null;
+  }
+
+  // Show all examples below drill
+  exDiv.innerHTML = g.examples.map(ex => `
+    <div class="grammar-example">
+      <div class="ko">${ex.k}</div>
+      <div class="en">${ex.e}</div>
+    </div>`).join('');
+}
+
+function renderDrillBank() {
+  if (!_drillState) return;
+  const { allTiles, placed } = _drillState;
+
+  const slotsEl = document.getElementById('drill-slots');
+  if (slotsEl) {
+    if (placed.length === 0) {
+      slotsEl.innerHTML = '<span class="drill-slot-placeholder">Tap tiles below…</span>';
+    } else {
+      slotsEl.innerHTML = placed.map((w, i) =>
+        `<span class="drill-tile placed" onclick="drillRemove(${i})">${w}</span>`
+      ).join('');
+    }
+  }
+
+  const bankEl = document.getElementById('drill-bank');
+  if (bankEl) {
+    // Track how many of each tile are placed
+    const placedCount = {};
+    placed.forEach(w => { placedCount[w] = (placedCount[w] || 0) + 1; });
+
+    bankEl.innerHTML = allTiles.map((tile, i) => {
+      const used = (placedCount[tile.w] || 0) > 0;
+      if (used) placedCount[tile.w]--;
+      return `<span class="drill-tile ${used ? 'used' : ''}"
+        onclick="drillPlace(${i})">${tile.w}</span>`;
+    }).join('');
+  }
+
+  const clearBtn = document.getElementById('drill-clear-btn');
+  if (clearBtn) clearBtn.style.display = placed.length > 0 ? 'inline-flex' : 'none';
+}
+
+function drillPlace(tileIdx) {
+  if (!_drillState || _drillState.done) return;
+  const tile = _drillState.allTiles[tileIdx];
+  if (!tile) return;
+
+  // Count availability
+  const totalAvail  = _drillState.allTiles.filter(t => t.w === tile.w).length;
+  const timesPlaced = _drillState.placed.filter(p => p === tile.w).length;
+  if (timesPlaced >= totalAvail) return;
+
+  _drillState.placed.push(tile.w);
+  renderDrillBank();
+
+  if (_drillState.placed.length === _drillState.correct.length) {
+    drillCheck();
+  }
+}
+
+function drillRemove(idx) {
+  if (!_drillState || _drillState.done) return;
+  _drillState.placed.splice(idx, 1);
+  const fb = document.getElementById('drill-feedback');
+  if (fb) { fb.textContent = ''; fb.className = 'feedback'; }
+  const slots = document.getElementById('drill-slots');
+  if (slots) slots.className = 'drill-answer-slots';
+  renderDrillBank();
+}
+
+function drillClear() {
+  if (!_drillState) return;
+  _drillState.placed = [];
+  const fb = document.getElementById('drill-feedback');
+  if (fb) { fb.textContent = ''; fb.className = 'feedback'; }
+  const slots = document.getElementById('drill-slots');
+  if (slots) slots.className = 'drill-answer-slots';
+  renderDrillBank();
+}
+
+function drillCheck() {
+  if (!_drillState) return;
+  const { placed, correct } = _drillState;
+  const isCorrect = placed.join(' ') === correct.join(' ');
+
+  const slotsEl = document.getElementById('drill-slots');
+  const fb      = document.getElementById('drill-feedback');
+
+  if (isCorrect) {
+    _drillState.done = true;
+    if (slotsEl) slotsEl.className = 'drill-answer-slots correct';
+    if (fb) { fb.className = 'feedback correct'; fb.textContent = '✓ 맞아요! Correct!'; }
+    bumpStat('grammarCorrect');
+    clearTimeout(_drillAdvanceTimer);
+    _drillAdvanceTimer = setTimeout(() => nextGrammar(), 1100);
+  } else {
+    if (slotsEl) slotsEl.className = 'drill-answer-slots wrong';
+    if (fb) { fb.className = 'feedback wrong'; fb.textContent = '✗ Not quite — try again'; }
+    setTimeout(() => {
+      if (_drillState && !_drillState.done) {
+        _drillState.placed = [];
+        if (slotsEl) slotsEl.className = 'drill-answer-slots';
+        if (fb) { fb.textContent = ''; fb.className = 'feedback'; }
+        renderDrillBank();
+      }
+    }, 900);
+  }
+}
+
+function nextGrammar() {
+  state.grammarIdx = (state.grammarIdx + 1) % GRAMMAR.length;
+  _drillState = null;
+  renderGrammarCard();
+}
+
+// ═══════════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════════
+
+// Build one question of a given type
+function buildVocabQuestion(direction) {
+  const pool = getFilteredVocab();
+  const item = shuffle(pool)[0];
+  const wrongPool = pool.filter(v => v.k !== item.k);
+  const wrongs = shuffle(wrongPool).slice(0,3).map(v => direction === 'ko-en' ? v.e : v.k);
+  const correct = direction === 'ko-en' ? item.e : item.k;
+  return {
+    type: direction,
+    prompt: direction === 'ko-en' ? 'What does this mean?' : 'How do you say this in Korean?',
+    word: direction === 'ko-en' ? item.k : item.e,
+    wordIsKorean: direction === 'ko-en',
+    correct,
+    options: shuffle([correct, ...wrongs]),
+  };
+}
+
+function buildConjugationQuestion() {
+  const verbPool = getFilteredVocab().filter(v => v.conj);
+  // Fall back to full vocab if filtered set has too few verbs
+  const pool = verbPool.length >= 4 ? verbPool : VOCAB.filter(v => v.conj);
+  const item = shuffle(pool)[0];
+  const wrongPool = shuffle(pool.filter(v => v.k !== item.k)).slice(0,3).map(v => v.conj);
+  return {
+    type: 'conj',
+    prompt: 'What is the present tense (해요 form)?',
+    word: item.k,
+    wordIsKorean: true,
+    correct: item.conj,
+    options: shuffle([item.conj, ...wrongPool]),
+    note: item.note || null,
+  };
+}
+
+function buildGrammarRecognitionQuestion() {
+  // Show an example sentence, ask which pattern it belongs to
+  const correctG = shuffle(GRAMMAR)[0];
+  const correctEx = correctG.examples[Math.floor(Math.random() * correctG.examples.length)];
+  const wrongPatterns = shuffle(GRAMMAR.filter(g => g.pattern !== correctG.pattern)).slice(0,3).map(g => g.pattern);
+  return {
+    type: 'grammar-recog',
+    prompt: 'Which grammar pattern is used here?',
+    word: correctEx.k,
+    wordIsKorean: true,
+    subtext: correctEx.e,
+    correct: correctG.pattern,
+    options: shuffle([correctG.pattern, ...wrongPatterns]),
+  };
+}
+
+function buildGrammarFillQuestion() {
+  // Show a sentence with the last meaningful word blanked, ask for the correct ending
+  const correctG = shuffle(GRAMMAR.filter(g => g.examples.length >= 1))[0];
+  const ex = correctG.examples[Math.floor(Math.random() * correctG.examples.length)];
+  const words = ex.k.split(' ');
+  const answer = words.pop().replace(/[.。?？!！,，]+$/, '');
+  const prompt_sentence = words.join(' ') + ' ___';
+
+  // Wrong options: endings from other grammar patterns
+  const wrongGs = shuffle(GRAMMAR.filter(g => g.pattern !== correctG.pattern)).slice(0,3);
+  const wrongs = wrongGs.map(g => {
+    const we = g.examples[0];
+    const ww = we.k.split(' ');
+    return ww[ww.length - 1].replace(/[.。?？!！,，]+$/, '');
+  }).filter((w, i, arr) => w !== answer && arr.indexOf(w) === i).slice(0,3);
+
+  // Pad if not enough unique wrongs
+  while (wrongs.length < 3) wrongs.push(correctG.pattern.slice(-3) + ['요','어요','해요'][wrongs.length] || '—');
+
+  return {
+    type: 'grammar-fill',
+    prompt: `Complete the sentence: (${correctG.meaning})`,
+    word: prompt_sentence,
+    wordIsKorean: true,
+    subtext: ex.e,
+    correct: answer,
+    options: shuffle([answer, ...wrongs.slice(0,3)]),
+  };
+}
+
+function buildQuizPool(size) {
+  const questions = [];
+  // Weight: 35% ko-en vocab, 25% en-ko vocab, 20% conjugation, 10% grammar recognition, 10% grammar fill
+  const weights = ['ko-en','ko-en','ko-en','ko-en','ko-en','ko-en','ko-en',
+                   'en-ko','en-ko','en-ko','en-ko','en-ko',
+                   'conj','conj','conj','conj',
+                   'grammar-recog','grammar-recog',
+                   'grammar-fill','grammar-fill'];
+  const types = shuffle(weights).slice(0, size);
+  for (const t of types) {
+    if (t === 'ko-en' || t === 'en-ko') questions.push(buildVocabQuestion(t));
+    else if (t === 'conj') questions.push(buildConjugationQuestion());
+    else if (t === 'grammar-recog') questions.push(buildGrammarRecognitionQuestion());
+    else questions.push(buildGrammarFillQuestion());
+  }
+  return questions;
+}
+
+function startQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-question-card').style.display = 'block';
+  document.getElementById('qz-back').style.display = 'block';
+
+  state.quizQ = buildQuizPool(20);
+  state.quizIdx = 0;
+  state.quizScore = 0;
+  showScreen('quiz');
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  if (state.quizIdx >= state.quizQ.length) {
+    document.getElementById('quiz-question-card').style.display = 'none';
+    document.getElementById('qz-back').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'block';
+    const pct = Math.round((state.quizScore / state.quizQ.length) * 100);
+    const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '📚';
+    document.getElementById('qz-score').innerHTML = `${emoji} ${state.quizScore} / ${state.quizQ.length}<small>${pct}% — ${pct >= 80 ? '잘했어요! Great job!' : pct >= 60 ? '괜찮아요. Keep going!' : '계속 공부해요. Keep studying!'}</small>`;
+    return;
+  }
+
+  const q = state.quizQ[state.quizIdx];
+  const pct = Math.round((state.quizIdx / state.quizQ.length)*100);
+  document.getElementById('qz-progress-fill').style.width = pct + '%';
+  document.getElementById('qz-counter').textContent = `${state.quizIdx+1} / ${state.quizQ.length}`;
+
+  // Type badge colors
+  const typeMeta = {
+    'ko-en':         { label: '🇰🇷 → 🇬🇧 Vocab',      color: 'var(--accent)' },
+    'en-ko':         { label: '🇬🇧 → 🇰🇷 Vocab',      color: 'var(--blue)' },
+    'conj':          { label: '✍️ Conjugation',      color: 'var(--green)' },
+    'grammar-recog': { label: '📐 Grammar Recognition', color: 'var(--ink)' },
+    'grammar-fill':  { label: '📐 Grammar Fill-in',   color: 'var(--ink)' },
+  };
+  const meta = typeMeta[q.type] || { label: q.type, color: 'var(--muted)' };
+
+  document.getElementById('qz-prompt').innerHTML =
+    `<span style="display:inline-block;background:${meta.color};color:white;border-radius:4px;padding:2px 8px;font-size:0.68rem;letter-spacing:0.05em;margin-bottom:8px;">${meta.label}</span><br>${q.prompt}`;
+
+  const wordEl = document.getElementById('qz-word');
+  wordEl.innerHTML = q.wordIsKorean
+    ? `<span style="font-family:'Noto Sans KR',sans-serif">${q.word}</span>`
+    : q.word;
+  wordEl.className = 'quiz-word' + (q.wordIsKorean ? '' : ' en-word');
+
+  // Show subtext (English translation hint for grammar questions)
+  let subEl = document.getElementById('qz-subtext');
+  if (!subEl) {
+    subEl = document.createElement('div');
+    subEl.id = 'qz-subtext';
+    subEl.style.cssText = 'font-size:0.8rem;color:var(--muted);font-style:italic;margin-top:6px;';
+    wordEl.parentNode.insertBefore(subEl, wordEl.nextSibling);
+  }
+  subEl.textContent = q.subtext || '';
+
+  const optDiv = document.getElementById('qz-options');
+  // For Korean-answer questions use Korean font on options
+  const optKo = ['en-ko','conj','grammar-fill','grammar-recog'].includes(q.type);
+  optDiv.innerHTML = q.options.map(opt => {
+    const safeOpt = opt.replace(/'/g, "\\'");
+    const safeCorrect = q.correct.replace(/'/g, "\\'");
+    const fontStyle = optKo ? `font-family:'Noto Sans KR',sans-serif;font-size:0.95rem;` : '';
+    return `<button class="quiz-option" style="${fontStyle}" onclick="answerQuiz(this,'${safeOpt}','${safeCorrect}')">${opt}</button>`;
+  }).join('');
+}
+
+function answerQuiz(btn, chosen, correct) {
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(b => {
+    b.classList.add('disabled');
+    const txt = b.textContent.trim();
+    if (txt === correct) b.classList.add('correct');
+    else if (txt === chosen && chosen !== correct) b.classList.add('wrong');
+  });
+  if (chosen === correct) { state.quizScore++; bumpStat('quizCorrect'); }
+  setTimeout(() => { state.quizIdx++; renderQuizQ(); }, 900);
+}
+
+// ═══════════════════════════════════════════
+//  PROGRESS
+// ═══════════════════════════════════════════
+function renderProgress() {
+  const srs = loadSRS();
+  const today = todayStr();
+  const stats = loadStats();
+  const total = VOCAB.length;
+  const known = Object.values(srs).filter(c => c.interval >= 4).length;
+  const due = VOCAB.filter(v => (srs[v.k]||defaultCard()).due <= today).length;
+  const streak = loadStreak().streak;
+
+  document.getElementById('pg-total').textContent = total;
+  document.getElementById('pg-known').textContent = known;
+  document.getElementById('pg-due').textContent = due;
+  document.getElementById('pg-streak').textContent = streak;
+  document.getElementById('pg-time').textContent = fmtSecs(timerState.todaySeconds);
+  document.getElementById('pg-reviews').textContent = stats.reviews || 0;
+  document.getElementById('pg-quiz').textContent = stats.quizCorrect || 0;
+  document.getElementById('pg-grammar').textContent = stats.grammarCorrect || 0;
+
+  // category breakdown
+  const cats = {};
+  VOCAB.forEach(v => {
+    if (!cats[v.cat]) cats[v.cat] = {total:0, known:0};
+    cats[v.cat].total++;
+    const c = srs[v.k];
+    if (c && c.interval >= 4) cats[v.cat].known++;
+  });
+
+  const listEl = document.getElementById('category-list');
+  listEl.innerHTML = Object.entries(cats).sort((a,b)=>b[1].total-a[1].total).map(([cat, {total, known}]) => {
+    const pct = Math.round((known/total)*100);
+    return `<div class="cat-row">
+      <span class="cat-name">${cat}</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%"></div></div>
+      <span class="cat-count">${known}/${total}</span>
+    </div>`;
+  }).join('');
+}
+
+function resetProgress() {
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(STREAK_KEY);
+  localStorage.removeItem(STATS_KEY);
+  updateHeader();
+  renderProgress();
+}
+
+// ── Nav tab handlers ──
+function navFlashcards() {
+  // Show mode picker, not a running session
+  showScreen('flashcard');
+  document.getElementById('fc-mode-picker').style.display = 'block';
+  document.getElementById('fc-study-area').style.display = 'none';
+}
+
+function navGrammar() {
+  startGrammar();
+}
+
+function navQuiz() {
+  startQuiz();
+}
+
+function pickMode(mode) {
+  document.getElementById('fc-mode-picker').style.display = 'none';
+  document.getElementById('fc-study-area').style.display = 'block';
+  startFlashcards(mode);
+}
+
+// ═══════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+// ═══════════════════════════════════════════
+//  STUDY TIMER
+// ═══════════════════════════════════════════
+const TIMER_KEY   = 'dylan_timer_v1';
+const STATS_KEY   = 'dylan_stats_v1';
+const GOAL_SECS   = 15 * 60;
+
+function loadStats() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STATS_KEY)) || {};
+    const today = todayStr();
+    if (d.date !== today) return { date: today, reviews: 0, quizCorrect: 0, grammarCorrect: 0 };
+    return d;
+  } catch { return { date: todayStr(), reviews: 0, quizCorrect: 0, grammarCorrect: 0 }; }
+}
+function saveStats(s) { localStorage.setItem(STATS_KEY, JSON.stringify(s)); }
+function bumpStat(key) {
+  const s = loadStats();
+  s[key] = (s[key] || 0) + 1;
+  saveStats(s);
+}
+
+let timerState = {
+  todayDate: '',
+  todaySeconds: 0,
+  running: false,
+  intervalId: null,
+  // pause when tab hidden
+};
+
+function loadTimer() {
+  try {
+    const d = JSON.parse(localStorage.getItem(TIMER_KEY)) || {};
+    const today = todayStr();
+    if (d.date === today) {
+      timerState.todaySeconds = d.seconds || 0;
+    } else {
+      timerState.todaySeconds = 0;
+    }
+    timerState.todayDate = today;
+  } catch { timerState.todaySeconds = 0; }
+}
+
+function saveTimer() {
+  localStorage.setItem(TIMER_KEY, JSON.stringify({
+    date: todayStr(),
+    seconds: timerState.todaySeconds
+  }));
+}
+
+function timerStart() {
+  if (timerState.running) return;
+  timerState.running = true;
+  document.getElementById('timer-dot').classList.add('active');
+  timerState.intervalId = setInterval(() => {
+    timerState.todaySeconds++;
+    saveTimer();
+    renderTimerUI();
+    updateRoutineRing();
+  }, 1000);
+}
+
+function timerStop() {
+  if (!timerState.running) return;
+  timerState.running = false;
+  document.getElementById('timer-dot').classList.remove('active');
+  clearInterval(timerState.intervalId);
+  timerState.intervalId = null;
+}
+
+function timerToggle() {
+  timerState.running ? timerStop() : timerStart();
+}
+
+function fmtSecs(s) {
+  const m = Math.floor(s / 60);
+  const ss = String(s % 60).padStart(2, '0');
+  return `${m}:${ss}`;
+}
+
+function renderTimerUI() {
+  const s = timerState.todaySeconds;
+  const display = fmtSecs(s);
+  document.getElementById('timer-display').textContent = display;
+  document.getElementById('ring-time').textContent = display;
+
+  const badge = document.getElementById('timer-badge');
+  const pct = Math.min(1, s / GOAL_SECS);
+  if (pct >= 1) {
+    badge.classList.add('goal-done');
+    badge.title = '🎉 Daily goal reached!';
+  } else {
+    badge.classList.remove('goal-done');
+    badge.title = `Today's study time — click to pause/resume`;
+  }
+}
+
+// auto-pause when tab is hidden
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) timerStop();
+});
+
+document.getElementById('timer-badge').addEventListener('click', timerToggle);
+
+// ═══════════════════════════════════════════
+//  DAILY ROUTINE ENGINE
+// ═══════════════════════════════════════════
+const ROUTINE_KEY = 'dylan_routine_v1';
+
+// 7 rotating routines — one per day of week
+const ROUTINES = [
+  {
+    title: "SRS Focus Day",
+    steps: [
+      { name: "Flashcards (Korean → English)", desc: "Work through all due cards", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 5 },
+      { name: "Grammar Drill", desc: "Review 3 grammar patterns", icon: "📐", action: () => startGrammar(), mins: 5 },
+      { name: "Quiz", desc: "Test yourself with 10 questions", icon: "🎯", action: () => startQuiz(), mins: 3 },
+    ]
+  },
+  {
+    title: "Active Recall Day",
+    steps: [
+      { name: "Flashcards (English → Korean)", desc: "The hard direction — builds output", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 6 },
+      { name: "Grammar Drill", desc: "Focus on fill-in-the-blank", icon: "📐", action: () => startGrammar(), mins: 4 },
+      { name: "Quiz", desc: "Finish with a mixed quiz", icon: "🎯", action: () => startQuiz(), mins: 3 },
+    ]
+  },
+  {
+    title: "Grammar Deep Dive",
+    steps: [
+      { name: "Grammar Drill", desc: "Go through 5+ grammar patterns", icon: "📐", action: () => startGrammar(), mins: 7 },
+      { name: "Flashcards (Korean → English)", desc: "Review vocab from due cards", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 5 },
+    ]
+  },
+  {
+    title: "Mixed Challenge",
+    steps: [
+      { name: "Quiz", desc: "Start with a full 20-question quiz", icon: "🎯", action: () => startQuiz(), mins: 5 },
+      { name: "Flashcards (Korean → English)", desc: "Review anything you missed", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 4 },
+      { name: "Grammar Drill", desc: "One grammar pattern to finish", icon: "📐", action: () => startGrammar(), mins: 3 },
+    ]
+  },
+  {
+    title: "Production Focus",
+    steps: [
+      { name: "Flashcards (English → Korean)", desc: "Active recall — say it in Korean", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 7 },
+      { name: "Quiz", desc: "Reinforce with multiple choice", icon: "🎯", action: () => startQuiz(), mins: 5 },
+    ]
+  },
+  {
+    title: "Quick Review Day",
+    steps: [
+      { name: "Flashcards (Korean → English)", desc: "Light review — just due cards", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 5 },
+      { name: "Grammar Drill", desc: "Browse 2-3 patterns casually", icon: "📐", action: () => startGrammar(), mins: 4 },
+    ]
+  },
+  {
+    title: "Full Workout",
+    steps: [
+      { name: "Flashcards (Korean → English)", desc: "Warm up with recognition", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 4 },
+      { name: "Flashcards (English → Korean)", desc: "Push harder — produce Korean", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 4 },
+      { name: "Grammar Drill", desc: "Two new grammar patterns", icon: "📐", action: () => startGrammar(), mins: 3 },
+      { name: "Quiz", desc: "Finish strong", icon: "🎯", action: () => startQuiz(), mins: 3 },
+    ]
+  },
+];
+
+let routineState = { dayIndex: 0, stepDone: [] };
+
+function loadRoutine() {
+  try {
+    const d = JSON.parse(localStorage.getItem(ROUTINE_KEY)) || {};
+    const today = todayStr();
+    if (d.date === today) {
+      routineState.dayIndex = d.dayIndex;
+      routineState.stepDone = d.stepDone || [];
+    } else {
+      // New day — advance routine
+      const prevIdx = (d.dayIndex !== undefined) ? d.dayIndex : -1;
+      routineState.dayIndex = (prevIdx + 1) % ROUTINES.length;
+      routineState.stepDone = [];
+      saveRoutine();
+    }
+  } catch {
+    routineState.dayIndex = new Date().getDay() % ROUTINES.length;
+    routineState.stepDone = [];
+  }
+}
+
+function saveRoutine() {
+  localStorage.setItem(ROUTINE_KEY, JSON.stringify({
+    date: todayStr(),
+    dayIndex: routineState.dayIndex,
+    stepDone: routineState.stepDone
+  }));
+}
+
+function getRoutine() { return ROUTINES[routineState.dayIndex]; }
+
+function currentStepIndex() {
+  const r = getRoutine();
+  for (let i = 0; i < r.steps.length; i++) {
+    if (!routineState.stepDone.includes(i)) return i;
+  }
+  return r.steps.length; // all done
+}
+
+function renderRoutine() {
+  const r = getRoutine();
+  const totalMins = r.steps.reduce((a, s) => a + s.mins, 0);
+  const doneMins  = routineState.stepDone.reduce((a, i) => a + r.steps[i].mins, 0);
+  document.getElementById('routine-title').textContent = r.title;
+  document.getElementById('routine-subtitle').textContent =
+    `~${totalMins} min total · ${routineState.stepDone.length}/${r.steps.length} steps done`;
+  document.getElementById('ring-goal-label').textContent = `/ ${GOAL_SECS/60}min`;
+
+  const activeStep = currentStepIndex();
+  const stepsEl = document.getElementById('routine-steps');
+  stepsEl.innerHTML = r.steps.map((step, i) => {
+    const done = routineState.stepDone.includes(i);
+    const active = i === activeStep;
+    return `<div class="routine-step ${done ? 'done-step' : ''} ${active ? 'active-step' : ''}"
+      onclick="launchStep(${i})">
+      <span class="step-check">${done ? '✅' : active ? '▶' : '○'}</span>
+      <div class="step-info">
+        <div class="step-name">${step.icon} ${step.name}</div>
+        <div class="step-desc">${step.desc}</div>
+      </div>
+      <span class="step-duration">~${step.mins}m</span>
+    </div>`;
+  }).join('');
+
+  const startBtn = document.getElementById('routine-start-btn');
+  if (activeStep >= r.steps.length) {
+    startBtn.textContent = '✓ Done';
+    startBtn.disabled = true;
+    startBtn.style.opacity = '0.6';
+  } else {
+    startBtn.textContent = '▶ Start';
+    startBtn.disabled = false;
+    startBtn.style.opacity = '1';
+  }
+
+  updateRoutineRing();
+}
+
+function updateRoutineRing() {
+  const s = timerState.todaySeconds;
+  const pct = Math.min(1, s / GOAL_SECS);
+  const circumference = 188.5;
+  const offset = circumference * (1 - pct);
+  const ring = document.getElementById('goal-ring');
+  ring.style.strokeDashoffset = offset;
+  ring.classList.toggle('done', pct >= 1);
+}
+
+function launchStep(i) {
+  const r = getRoutine();
+  markStepDone(i);
+  r.steps[i].action();
+}
+
+function startRoutineStep() {
+  const i = currentStepIndex();
+  if (i >= getRoutine().steps.length) return;
+  launchStep(i);
+}
+
+function skipRoutineStep() {
+  const i = currentStepIndex();
+  if (i >= getRoutine().steps.length) return;
+  markStepDone(i);
+  renderRoutine();
+}
+
+function markStepDone(i) {
+  if (!routineState.stepDone.includes(i)) {
+    routineState.stepDone.push(i);
+    saveRoutine();
+  }
+}
+
+// Auto-mark step done when returning to home after studying
+function onReturnHome() {
+  renderRoutine();
+  updateHeader();
+}
+
+// ═══════════════════════════════════════════
+//  IMPORT ENGINE
+// ═══════════════════════════════════════════
+const IMPORT_KEY = 'dylan_imported_vocab_v1';
+
+function loadImported() {
+  try { return JSON.parse(localStorage.getItem(IMPORT_KEY)) || []; } catch { return []; }
+}
+function saveImported(items) {
+  localStorage.setItem(IMPORT_KEY, JSON.stringify(items));
+}
+
+// Merge imported vocab into the live pool
+function getFilteredVocab() {
+  const imported = loadImported();
+  const combined = [...VOCAB, ...imported];
+  const active = getActiveLessons();
+  if (!active) return combined;
+  return combined.filter(v => v.lesson && active.includes(v.lesson));
+}
+
+function parseLine(line, fallbackLesson) {
+  const parts = line.split('|').map(s => s.trim());
+  if (parts.length < 2 || !parts[0] || !parts[1]) return null;
+  const [k, e, cat, conj, note, lessonRaw] = parts;
+  const lessonNum = lessonRaw ? parseInt(lessonRaw) : fallbackLesson;
+  const item = {
+    k, e,
+    cat: cat || 'General',
+    lesson: isNaN(lessonNum) ? fallbackLesson : lessonNum,
+    _imported: true,
+  };
+  if (conj) item.conj = conj;
+  if (note) item.note = note;
+  return item;
+}
+
+function previewImport() {
+  const raw = document.getElementById('import-textarea').value.trim();
+  const fallbackLesson = parseInt(document.getElementById('import-lesson-num').value) || getNextLessonNumber();
+
+  if (!raw) {
+    alert('Nothing to preview — paste some vocab first.');
+    return;
+  }
+
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'));
+  const parsed = [];
+  const errors = [];
+
+  for (const line of lines) {
+    const item = parseLine(line, fallbackLesson);
+    if (item) parsed.push(item);
+    else errors.push(line);
+  }
+
+  const existing = [...VOCAB, ...loadImported()];
+  const existingKeys = new Set(existing.map(v => v.k));
+
+  const previewDiv = document.getElementById('import-preview');
+  const listDiv = document.getElementById('import-preview-list');
+  const titleEl = document.getElementById('import-preview-title');
+
+  titleDiv: titleEl.textContent = `${parsed.length} cards ready${errors.length ? `, ${errors.length} skipped` : ''}`;
+
+  listDiv.innerHTML = parsed.map(item => {
+    const isNew = !existingKeys.has(item.k);
+    return `<div class="import-row">
+      <span class="import-row-ko">${item.k}</span>
+      <div style="flex:1;">
+        <div class="import-row-en">${item.e}</div>
+        <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;">
+          <span class="import-badge">${item.cat}</span>
+          ${item.conj ? `<span class="import-badge">→ ${item.conj}</span>` : ''}
+          ${item.note ? `<span class="import-badge">${item.note}</span>` : ''}
+          <span class="import-badge">Lesson ${item.lesson}</span>
+          ${isNew ? '<span class="import-badge new">new</span>' : '<span class="import-badge">duplicate</span>'}
+        </div>
+      </div>
+    </div>`;
+  }).join('') + (errors.length ? `<div style="margin-top:10px;font-size:0.75rem;color:var(--err);">Skipped ${errors.length} line(s) — missing Korean or English field.</div>` : '');
+
+  previewDiv.style.display = 'block';
+  previewDiv._parsed = parsed;
+}
+
+function getNextLessonNumber() {
+  const imported = loadImported();
+  const allLessons = [...VOCAB, ...imported].map(v => v.lesson).filter(Boolean);
+  return Math.max(...allLessons, 62) + 1;
+}
+
+function confirmImport() {
+  const preview = document.getElementById('import-preview');
+  const parsed = preview._parsed;
+  if (!parsed || !parsed.length) return;
+
+  const existing = loadImported();
+  const existingKeys = new Set([...VOCAB, ...existing].map(v => v.k));
+  const newItems = parsed.filter(item => !existingKeys.has(item.k));
+  const dupes = parsed.length - newItems.length;
+
+  saveImported([...existing, ...newItems]);
+
+  // Update LESSON_SEQUENCE with any new lesson numbers
+  const newLessons = [...new Set(newItems.map(v => v.lesson).filter(Boolean))];
+  for (const l of newLessons) {
+    if (!LESSON_SEQUENCE.includes(l)) {
+      LESSON_SEQUENCE.push(l);
+      LESSON_SEQUENCE.sort((a,b) => a-b);
+    }
+  }
+
+  preview.style.display = 'none';
+  document.getElementById('import-textarea').value = '';
+  document.getElementById('import-lesson-num').value = '';
+
+  renderImportedLessons();
+  updateHeader();
+  updateFilterLabel();
+
+  alert(`✓ Added ${newItems.length} new cards${dupes ? ` (${dupes} duplicate${dupes>1?'s':''} skipped)` : ''}.`);
+}
+
+function renderImportedLessons() {
+  const imported = loadImported();
+  const el = document.getElementById('imported-lessons-list');
+  if (!imported.length) { el.textContent = 'None yet.'; return; }
+
+  // Group by lesson
+  const byLesson = {};
+  for (const item of imported) {
+    const l = item.lesson || '?';
+    if (!byLesson[l]) byLesson[l] = [];
+    byLesson[l].push(item);
+  }
+
+  el.innerHTML = Object.entries(byLesson)
+    .sort((a,b) => parseInt(a[0]) - parseInt(b[0]))
+    .map(([lesson, items]) => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-size:0.82rem;font-weight:500;">Lesson ${lesson}</span>
+          <span style="font-size:0.72rem;color:var(--muted);margin-left:10px;">${items.length} cards</span>
+          <div style="font-size:0.7rem;color:var(--subtle);margin-top:3px;">${items.slice(0,4).map(i=>i.k).join(', ')}${items.length>4?'…':''}</div>
+        </div>
+        <button class="btn secondary" style="padding:5px 10px;font-size:0.7rem;" onclick="removeImportedLesson(${lesson})">Remove</button>
+      </div>`).join('');
+}
+
+function removeImportedLesson(lesson) {
+  if (!confirm(`Remove all ${lesson} imported cards?`)) return;
+  const remaining = loadImported().filter(v => v.lesson !== lesson);
+  saveImported(remaining);
+  renderImportedLessons();
+  updateHeader();
+  updateFilterLabel();
+}
+
+function clearImported() {
+  saveImported([]);
+  renderImportedLessons();
+  updateHeader();
+  updateFilterLabel();
+}
+
+function clearImport() {
+  document.getElementById('import-textarea').value = '';
+  document.getElementById('import-lesson-num').value = '';
+  document.getElementById('import-preview').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════
+//  ACTIVITY TIMER
+// ═══════════════════════════════════════════
+const ACTIVITY_TARGETS = {
+  flashcard: 5 * 60,   // 5 minutes
+  grammar:   5 * 60,   // 5 minutes
+  quiz:      5 * 60,   // 5 minutes
+};
+const ACTIVITY_LABELS = {
+  flashcard: 'Flashcards',
+  grammar:   'Grammar',
+  quiz:      'Quiz',
+};
+
+let activityTimer = {
+  screen: null,
+  seconds: 0,
+  intervalId: null,
+  nudgeShown: false,
+};
+
+function activityTimerStart(screen) {
+  activityTimerStop();
+  activityTimer.screen  = screen;
+  activityTimer.seconds = 0;
+  activityTimer.nudgeShown = false;
+
+  const bar  = document.getElementById('activity-timer-bar');
+  const nudge = document.getElementById('activity-nudge');
+  nudge.style.display = 'none';
+  bar.style.display = 'block';
+  activityTimerRender();
+
+  activityTimer.intervalId = setInterval(() => {
+    activityTimer.seconds++;
+    activityTimerRender();
+  }, 1000);
+}
+
+function activityTimerStop() {
+  if (activityTimer.intervalId) {
+    clearInterval(activityTimer.intervalId);
+    activityTimer.intervalId = null;
+  }
+  document.getElementById('activity-timer-bar').style.display = 'none';
+  document.getElementById('activity-nudge').style.display = 'none';
+  activityTimer.screen = null;
+}
+
+function activityTimerRender() {
+  const screen  = activityTimer.screen;
+  const secs    = activityTimer.seconds;
+  const target  = ACTIVITY_TARGETS[screen] || 300;
+  const label   = ACTIVITY_LABELS[screen]  || screen;
+  const pct     = Math.min(100, (secs / target) * 100);
+  const done    = secs >= target;
+
+  document.getElementById('activity-bar-label').textContent = label;
+  document.getElementById('activity-bar-time').textContent =
+    `${fmtSecs(secs)} / ${fmtSecs(target)}`;
+
+  const fill = document.getElementById('activity-bar-fill');
+  fill.style.width = pct + '%';
+  fill.classList.toggle('done', done);
+
+  // Show nudge once when time is up
+  if (done && !activityTimer.nudgeShown) {
+    activityTimer.nudgeShown = true;
+    const nudge = document.getElementById('activity-nudge');
+    nudge.textContent = nudgeMessage(screen);
+    nudge.style.display = 'block';
+  }
+}
+
+function nudgeMessage(screen) {
+  if (screen === 'flashcard') return "5 minutes done — nice work! Ready to switch to Grammar? 📐";
+  if (screen === 'grammar')   return "5 minutes done — time for the Quiz! 🎯";
+  if (screen === 'quiz')      return "5 minutes done — session complete! Great studying today 🎉";
+  return "Time's up — ready to move on?";
+}
+
+// ═══════════════════════════════════════════
+//  LESSON FILTER
+// ═══════════════════════════════════════════
+// Ordered unique lesson numbers in the vocab data
+const LESSON_SEQUENCE = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26,27,28,29,30,32,33,34,36,37,39,40,41,42,43,44,56,57,58,59,60,61,62];
+
+let lessonFilter = 'all'; // 'all' | 'recent5' | 'recent10' | 'recent15'
+
+function getActiveLessons() {
+  const n = lessonFilter === 'recent5' ? 5
+          : lessonFilter === 'recent10' ? 10
+          : lessonFilter === 'recent15' ? 15
+          : null;
+  if (!n) return null;
+  return LESSON_SEQUENCE.slice(-n);
+}
+
+function setLessonFilter(filter) {
+  lessonFilter = filter;
+  document.querySelectorAll('.lesson-filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === filter);
+  });
+  updateFilterLabel();
+}
+
+function updateFilterLabel() {
+  const filtered = getFilteredVocab();
+  const active = getActiveLessons();
+  const countEl = document.getElementById('filter-count-label');
+  if (countEl) countEl.textContent = active ? `${filtered.length} cards` : '';
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+loadTimer();
+loadRoutine();
+renderTimerUI();
+renderRoutine();
+updateHeader();
+updateFilterLabel();
+
+// Patch showScreen to drive the timer automatically
+const _baseShowScreen = showScreen;
+showScreen = function(name) {
+  _baseShowScreen(name);
+  if (['flashcard','grammar','quiz'].includes(name)) {
+    timerStart();
+    activityTimerStart(name);
+  } else {
+    timerStop();
+    activityTimerStop();
+    if (name === 'home') onReturnHome();
+  }
+};
+</script>
+</body>
+</html>
