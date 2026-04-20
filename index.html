@@ -358,7 +358,7 @@
     cursor: pointer;
   }
   .routine-step.active-step { border-color: var(--ink); background: var(--surface); }
-  .routine-step.done-step { opacity: 0.45; pointer-events: none; }
+  .routine-step.done-step { opacity: 0.45; }
   .step-check { font-size: 0.9rem; width: 18px; text-align: center; flex-shrink: 0; }
   .step-info { flex: 1; }
   .step-name { font-size: 0.8rem; font-weight: 500; }
@@ -522,160 +522,6 @@
     margin-top: 4px; flex-wrap: wrap;
   }
 
-  /* ── GRAMMAR EXERCISE TYPES ── */
-  .drill-mc-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .drill-mc-option {
-    background: var(--faint);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 11px 12px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.15s;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .drill-mc-option:hover:not(.disabled) { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .drill-mc-option:hover:not(.disabled) .drill-mc-sub { color: rgba(255,255,255,0.6); }
-  .drill-mc-option.correct { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
-  .drill-mc-option.correct .drill-mc-sub { color: var(--ok); }
-  .drill-mc-option.wrong   { background: var(--err-bg); border-color: var(--err); color: var(--err); }
-  .drill-mc-option.disabled { cursor: default; }
-  .drill-mc-sub { font-size: 0.68rem; color: var(--muted); }
-  .drill-context-box {
-    background: var(--faint);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-  }
-  .drill-context-line .ko {
-    display: block;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 1rem;
-    margin-bottom: 2px;
-  }
-  .drill-context-line .en {
-    display: block;
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-style: italic;
-  }
-  .drill-tile.disabled { pointer-events: none; opacity: 0.5; }
-  .drill-tile.correct  { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
-  .drill-tile.wrong    { background: var(--err-bg); border-color: var(--err); color: var(--err); }
-
-  /* ── PRACTICE (Diary + Reading) ── */
-  .practice-tabs {
-    display: flex; gap: 0; margin-bottom: 18px;
-    border-bottom: 1px solid var(--border);
-  }
-  .practice-tab {
-    background: none; border: none; cursor: pointer;
-    padding: 10px 18px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem; letter-spacing: 0.06em;
-    color: var(--muted); text-transform: uppercase;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-  }
-  .practice-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
-  .practice-tab:hover:not(.active) { color: var(--ink); }
-  .practice-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 14px;
-  }
-  .practice-badge {
-    display: inline-block;
-    background: var(--faint);
-    border-radius: 5px;
-    padding: 3px 10px;
-    font-size: 0.75rem;
-    color: var(--ink);
-    font-family: 'DM Serif Display', serif;
-  }
-  .diary-textarea {
-    width: 100%; min-height: 160px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 1rem; line-height: 1.8;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--paper);
-    color: var(--ink);
-    resize: vertical;
-    transition: border-color 0.2s;
-  }
-  .diary-textarea:focus { outline: none; border-color: var(--ink); }
-  .diary-entry {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 10px;
-  }
-  .diary-entry-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 8px; flex-wrap: wrap; gap: 6px;
-  }
-  .diary-entry-date { font-size: 0.72rem; color: var(--muted); }
-  .diary-entry-prompt { font-size: 0.82rem; font-weight: 500; }
-  .diary-entry-text {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 0.95rem; line-height: 1.8;
-    color: var(--ink); margin-top: 8px;
-    white-space: pre-wrap;
-  }
-  .vocab-hint-pill {
-    background: var(--faint);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 0.82rem;
-    cursor: default;
-  }
-  .vocab-hint-pill span { font-size: 0.7rem; color: var(--muted); margin-left: 4px; }
-  .passage-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  }
-  .passage-card:hover { border-color: var(--ink); }
-  .passage-card.completed { opacity: 0.6; }
-  .reading-question {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 10px;
-  }
-  .reading-q-text { font-size: 0.88rem; font-weight: 500; margin-bottom: 10px; }
-  .reading-option {
-    width: 100%; background: var(--faint); border: 1px solid var(--border);
-    border-radius: 7px; padding: 10px 12px; cursor: pointer;
-    font-family: 'DM Mono', monospace; font-size: 0.78rem;
-    text-align: left; margin-bottom: 6px;
-    transition: all 0.15s; color: var(--ink);
-  }
-  .reading-option:hover:not(.disabled) { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .reading-option.correct { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
-  .reading-option.wrong   { background: var(--err-bg); border-color: var(--err); color: var(--err); }
-  .reading-option.disabled { cursor: default; }
-
   /* ── IMPORT ── */
   .import-textarea {
     width: 100%;
@@ -807,6 +653,44 @@
     nav button { padding: 10px 10px; font-size: 0.65rem; letter-spacing: 0.04em; }
     .lesson-filter-btn { padding: 4px 9px; font-size: 0.67rem; }
   }
+
+  /* ── PRACTICE ── */
+  .practice-tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:18px; }
+  .practice-tab { background:none; border:none; cursor:pointer; padding:10px 18px; font-family:'DM Mono',monospace; font-size:0.78rem; letter-spacing:0.06em; color:var(--muted); text-transform:uppercase; border-bottom:2px solid transparent; transition:all 0.15s; }
+  .practice-tab.active { color:var(--ink); border-bottom-color:var(--ink); }
+  .practice-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:14px; }
+  .practice-badge { display:inline-block; background:var(--faint); border-radius:5px; padding:3px 10px; font-size:0.75rem; color:var(--ink); }
+  .diary-textarea { width:100%; min-height:160px; font-family:'Noto Sans KR',sans-serif; font-size:1rem; line-height:1.8; padding:12px 14px; border:1px solid var(--border); border-radius:8px; background:var(--paper); color:var(--ink); resize:vertical; transition:border-color 0.2s; }
+  .diary-textarea:focus { outline:none; border-color:var(--ink); }
+  .diary-entry { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:10px; }
+  .diary-entry-prompt { font-size:0.82rem; font-weight:500; }
+  .diary-entry-text { font-family:'Noto Sans KR',sans-serif; font-size:0.95rem; line-height:1.8; color:var(--ink); margin-top:8px; white-space:pre-wrap; }
+  .vocab-hint-pill { background:var(--faint); border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-family:'Noto Sans KR',sans-serif; font-size:0.82rem; cursor:default; }
+  .vocab-hint-pill span { font-size:0.7rem; color:var(--muted); margin-left:4px; }
+  .passage-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:10px; cursor:pointer; transition:all 0.15s; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .passage-card:hover { border-color:var(--ink); }
+  .passage-card.completed { opacity:0.6; }
+  .reading-question { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:10px; }
+  .reading-q-text { font-size:0.88rem; font-weight:500; margin-bottom:10px; }
+  .reading-option { width:100%; background:var(--faint); border:1px solid var(--border); border-radius:7px; padding:10px 12px; cursor:pointer; font-family:'DM Mono',monospace; font-size:0.78rem; text-align:left; margin-bottom:6px; transition:all 0.15s; color:var(--ink); }
+  .reading-option:hover:not(.disabled) { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .reading-option.correct { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+  .reading-option.wrong { background:var(--err-bg); border-color:var(--err); color:var(--err); }
+  .reading-option.disabled { cursor:default; }
+  /* ── GRAMMAR MC ── */
+  .drill-mc-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+  .drill-mc-option { background:var(--faint); border:1px solid var(--border); border-radius:8px; padding:11px 12px; cursor:pointer; text-align:left; transition:all 0.15s; display:flex; flex-direction:column; gap:3px; }
+  .drill-mc-option:hover:not(.disabled) { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .drill-mc-option.correct { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+  .drill-mc-option.wrong { background:var(--err-bg); border-color:var(--err); color:var(--err); }
+  .drill-mc-option.disabled { cursor:default; }
+  .drill-mc-sub { font-size:0.68rem; color:var(--muted); }
+  .drill-context-box { background:var(--faint); border-radius:8px; padding:14px 16px; margin-bottom:14px; }
+  .drill-context-line .ko { display:block; font-family:'Noto Sans KR',sans-serif; font-size:1rem; margin-bottom:2px; }
+  .drill-context-line .en { display:block; font-size:0.78rem; color:var(--muted); font-style:italic; }
+  .drill-tile.disabled { pointer-events:none; opacity:0.5; }
+  .drill-tile.correct { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+  .drill-tile.wrong { background:var(--err-bg); border-color:var(--err); color:var(--err); }
 </style>
 </head>
 <body>
@@ -1067,13 +951,10 @@
 
   <!-- PRACTICE: Diary + Reading -->
   <div class="screen" id="screen-practice">
-
-    <!-- Sub-tabs -->
     <div class="practice-tabs">
       <button class="practice-tab active" id="ptab-diary" onclick="switchPracticeTab('diary')">✍️ Diary</button>
       <button class="practice-tab" id="ptab-reading" onclick="switchPracticeTab('reading')">📖 Reading</button>
     </div>
-
     <!-- DIARY -->
     <div id="practice-diary">
       <div class="practice-card" id="diary-prompt-card">
@@ -1099,7 +980,6 @@
           <div id="vocab-hints-list" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
         </div>
       </div>
-
       <div class="divider"></div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <h3 class="section-title" style="margin:0;">Past Entries</h3>
@@ -1107,7 +987,6 @@
       </div>
       <div id="diary-entries-list"></div>
     </div>
-
     <!-- READING -->
     <div id="practice-reading" style="display:none;">
       <div style="display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap;">
@@ -1116,8 +995,6 @@
         <button class="lesson-filter-btn" data-level="intermediate" onclick="setReadingLevel('intermediate')">Intermediate</button>
         <button class="lesson-filter-btn" data-level="advanced" onclick="setReadingLevel('advanced')">Advanced</button>
       </div>
-
-      <!-- Passage view -->
       <div id="reading-passage-view" style="display:none;">
         <div class="practice-card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
@@ -1131,20 +1008,16 @@
           <button class="btn secondary" style="width:100%;justify-content:center;" id="translation-toggle" onclick="toggleTranslation()">Show translation</button>
           <div id="reading-translation" style="display:none;margin-top:12px;font-size:0.82rem;color:var(--muted);font-style:italic;line-height:1.8;border-top:1px solid var(--border);padding-top:12px;"></div>
         </div>
-
         <div style="margin-top:16px;" id="reading-questions-area"></div>
         <div id="reading-result" style="display:none;text-align:center;padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-top:12px;">
           <div style="font-family:'DM Serif Display',serif;font-size:2rem;" id="reading-score"></div>
           <button class="btn secondary" style="margin-top:16px;" onclick="showReadingList()">← Back to passages</button>
         </div>
       </div>
-
-      <!-- Passage list -->
       <div id="reading-list-view">
         <div id="reading-passage-list"></div>
       </div>
     </div>
-
   </div>
 
 </main>
@@ -1152,12 +1025,9 @@
 <footer>Dylan's Korean Study App · Lessons with Jenna · SRS powered · v1.0</footer>
 
 <script>
-// ─────────────────────────────────────────
-//  Dylan's Korean — vocab & grammar data
-//  Edit this file to add new lessons.
-//  Format: {k, e, cat, conj?, note?, lesson}
-// ─────────────────────────────────────────
-
+// ═══════════════════════════════════════════
+//  DATA — all vocab + grammar from the MD file
+// ═══════════════════════════════════════════
 const VOCAB = [
   // Emotions & Feelings
   {k:"신나요",e:"excited / thrilling",cat:"Emotions",lesson:41},
@@ -2346,9 +2216,6 @@ const VOCAB = [
   {k:"경우에 따라 달라요",e:"it depends on the situation",cat:"Expressions",lesson:63},
   {k:"주제에 따라 달라요",e:"it depends on the topic",cat:"Expressions",lesson:63},
   {k:"기대 높으면 항상 실망해요",e:"high expectations always lead to disappointment",cat:"Expressions",lesson:63},
-  {k:"-하니까 말인데",e:"speaking of ~ / since you mention ~",cat:"Expressions",lesson:63},
-  {k:"나라면 -(으)겠어요",e:"if I were you, I would… (hypothetical advice)",cat:"Grammar Particles",lesson:63},
-  {k:"-는 게 좋을 것 같아요",e:"I think it would be good to… (soft suggestion)",cat:"Grammar Particles",lesson:63},
 ];
 
 const GRAMMAR = [
@@ -2558,6 +2425,7 @@ const GRAMMAR = [
     {k:"결혼한 줄 몰랐어요.",e:"I didn't know you were married."},
     {k:"비 올 줄 몰랐어요.",e:"I didn't know it would rain."}
   ]},
+
   {pattern:"나라면 -(으)겠어요", meaning:"If I were you, I would… (hypothetical advice)", examples:[
     {k:"나라면 커피 안 마시겠어요.",e:"If I were you, I wouldn't drink coffee."},
     {k:"나라면 일찍 자겠어요.",e:"If I were you, I would sleep early."},
@@ -2569,175 +2437,8 @@ const GRAMMAR = [
     {k:"먼저 이야기하는 게 좋을 것 같아요.",e:"I think it would be good to talk first."}
   ]},
 ];
-
-const LESSON_SEQUENCE = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26,27,28,29,30,32,33,34,36,37,39,40,41,42,43,44,56,57,58,59,60,61,62,63];// Reading passages — built from Dylan's vocab with Jenna
-// Each passage: { id, title, level, text (Korean), translation (English), questions: [{q, options, correct}] }
-
-const PASSAGES = [
-
-  // ── BEGINNER (lessons 1-20) ──────────────────
-
-  {
-    id: 'p01',
-    level: 'beginner',
-    title: '주말 계획',
-    text: `이번 주말에 친구를 만나려고 해요. 친구는 집순이라서 보통 집에 있어요. 하지만 날씨가 좋으면 같이 공원에 가요. 공원에서 산책하고 커피도 마셔요. 저는 이번 주말이 기대돼요.`,
-    translation: `This weekend I'm planning to meet a friend. My friend is a homebody, so they're usually at home. But if the weather is nice, we go to the park together. We take a walk and drink coffee at the park. I'm looking forward to this weekend.`,
-    questions: [
-      { q: "Where do they go when the weather is nice?", options: ["A café", "The park", "A restaurant", "Home"], correct: "The park" },
-      { q: "What does 집순이 mean?", options: ["Night owl", "Morning person", "Homebody (female)", "Hard worker"], correct: "Homebody (female)" },
-      { q: "How does the writer feel about the weekend?", options: ["Nervous", "Bored", "Looking forward to it", "Worried"], correct: "Looking forward to it" },
-    ]
-  },
-
-  {
-    id: 'p02',
-    level: 'beginner',
-    title: '오늘 기분',
-    text: `오늘 많이 피곤해요. 어제 밤에 뒤척뒤척했어요. 아침에 일어나자마자 커피를 마셨어요. 지금은 조금 괜찮아요. 오늘 저녁에는 일찍 자려고 해요.`,
-    translation: `I'm very tired today. Last night I was tossing and turning. As soon as I woke up in the morning, I drank coffee. Now I feel a little okay. This evening I'm planning to sleep early.`,
-    questions: [
-      { q: "Why is the writer tired?", options: ["They worked late", "They were tossing and turning", "They forgot to sleep", "They drank too much coffee"], correct: "They were tossing and turning" },
-      { q: "What did they do as soon as they woke up?", options: ["Exercised", "Ate breakfast", "Drank coffee", "Checked their phone"], correct: "Drank coffee" },
-      { q: "What are they planning for this evening?", options: ["Meet a friend", "Watch a movie", "Sleep early", "Study Korean"], correct: "Sleep early" },
-    ]
-  },
-
-  {
-    id: 'p03',
-    level: 'beginner',
-    title: '날씨와 계절',
-    text: `저는 봄을 제일 좋아해요. 날씨가 따뜻하고 꽃이 많이 피어요. 여름은 너무 더워요. 가을은 선선하고 경치가 아름다워요. 겨울은 쌀쌀해서 별로 안 좋아해요.`,
-    translation: `I like spring the most. The weather is warm and many flowers bloom. Summer is too hot. Autumn is cool and the scenery is beautiful. I don't really like winter because it's chilly.`,
-    questions: [
-      { q: "Which season does the writer like most?", options: ["Summer", "Autumn", "Winter", "Spring"], correct: "Spring" },
-      { q: "Why don't they like winter?", options: ["Too much rain", "Too chilly", "Too cloudy", "Too dark"], correct: "Too chilly" },
-      { q: "How is autumn described?", options: ["Warm and rainy", "Hot and dry", "Cool with beautiful scenery", "Cold and cloudy"], correct: "Cool with beautiful scenery" },
-    ]
-  },
-
-  // ── INTERMEDIATE (lessons 21-44) ────────────
-
-  {
-    id: 'p04',
-    level: 'intermediate',
-    title: '건강 관리',
-    text: `요즘 건강에 관심이 많아요. 유산소 운동을 일주일에 세 번 하려고 해요. 음식도 신경 써요. 단백질을 충분히 먹고 탄수화물은 줄이고 있어요. 건강한 생활을 유지하는 게 쉽지 않지만 중요해요.`,
-    translation: `These days I'm very interested in health. I'm trying to do cardio exercise three times a week. I'm also paying attention to food. I'm eating enough protein and reducing carbohydrates. It's not easy to maintain a healthy lifestyle, but it's important.`,
-    questions: [
-      { q: "How often does the writer plan to do cardio?", options: ["Every day", "Twice a week", "Three times a week", "Once a week"], correct: "Three times a week" },
-      { q: "What are they reducing in their diet?", options: ["Protein", "Vegetables", "Carbohydrates", "Water"], correct: "Carbohydrates" },
-      { q: "How does the writer describe maintaining a healthy lifestyle?", options: ["Easy and fun", "Not easy but important", "Boring", "Very expensive"], correct: "Not easy but important" },
-    ]
-  },
-
-  {
-    id: 'p05',
-    level: 'intermediate',
-    title: '직장 생활',
-    text: `새 직업을 찾고 있어요. 지금 회사는 월급이 괜찮지만 워라벨이 별로예요. 출퇴근 시간도 너무 길어요. 장단점을 생각해 봤어요. 결국 더 좋은 기회를 찾기로 했어요.`,
-    translation: `I'm looking for a new job. The salary at my current company is okay, but the work-life balance isn't great. The commute is also too long. I've thought about the pros and cons. In the end, I decided to look for a better opportunity.`,
-    questions: [
-      { q: "What is okay about the current job?", options: ["Work-life balance", "Commute", "Salary", "The boss"], correct: "Salary" },
-      { q: "What does 워라벨 mean?", options: ["Overtime pay", "Work-life balance", "Commute time", "Office location"], correct: "Work-life balance" },
-      { q: "What did the writer decide to do?", options: ["Stay at their job", "Ask for a raise", "Look for a better opportunity", "Start their own business"], correct: "Look for a better opportunity" },
-    ]
-  },
-
-  {
-    id: 'p06',
-    level: 'intermediate',
-    title: '사진 취미',
-    text: `저는 흑백사진 찍는 걸 좋아해요. 좋은 사진을 찍기 위해서 천천히 기다려요. 빛과 경치가 중요해요. 필름 카메라를 써요. 현상소에 맡기는 게 번거롭지만 결과가 독특해요.`,
-    translation: `I like taking black-and-white photos. I wait patiently in order to take a good photo. Light and scenery are important. I use a film camera. Having it developed at a lab is inconvenient, but the results are unique.`,
-    questions: [
-      { q: "What type of photos does the writer like?", options: ["Portrait photos", "Black-and-white photos", "Landscape only", "Digital photos"], correct: "Black-and-white photos" },
-      { q: "What does the writer use to take photos?", options: ["Smartphone", "Digital camera", "Film camera", "Instant camera"], correct: "Film camera" },
-      { q: "How does the writer describe getting film developed?", options: ["Quick and easy", "Cheap", "Inconvenient but unique results", "Always perfect"], correct: "Inconvenient but unique results" },
-    ]
-  },
-
-  // ── ADVANCED (lessons 56+) ───────────────────
-
-  {
-    id: 'p07',
-    level: 'advanced',
-    title: '감정과 이성',
-    text: `사람들은 감정적으로 결정할 때가 많아요. 이성적으로 생각하는 게 항상 쉽지 않아요. 기대가 높으면 실망도 커요. 상황에 따라 감정을 조절하는 게 중요해요. 자신감이 있으면 어려운 상황에서도 더 잘 대처할 수 있어요.`,
-    translation: `People often make decisions emotionally. It's not always easy to think rationally. The higher the expectations, the greater the disappointment. It's important to manage your emotions depending on the situation. If you have confidence, you can handle difficult situations better.`,
-    questions: [
-      { q: "What does the passage say about high expectations?", options: ["They lead to success", "They lead to greater disappointment", "They are always good", "They should be avoided"], correct: "They lead to greater disappointment" },
-      { q: "What helps you handle difficult situations better?", options: ["Being emotional", "Having confidence", "Ignoring problems", "Asking for help"], correct: "Having confidence" },
-      { q: "What is described as 'not always easy'?", options: ["Being emotional", "Having high expectations", "Thinking rationally", "Making decisions"], correct: "Thinking rationally" },
-    ]
-  },
-
-  {
-    id: 'p08',
-    level: 'advanced',
-    title: '여행과 문화 충격',
-    text: `처음 한국에 왔을 때 문화 충격을 받았어요. 성격 차이뿐만 아니라 생활 방식도 달랐어요. 시간이 지나면서 점점 익숙해졌어요. 지금은 한국 생활이 아주 편해요. 외국에서 살면서 더 열린 마음을 갖게 됐어요.`,
-    translation: `When I first came to Korea, I experienced culture shock. Not only personality differences but also lifestyle was different. As time passed, I gradually got used to it. Now Korean life is very comfortable for me. Living abroad, I've come to have a more open mind.`,
-    questions: [
-      { q: "What did the writer experience when they first came to Korea?", options: ["Happiness immediately", "Culture shock", "Language barriers only", "No difficulties"], correct: "Culture shock" },
-      { q: "What changed as time passed?", options: ["They left Korea", "They got used to Korean life", "They missed home more", "They stopped learning Korean"], correct: "They got used to Korean life" },
-      { q: "What did living abroad help them develop?", options: ["A new job", "More open mind", "Better cooking skills", "Financial success"], correct: "More open mind" },
-    ]
-  },
-
-  {
-    id: 'p09',
-    level: 'advanced',
-    title: '충고하기',
-    text: `친구가 요즘 너무 스트레스를 많이 받고 있어요. 제 생각에는 먼저 충분히 쉬는 게 좋을 것 같아요. 나라면 잠깐 모든 걸 내려놓겠어요. 걱정을 많이 하면 몸에도 안 좋아요. 이성적으로 생각하면 해결책을 찾을 수 있어요.`,
-    translation: `My friend is under too much stress these days. In my opinion, I think it would be good to rest properly first. If I were them, I would put everything down for a moment. Worrying a lot is also bad for your health. If you think rationally, you can find a solution.`,
-    questions: [
-      { q: "What does the writer suggest their friend do first?", options: ["Exercise more", "Rest properly", "Change jobs", "Talk to a doctor"], correct: "Rest properly" },
-      { q: "What grammar pattern is 나라면 잠깐 모든 걸 내려놓겠어요 an example of?", options: ["나라면 -(으)겠어요", "-아/어야 해요", "-자마자", "-는 게 좋을 것 같아요"], correct: "나라면 -(으)겠어요" },
-      { q: "What does the writer say worrying a lot affects?", options: ["Work performance", "Relationships", "Health", "Finances"], correct: "Health" },
-    ]
-  },
-
-  {
-    id: 'p10',
-    level: 'advanced',
-    title: '언어 학습',
-    text: `한국어를 배운 지 꽤 됐어요. 처음에는 발음이 어려웠어요. 꾸준히 공부하다 보니 점점 늘었어요. 선생님과 매주 수업하는 게 가장 도움이 돼요. 언어를 배우면서 문화도 함께 이해하게 됐어요.`,
-    translation: `It's been quite a while since I started learning Korean. At first, pronunciation was difficult. As I kept studying consistently, I gradually improved. Having weekly lessons with a teacher is the most helpful. While learning the language, I've also come to understand the culture.`,
-    questions: [
-      { q: "What was difficult at first?", options: ["Grammar", "Writing", "Pronunciation", "Vocabulary"], correct: "Pronunciation" },
-      { q: "What does the writer find most helpful?", options: ["Watching dramas", "Reading books", "Weekly lessons with a teacher", "Using an app"], correct: "Weekly lessons with a teacher" },
-      { q: "What has learning the language helped them understand?", options: ["History", "Culture", "Politics", "Business"], correct: "Culture" },
-    ]
-  },
-
-];
-
-// ── Diary prompts ────────────────────────────
-// Each: { topic, grammar, hint (English), vocabCats }
-
-const DIARY_PROMPTS = [
-  { topic: "오늘 기분이 어때요?", english: "How are you feeling today?", grammar: "-아/어서 (because/so)", hint: "Try to explain why you feel that way.", vocabCats: ["Emotions","Mood"] },
-  { topic: "이번 주에 뭐 했어요?", english: "What did you do this week?", grammar: "-았/었어요 (past tense)", hint: "Describe 2-3 things you did.", vocabCats: ["Daily Life","Verbs"] },
-  { topic: "좋아하는 계절은 뭐예요?", english: "What is your favourite season?", grammar: "-(으)면 (if/when)", hint: "Explain what you like to do in that season.", vocabCats: ["Seasons","Weather"] },
-  { topic: "요즘 어떤 목표가 있어요?", english: "What goals do you have these days?", grammar: "-(으)려고 해요 (planning to)", hint: "Share one personal or professional goal.", vocabCats: ["Abstract","Work"] },
-  { topic: "가장 스트레스 받을 때가 언제예요?", english: "When do you get most stressed?", grammar: "-(으)ㄹ 때 (when)", hint: "Describe a situation that stresses you out.", vocabCats: ["Emotions","Daily Life"] },
-  { topic: "한국어를 왜 배우고 있어요?", english: "Why are you learning Korean?", grammar: "-기 위해서 (in order to)", hint: "Give one or two reasons.", vocabCats: ["Abstract","Conversation"] },
-  { topic: "가장 좋아하는 음식은 뭐예요?", english: "What is your favourite food?", grammar: "A보다 B를 선호해요 (I prefer B over A)", hint: "Compare two foods you like.", vocabCats: ["Food"] },
-  { topic: "친구에게 조언을 해주세요.", english: "Give some advice to a friend.", grammar: "-는 게 좋을 것 같아요 (I think it would be good to)", hint: "Imagine a friend is stressed or unhappy.", vocabCats: ["Conversation","Emotions"] },
-  { topic: "오늘 날씨가 어때요?", english: "What is the weather like today?", grammar: "-아/어지다 (becoming/getting)", hint: "Describe how the weather has been changing.", vocabCats: ["Weather","Seasons"] },
-  { topic: "지금 어떤 감정을 느끼고 있어요?", english: "What emotions are you feeling right now?", grammar: "-고 있어요 (currently doing)", hint: "Be honest — describe 2-3 feelings.", vocabCats: ["Emotions","감(感) Family"] },
-  { topic: "이번 주말에 뭐 할 거예요?", english: "What will you do this weekend?", grammar: "-(으)ㄹ 거예요 (going to/will)", hint: "Make at least 3 plans.", vocabCats: ["Time","Travel"] },
-  { topic: "학교에서 무슨 일이 있었어요?", english: "What happened at school?", grammar: "-아/어 버렸어요 (ended up doing)", hint: "Describe something unexpected that happened.", vocabCats: ["School","Daily Life"] },
-  { topic: "건강을 위해 뭘 해요?", english: "What do you do for your health?", grammar: "-기 위해서 (in order to)", hint: "Describe your health habits.", vocabCats: ["Health","Sports"] },
-  { topic: "가장 기억에 남는 여행은 뭐예요?", english: "What is your most memorable trip?", grammar: "-ㄴ/은 적 있어요 (have ever done)", hint: "Describe where you went and what you did.", vocabCats: ["Travel","Places"] },
-];
-
-
-// ═══════════════════════════════════════════
-//  SRS ENGINE  (SM-2 simplified)
-// ═══════════════════════════════════════════
-const STORAGE_KEY = 'dylan_korean_srs_v2';
+const LESSON_SEQUENCE = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26,27,28,29,30,32,33,34,36,37,39,40,41,42,43,44,56,57,58,59,60,61,62,63];
+_korean_srs_v2';
 const STREAK_KEY  = 'dylan_korean_streak_v2';
 
 function loadSRS() {
@@ -2845,8 +2546,8 @@ function showScreen(name) {
     b.classList.toggle('active', names[i] === name);
   });
   if (name === 'progress') renderProgress();
-  if (name === 'import')   renderImportedLessons();
   if (name === 'practice') renderPractice();
+  if (name === 'import') renderImportedLessons();
   updateHeader();
 }
 
@@ -2998,12 +2699,8 @@ function rateSRS(rating) {
 }
 
 // ═══════════════════════════════════════════
-//  GRAMMAR — 5 rotating exercise types
+//  GRAMMAR — word-bank drill
 // ═══════════════════════════════════════════
-// Types: 'wordbank' | 'meaning-to-form' | 'error-detect' | 'interleaved' | 'gap-fill'
-
-const DRILL_TYPES = ['wordbank','meaning-to-form','error-detect','interleaved','gap-fill'];
-
 function startGrammar() {
   state.grammarIdx = Math.floor(Math.random() * GRAMMAR.length);
   _drillState = null;
@@ -3013,310 +2710,6 @@ function startGrammar() {
 
 let _drillState = null;
 let _drillAdvanceTimer = null;
-
-// ── Shared helpers ──────────────────────────
-
-function drillSuccess() {
-  _drillState.done = true;
-  bumpStat('grammarCorrect');
-  clearTimeout(_drillAdvanceTimer);
-  _drillAdvanceTimer = setTimeout(() => nextGrammar(), 1200);
-}
-
-function drillFeedback(correct, msg = '') {
-  const fb = document.getElementById('drill-feedback');
-  if (!fb) return;
-  fb.className = 'feedback ' + (correct ? 'correct' : 'wrong');
-  fb.textContent = correct
-    ? '✓ 맞아요!'
-    : (msg || '✗ Not quite — try again');
-}
-
-function mcAnswer(btn, chosen, correct, explanation = '') {
-  if (_drillState && _drillState.done) return;
-  document.querySelectorAll('.drill-mc-option').forEach(b => {
-    b.classList.add('disabled');
-    if (b.dataset.value === correct) b.classList.add('correct');
-    else if (b.dataset.value === chosen) b.classList.add('wrong');
-  });
-  const isCorrect = chosen === correct;
-  drillFeedback(isCorrect, explanation);
-  if (isCorrect) {
-    drillSuccess();
-  }
-}
-
-// ── Type 1: Word-bank sentence builder ─────
-
-function buildWordbank(g, drillArea) {
-  const ex = g.examples[Math.floor(Math.random() * g.examples.length)];
-  const correctTiles = ex.k.replace(/[.。?？!！]+$/, '').split(' ').filter(w => w.length > 0);
-
-  const distractorPool = [];
-  for (const og of GRAMMAR) {
-    if (og.pattern === g.pattern) continue;
-    for (const oex of og.examples) {
-      oex.k.split(' ').forEach(w => {
-        const clean = w.replace(/[.。?？!！,，]+$/, '');
-        if (clean && !correctTiles.includes(clean)) distractorPool.push(clean);
-      });
-    }
-  }
-  const distractors = shuffle(distractorPool)
-    .filter((w, i, a) => a.indexOf(w) === i)
-    .slice(0, Math.min(3, correctTiles.length));
-
-  const allTiles = shuffle([
-    ...correctTiles.map(t => ({ w: t, type: 'correct' })),
-    ...(state.grammarIdx >= 5 ? distractors.map(t => ({ w: t, type: 'distractor' })) : []),
-  ]);
-
-  _drillState = { type: 'wordbank', correct: correctTiles, placed: [], allTiles, ex, done: false };
-
-  drillArea.innerHTML = `
-    <div style="margin-bottom:20px;">
-      <div class="drill-prompt">Build the sentence</div>
-      <div class="drill-english">${ex.e}</div>
-      <div class="drill-answer-slots" id="drill-slots">
-        <span class="drill-slot-placeholder">Tap tiles below…</span>
-      </div>
-      <div class="drill-bank" id="drill-bank"></div>
-      <div class="drill-feedback-row">
-        <div class="feedback" id="drill-feedback"></div>
-        <button class="btn secondary" id="drill-clear-btn" onclick="drillClear()" style="padding:5px 12px;font-size:0.72rem;display:none;">Clear</button>
-      </div>
-    </div>`;
-
-  renderDrillBank();
-}
-
-// ── Type 2: Meaning-to-form ─────────────────
-// Given an English situation, choose which Korean grammar pattern fits
-
-function buildMeaningToForm(g, drillArea) {
-  const ex = g.examples[Math.floor(Math.random() * g.examples.length)];
-  const wrongPatterns = shuffle(GRAMMAR.filter(og => og.pattern !== g.pattern)).slice(0, 3);
-  const options = shuffle([g, ...wrongPatterns]);
-
-  _drillState = { type: 'meaning-to-form', done: false };
-
-  drillArea.innerHTML = `
-    <div style="margin-bottom:20px;">
-      <div class="drill-prompt">Which grammar pattern fits this situation?</div>
-      <div class="drill-english">${ex.e}</div>
-      <div class="drill-mc-grid">
-        ${options.map(opt => `
-          <button class="drill-mc-option" data-value="${opt.pattern}"
-            onclick="mcAnswer(this,'${opt.pattern.replace(/'/g,"\\'")}','${g.pattern.replace(/'/g,"\\'")}')">
-            <span style="font-family:'DM Serif Display',serif;font-size:0.95rem;">${opt.pattern}</span>
-            <span class="drill-mc-sub">${opt.meaning}</span>
-          </button>`).join('')}
-      </div>
-      <div class="feedback" id="drill-feedback"></div>
-    </div>`;
-}
-
-// ── Type 3: Error detection ─────────────────
-// Shown a sentence with one deliberate word-level error, tap the wrong tile
-
-function buildErrorDetect(g, drillArea) {
-  if (g.examples.length < 1) { buildWordbank(g, drillArea); return; }
-  const ex = g.examples[Math.floor(Math.random() * g.examples.length)];
-  const words = ex.k.replace(/[.。?？!！]+$/, '').split(' ');
-  if (words.length < 2) { buildWordbank(g, drillArea); return; }
-
-  // Replace a random word (not first) with a word from another pattern
-  const errIdx = 1 + Math.floor(Math.random() * (words.length - 1));
-  const correctWord = words[errIdx];
-  const wrongPool = [];
-  for (const og of GRAMMAR) {
-    if (og.pattern === g.pattern) continue;
-    for (const oex of og.examples) {
-      oex.k.replace(/[.。?？!！]+$/, '').split(' ').forEach(w => {
-        if (w && w !== correctWord && w.length > 1) wrongPool.push(w);
-      });
-    }
-  }
-  const wrongWord = shuffle([...new Set(wrongPool)])[0] || '???';
-  const errorWords = [...words];
-  errorWords[errIdx] = wrongWord;
-
-  _drillState = { type: 'error-detect', correctWord, wrongWord, errIdx, words, ex, done: false };
-
-  drillArea.innerHTML = `
-    <div style="margin-bottom:20px;">
-      <div class="drill-prompt">Find the mistake — tap the wrong word</div>
-      <div class="drill-english">${ex.e}</div>
-      <div class="drill-bank" style="margin-bottom:12px;">
-        ${errorWords.map((w, i) =>
-          `<span class="drill-tile" onclick="errorTap(${i},'${correctWord.replace(/'/g,"\\'")}','${wrongWord.replace(/'/g,"\\'")}')">${w}</span>`
-        ).join('')}
-      </div>
-      <div class="feedback" id="drill-feedback"></div>
-    </div>`;
-}
-
-function errorTap(idx, correctWord, wrongWord) {
-  if (_drillState && _drillState.done) return;
-  const tiles = document.querySelectorAll('#gr-drill-area .drill-bank .drill-tile');
-  const isWrong = idx === _drillState.errIdx;
-
-  tiles.forEach((t, i) => {
-    t.classList.add('disabled');
-    if (i === _drillState.errIdx) t.classList.add('correct'); // highlight actual error
-    else if (i === idx && !isWrong) t.classList.add('wrong');
-  });
-
-  if (isWrong) {
-    // Show fix options
-    const fixPool = shuffle(
-      GRAMMAR.find(g => g.examples.some(e => e.k.includes(correctWord)))
-        ? [correctWord]
-        : [correctWord]
-    );
-    const otherPool = [];
-    for (const og of GRAMMAR) {
-      for (const oex of og.examples) {
-        oex.k.split(' ').forEach(w => {
-          const clean = w.replace(/[.。?？!！,，]+$/, '');
-          if (clean && clean !== correctWord && clean.length > 1) otherPool.push(clean);
-        });
-      }
-    }
-    const fixOptions = shuffle([correctWord, ...shuffle([...new Set(otherPool)]).slice(0,3)]);
-    const fb = document.getElementById('drill-feedback');
-    if (fb) {
-      fb.className = 'feedback';
-      fb.innerHTML = `<div style="margin-top:8px;font-size:0.78rem;color:var(--muted);margin-bottom:8px;">Good — now choose the correct word:</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          ${fixOptions.map(opt =>
-            `<button class="drill-tile" onclick="errorFix('${opt.replace(/'/g,"\\'")}','${correctWord.replace(/'/g,"\\'")}')">${opt}</button>`
-          ).join('')}
-        </div>`;
-    }
-  } else {
-    drillFeedback(false, `✗ Not that one — the mistake is somewhere else`);
-    setTimeout(() => {
-      tiles.forEach(t => { t.classList.remove('disabled','wrong','correct'); });
-      drillFeedback(false, '');
-    }, 900);
-  }
-}
-
-function errorFix(chosen, correct) {
-  if (_drillState && _drillState.done) return;
-  const isCorrect = chosen === correct;
-  drillFeedback(isCorrect, `✗ The correct word was: ${correct}`);
-  if (isCorrect) drillSuccess();
-}
-
-// ── Type 4: Interleaved discrimination ─────
-// Shown 4 sentences from different patterns, pick the one using today's pattern
-
-function buildInterleaved(g, drillArea) {
-  const targetEx = g.examples[Math.floor(Math.random() * g.examples.length)];
-  const otherGs = shuffle(GRAMMAR.filter(og => og.pattern !== g.pattern)).slice(0, 3);
-  const otherExs = otherGs.map(og => og.examples[Math.floor(Math.random() * og.examples.length)]);
-  const options = shuffle([
-    { ex: targetEx, isTarget: true },
-    ...otherExs.map(ex => ({ ex, isTarget: false })),
-  ]);
-
-  _drillState = { type: 'interleaved', done: false };
-
-  drillArea.innerHTML = `
-    <div style="margin-bottom:20px;">
-      <div class="drill-prompt">Which sentence uses <strong>${g.pattern}</strong>?</div>
-      <div class="drill-mc-grid" style="grid-template-columns:1fr;">
-        ${options.map((opt, i) => `
-          <button class="drill-mc-option" data-value="${i}"
-            onclick="interleavedAnswer(this,${opt.isTarget})">
-            <span style="font-family:'Noto Sans KR',sans-serif;font-size:0.95rem;">${opt.ex.k}</span>
-            <span class="drill-mc-sub">${opt.ex.e}</span>
-          </button>`).join('')}
-      </div>
-      <div class="feedback" id="drill-feedback"></div>
-    </div>`;
-}
-
-function interleavedAnswer(btn, isTarget) {
-  if (_drillState && _drillState.done) return;
-  document.querySelectorAll('.drill-mc-option').forEach(b => {
-    b.classList.add('disabled');
-  });
-  btn.classList.add(isTarget ? 'correct' : 'wrong');
-  if (!isTarget) {
-    // Find and highlight the correct one
-    const allBtns = document.querySelectorAll('.drill-mc-option');
-    // We don't have a clean way to re-identify it, so just give feedback
-    drillFeedback(false, '✗ Not that one — look for the target pattern');
-    setTimeout(() => {
-      document.querySelectorAll('.drill-mc-option').forEach(b => b.classList.remove('disabled','wrong','correct'));
-    }, 900);
-  } else {
-    drillFeedback(true);
-    drillSuccess();
-  }
-}
-
-// ── Type 5: Contextualized gap-fill ─────────
-// Short 2-sentence mini-context, one blank, 4 MC options
-
-function buildGapFill(g, drillArea) {
-  if (g.examples.length < 2) { buildWordbank(g, drillArea); return; }
-  // Use two consecutive examples as "context"
-  const startIdx = Math.floor(Math.random() * (g.examples.length - 1));
-  const ctx1 = g.examples[startIdx];
-  const ctx2 = g.examples[startIdx + 1];
-
-  // Blank a non-trivial word from ctx2
-  const words = ctx2.k.replace(/[.。?？!！]+$/, '').split(' ');
-  if (words.length < 2) { buildWordbank(g, drillArea); return; }
-  const blankIdx = 1 + Math.floor(Math.random() * (words.length - 1));
-  const answer = words[blankIdx];
-  const blanked = words.map((w, i) => i === blankIdx ? '______' : w).join(' ');
-
-  // Distractors from other patterns
-  const distPool = [];
-  for (const og of GRAMMAR) {
-    if (og.pattern === g.pattern) continue;
-    for (const oex of og.examples) {
-      oex.k.split(' ').forEach(w => {
-        const clean = w.replace(/[.。?？!！,，]+$/, '');
-        if (clean && clean !== answer && clean.length > 1) distPool.push(clean);
-      });
-    }
-  }
-  const wrongs = shuffle([...new Set(distPool)]).slice(0, 3);
-  const options = shuffle([answer, ...wrongs]);
-
-  _drillState = { type: 'gap-fill', done: false };
-
-  drillArea.innerHTML = `
-    <div style="margin-bottom:20px;">
-      <div class="drill-prompt">Fill in the blank</div>
-      <div class="drill-context-box">
-        <div class="drill-context-line">
-          <span class="ko">${ctx1.k}</span>
-          <span class="en">${ctx1.e}</span>
-        </div>
-        <div class="drill-context-line" style="margin-top:8px;">
-          <span class="ko">${blanked}</span>
-          <span class="en">${ctx2.e}</span>
-        </div>
-      </div>
-      <div class="drill-mc-grid" style="grid-template-columns:1fr 1fr;">
-        ${options.map(opt => `
-          <button class="drill-mc-option" data-value="${opt}"
-            onclick="mcAnswer(this,'${opt.replace(/'/g,"\\'")}','${answer.replace(/'/g,"\\'")}',${'`✗ The answer was: ' + answer + '`'})">
-            <span style="font-family:'Noto Sans KR',sans-serif;font-size:1rem;">${opt}</span>
-          </button>`).join('')}
-      </div>
-      <div class="feedback" id="drill-feedback"></div>
-    </div>`;
-}
-
-// ── Main render ─────────────────────────────
 
 function renderGrammarCard() {
   const g = GRAMMAR[state.grammarIdx];
@@ -3328,35 +2721,62 @@ function renderGrammarCard() {
 
   clearTimeout(_drillAdvanceTimer);
   _drillAdvanceTimer = null;
-  _drillState = null;
 
   const drillArea = document.getElementById('gr-drill-area');
   const exDiv     = document.getElementById('gr-examples');
 
   if (g.examples.length > 0) {
-    // Pick a random exercise type
-    const type = DRILL_TYPES[Math.floor(Math.random() * DRILL_TYPES.length)];
+    // Pick a random example for this drill
+    const ex = g.examples[Math.floor(Math.random() * g.examples.length)];
 
-    // Show exercise type badge
-    const typeLabels = {
-      'wordbank':       '🧱 Build the sentence',
-      'meaning-to-form':'🎯 Choose the pattern',
-      'error-detect':   '🔍 Find the mistake',
-      'interleaved':    '⚡ Spot the pattern',
-      'gap-fill':       '📝 Fill the gap',
-    };
-    const badge = `<div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:14px;">${typeLabels[type] || type}</div>`;
-    drillArea.innerHTML = badge;
+    const correctTiles = ex.k
+      .replace(/[.。?？!！]+$/, '')
+      .split(' ')
+      .filter(w => w.length > 0);
 
-    if (type === 'wordbank')        buildWordbank(g, drillArea);
-    else if (type === 'meaning-to-form') buildMeaningToForm(g, drillArea);
-    else if (type === 'error-detect')    buildErrorDetect(g, drillArea);
-    else if (type === 'interleaved')     buildInterleaved(g, drillArea);
-    else                                 buildGapFill(g, drillArea);
+    // Build distractors from other patterns
+    const distractorPool = [];
+    for (const og of GRAMMAR) {
+      if (og.pattern === g.pattern) continue;
+      for (const oex of og.examples) {
+        oex.k.split(' ').forEach(w => {
+          const clean = w.replace(/[.。?？!！,，]+$/, '');
+          if (clean && !correctTiles.includes(clean)) distractorPool.push(clean);
+        });
+      }
+    }
+    const distractors = shuffle(distractorPool)
+      .filter((w, i, a) => a.indexOf(w) === i)
+      .slice(0, Math.min(3, correctTiles.length));
+
+    const allTiles = shuffle([
+      ...correctTiles.map(t => ({ w: t, type: 'correct' })),
+      ...(state.grammarIdx >= 5 ? distractors.map(t => ({ w: t, type: 'distractor' })) : []),
+    ]);
+
+    _drillState = { correct: correctTiles, placed: [], allTiles, ex, done: false };
+
+    drillArea.innerHTML = `
+      <div style="margin-bottom:20px;">
+        <div class="drill-prompt">Build the sentence</div>
+        <div class="drill-english">${ex.e}</div>
+        <div class="drill-answer-slots" id="drill-slots">
+          <span class="drill-slot-placeholder">Tap tiles below…</span>
+        </div>
+        <div class="drill-bank" id="drill-bank"></div>
+        <div class="drill-feedback-row">
+          <div class="feedback" id="drill-feedback"></div>
+          <button class="btn secondary" id="drill-clear-btn" onclick="drillClear()" style="padding:5px 12px;font-size:0.72rem;display:none;">Clear</button>
+        </div>
+      </div>`;
+
+    renderDrillBank();
   } else {
     drillArea.innerHTML = '';
+    _drillState = null;
   }
 
+  // Show all examples below drill
   exDiv.innerHTML = g.examples.map(ex => `
     <div class="grammar-example">
       <div class="ko">${ex.k}</div>
@@ -3364,27 +2784,32 @@ function renderGrammarCard() {
     </div>`).join('');
 }
 
-// ── Word-bank helpers (unchanged) ───────────
-
 function renderDrillBank() {
-  if (!_drillState || _drillState.type !== 'wordbank') return;
+  if (!_drillState) return;
   const { allTiles, placed } = _drillState;
 
   const slotsEl = document.getElementById('drill-slots');
   if (slotsEl) {
-    slotsEl.innerHTML = placed.length === 0
-      ? '<span class="drill-slot-placeholder">Tap tiles below…</span>'
-      : placed.map((w, i) => `<span class="drill-tile placed" onclick="drillRemove(${i})">${w}</span>`).join('');
+    if (placed.length === 0) {
+      slotsEl.innerHTML = '<span class="drill-slot-placeholder">Tap tiles below…</span>';
+    } else {
+      slotsEl.innerHTML = placed.map((w, i) =>
+        `<span class="drill-tile placed" onclick="drillRemove(${i})">${w}</span>`
+      ).join('');
+    }
   }
 
   const bankEl = document.getElementById('drill-bank');
   if (bankEl) {
+    // Track how many of each tile are placed
     const placedCount = {};
     placed.forEach(w => { placedCount[w] = (placedCount[w] || 0) + 1; });
+
     bankEl.innerHTML = allTiles.map((tile, i) => {
       const used = (placedCount[tile.w] || 0) > 0;
       if (used) placedCount[tile.w]--;
-      return `<span class="drill-tile ${used ? 'used' : ''}" onclick="drillPlace(${i})">${tile.w}</span>`;
+      return `<span class="drill-tile ${used ? 'used' : ''}"
+        onclick="drillPlace(${i})">${tile.w}</span>`;
     }).join('');
   }
 
@@ -3393,15 +2818,21 @@ function renderDrillBank() {
 }
 
 function drillPlace(tileIdx) {
-  if (!_drillState || _drillState.done || _drillState.type !== 'wordbank') return;
+  if (!_drillState || _drillState.done) return;
   const tile = _drillState.allTiles[tileIdx];
   if (!tile) return;
+
+  // Count availability
   const totalAvail  = _drillState.allTiles.filter(t => t.w === tile.w).length;
   const timesPlaced = _drillState.placed.filter(p => p === tile.w).length;
   if (timesPlaced >= totalAvail) return;
+
   _drillState.placed.push(tile.w);
   renderDrillBank();
-  if (_drillState.placed.length === _drillState.correct.length) drillCheckWordbank();
+
+  if (_drillState.placed.length === _drillState.correct.length) {
+    drillCheck();
+  }
 }
 
 function drillRemove(idx) {
@@ -3424,20 +2855,24 @@ function drillClear() {
   renderDrillBank();
 }
 
-function drillCheckWordbank() {
+function drillCheck() {
   if (!_drillState) return;
   const { placed, correct } = _drillState;
   const isCorrect = placed.join(' ') === correct.join(' ');
+
   const slotsEl = document.getElementById('drill-slots');
   const fb      = document.getElementById('drill-feedback');
 
   if (isCorrect) {
+    _drillState.done = true;
     if (slotsEl) slotsEl.className = 'drill-answer-slots correct';
-    drillFeedback(true);
-    drillSuccess();
+    if (fb) { fb.className = 'feedback correct'; fb.textContent = '✓ 맞아요! Correct!'; }
+    bumpStat('grammarCorrect');
+    clearTimeout(_drillAdvanceTimer);
+    _drillAdvanceTimer = setTimeout(() => nextGrammar(), 1100);
   } else {
     if (slotsEl) slotsEl.className = 'drill-answer-slots wrong';
-    drillFeedback(false, '✗ Not quite — try again');
+    if (fb) { fb.className = 'feedback wrong'; fb.textContent = '✗ Not quite — try again'; }
     setTimeout(() => {
       if (_drillState && !_drillState.done) {
         _drillState.placed = [];
@@ -3476,109 +2911,85 @@ function buildVocabQuestion(direction) {
   };
 }
 
-function buildContextGapFill() {
-  // Show a grammar example sentence with one word blanked — pick the right word
-  const g = shuffle(GRAMMAR.filter(gr => gr.examples.length >= 2))[0];
-  const ex = g.examples[Math.floor(Math.random() * g.examples.length)];
-  const words = ex.k.replace(/[.。?？!！]+$/, '').split(' ');
-  if (words.length < 2) return buildVocabQuestion('ko-en');
+function buildConjugationQuestion() {
+  const verbPool = getFilteredVocab().filter(v => v.conj);
+  // Fall back to full vocab if filtered set has too few verbs
+  const pool = verbPool.length >= 4 ? verbPool : VOCAB.filter(v => v.conj);
+  const item = shuffle(pool)[0];
+  const wrongPool = shuffle(pool.filter(v => v.k !== item.k)).slice(0,3).map(v => v.conj);
+  return {
+    type: 'conj',
+    prompt: 'What is the present tense (해요 form)?',
+    word: item.k,
+    wordIsKorean: true,
+    correct: item.conj,
+    options: shuffle([item.conj, ...wrongPool]),
+    note: item.note || null,
+  };
+}
 
-  // Blank a random non-first word
-  const blankIdx = 1 + Math.floor(Math.random() * (words.length - 1));
-  const answer = words[blankIdx];
-  const displayed = words.map((w, i) => i === blankIdx ? '___' : w).join(' ');
+function buildGrammarRecognitionQuestion() {
+  // Show an example sentence, ask which pattern it belongs to
+  const correctG = shuffle(GRAMMAR)[0];
+  const correctEx = correctG.examples[Math.floor(Math.random() * correctG.examples.length)];
+  const wrongPatterns = shuffle(GRAMMAR.filter(g => g.pattern !== correctG.pattern)).slice(0,3).map(g => g.pattern);
+  return {
+    type: 'grammar-recog',
+    prompt: 'Which grammar pattern is used here?',
+    word: correctEx.k,
+    wordIsKorean: true,
+    subtext: correctEx.e,
+    correct: correctG.pattern,
+    options: shuffle([correctG.pattern, ...wrongPatterns]),
+  };
+}
 
-  // Distractors: words from other examples
-  const distPool = [];
-  for (const og of GRAMMAR) {
-    if (og.pattern === g.pattern) continue;
-    for (const oex of og.examples) {
-      oex.k.replace(/[.。?？!！]+$/, '').split(' ').forEach(w => {
-        if (w && w !== answer && w.length > 1) distPool.push(w);
-      });
-    }
-  }
-  const wrongs = shuffle([...new Set(distPool)]).slice(0, 3);
-  while (wrongs.length < 3) wrongs.push('—');
+function buildGrammarFillQuestion() {
+  // Show a sentence with the last meaningful word blanked, ask for the correct ending
+  const correctG = shuffle(GRAMMAR.filter(g => g.examples.length >= 1))[0];
+  const ex = correctG.examples[Math.floor(Math.random() * correctG.examples.length)];
+  const words = ex.k.split(' ');
+  const answer = words.pop().replace(/[.。?？!！,，]+$/, '');
+  const prompt_sentence = words.join(' ') + ' ___';
+
+  // Wrong options: endings from other grammar patterns
+  const wrongGs = shuffle(GRAMMAR.filter(g => g.pattern !== correctG.pattern)).slice(0,3);
+  const wrongs = wrongGs.map(g => {
+    const we = g.examples[0];
+    const ww = we.k.split(' ');
+    return ww[ww.length - 1].replace(/[.。?？!！,，]+$/, '');
+  }).filter((w, i, arr) => w !== answer && arr.indexOf(w) === i).slice(0,3);
+
+  // Pad if not enough unique wrongs
+  while (wrongs.length < 3) wrongs.push(correctG.pattern.slice(-3) + ['요','어요','해요'][wrongs.length] || '—');
 
   return {
-    type: 'context-fill',
-    prompt: 'Fill in the blank',
-    word: displayed,
+    type: 'grammar-fill',
+    prompt: `Complete the sentence: (${correctG.meaning})`,
+    word: prompt_sentence,
     wordIsKorean: true,
     subtext: ex.e,
     correct: answer,
-    options: shuffle([answer, ...wrongs]),
-  };
-}
-
-function buildSituationQuestion() {
-  // Show an English situation/meaning, pick the right Korean expression
-  // Uses grammar examples as the source — tests production from meaning
-  const g = shuffle(GRAMMAR)[0];
-  const ex = g.examples[Math.floor(Math.random() * g.examples.length)];
-  const correct = ex.k;
-
-  // Wrong options: examples from other grammar patterns
-  const wrongExs = shuffle(
-    GRAMMAR.filter(og => og.pattern !== g.pattern)
-      .flatMap(og => og.examples)
-  ).slice(0, 3).map(e => e.k);
-
-  return {
-    type: 'situation',
-    prompt: 'Which sentence matches this meaning?',
-    word: ex.e,
-    wordIsKorean: false,
-    correct,
-    options: shuffle([correct, ...wrongExs]),
-  };
-}
-
-function buildOddOneOut() {
-  // Pick 3 words from same category + 1 from a different category
-  const pool = getFilteredVocab();
-  const cats = [...new Set(pool.map(v => v.cat))];
-  if (cats.length < 2) return buildVocabQuestion('ko-en');
-
-  const mainCat = shuffle(cats)[0];
-  const mainPool = shuffle(pool.filter(v => v.cat === mainCat));
-  if (mainPool.length < 3) return buildVocabQuestion('ko-en');
-
-  const otherCat = shuffle(cats.filter(c => c !== mainCat))[0];
-  const otherPool = shuffle(pool.filter(v => v.cat === otherCat));
-  if (!otherPool.length) return buildVocabQuestion('ko-en');
-
-  const correct = otherPool[0].k;
-  const distractors = mainPool.slice(0, 3).map(v => v.k);
-  const options = shuffle([correct, ...distractors]);
-
-  return {
-    type: 'odd-one-out',
-    prompt: `Which one does NOT belong with the others? (category: ${mainCat})`,
-    word: '',
-    wordIsKorean: false,
-    correct,
-    options,
+    options: shuffle([answer, ...wrongs.slice(0,3)]),
   };
 }
 
 function buildQuizPool(size) {
-  // Weights: 30% ko-en, 25% en-ko, 25% context gap-fill, 10% situation, 10% odd-one-out
-  const weights = [
-    'ko-en','ko-en','ko-en','ko-en','ko-en','ko-en',
-    'en-ko','en-ko','en-ko','en-ko','en-ko',
-    'context-fill','context-fill','context-fill','context-fill','context-fill',
-    'situation','situation',
-    'odd-one-out','odd-one-out',
-  ];
+  const questions = [];
+  // Weight: 35% ko-en vocab, 25% en-ko vocab, 20% conjugation, 10% grammar recognition, 10% grammar fill
+  const weights = ['ko-en','ko-en','ko-en','ko-en','ko-en','ko-en','ko-en',
+                   'en-ko','en-ko','en-ko','en-ko','en-ko',
+                   'conj','conj','conj','conj',
+                   'grammar-recog','grammar-recog',
+                   'grammar-fill','grammar-fill'];
   const types = shuffle(weights).slice(0, size);
-  return types.map(t => {
-    if (t === 'ko-en' || t === 'en-ko') return buildVocabQuestion(t);
-    if (t === 'context-fill') return buildContextGapFill();
-    if (t === 'situation') return buildSituationQuestion();
-    return buildOddOneOut();
-  });
+  for (const t of types) {
+    if (t === 'ko-en' || t === 'en-ko') questions.push(buildVocabQuestion(t));
+    else if (t === 'conj') questions.push(buildConjugationQuestion());
+    else if (t === 'grammar-recog') questions.push(buildGrammarRecognitionQuestion());
+    else questions.push(buildGrammarFillQuestion());
+  }
+  return questions;
 }
 
 function startQuiz() {
@@ -3611,11 +3022,11 @@ function renderQuizQ() {
 
   // Type badge colors
   const typeMeta = {
-    'ko-en':        { label: '🇰🇷 → 🇬🇧 Vocab',        color: 'var(--ink)' },
-    'en-ko':        { label: '🇬🇧 → 🇰🇷 Vocab',        color: 'var(--ink)' },
-    'context-fill': { label: '📝 Fill in the Blank',   color: 'var(--ink)' },
-    'situation':    { label: '💬 Match the Meaning',    color: 'var(--ink)' },
-    'odd-one-out':  { label: '🔍 Odd One Out',          color: 'var(--ink)' },
+    'ko-en':         { label: '🇰🇷 → 🇬🇧 Vocab',      color: 'var(--accent)' },
+    'en-ko':         { label: '🇬🇧 → 🇰🇷 Vocab',      color: 'var(--blue)' },
+    'conj':          { label: '✍️ Conjugation',      color: 'var(--green)' },
+    'grammar-recog': { label: '📐 Grammar Recognition', color: 'var(--ink)' },
+    'grammar-fill':  { label: '📐 Grammar Fill-in',   color: 'var(--ink)' },
   };
   const meta = typeMeta[q.type] || { label: q.type, color: 'var(--muted)' };
 
@@ -3639,12 +3050,12 @@ function renderQuizQ() {
   subEl.textContent = q.subtext || '';
 
   const optDiv = document.getElementById('qz-options');
-  // Use Korean font when options are Korean
-  const optKo = ['en-ko','context-fill','situation','odd-one-out'].includes(q.type);
+  // For Korean-answer questions use Korean font on options
+  const optKo = ['en-ko','conj','grammar-fill','grammar-recog'].includes(q.type);
   optDiv.innerHTML = q.options.map(opt => {
     const safeOpt = opt.replace(/'/g, "\\'");
     const safeCorrect = q.correct.replace(/'/g, "\\'");
-    const fontStyle = optKo ? `font-family:'Noto Sans KR',sans-serif;font-size:0.88rem;` : '';
+    const fontStyle = optKo ? `font-family:'Noto Sans KR',sans-serif;font-size:0.95rem;` : '';
     return `<button class="quiz-option" style="${fontStyle}" onclick="answerQuiz(this,'${safeOpt}','${safeCorrect}')">${opt}</button>`;
   }).join('');
 }
@@ -3860,7 +3271,7 @@ const ROUTINES = [
     steps: [
       { name: "Flashcards (Korean → English)", desc: "Work through all due cards", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 5 },
       { name: "Grammar Drill", desc: "Review 3 grammar patterns", icon: "📐", action: () => startGrammar(), mins: 5 },
-      { name: "Quiz", desc: "Test yourself with 10 questions", icon: "🎯", action: () => startQuiz(), mins: 5 },
+      { name: "Quiz", desc: "Test yourself with 10 questions", icon: "🎯", action: () => startQuiz(), mins: 3 },
     ]
   },
   {
@@ -3868,7 +3279,7 @@ const ROUTINES = [
     steps: [
       { name: "Flashcards (English → Korean)", desc: "The hard direction — builds output", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 6 },
       { name: "Grammar Drill", desc: "Focus on fill-in-the-blank", icon: "📐", action: () => startGrammar(), mins: 4 },
-      { name: "Quiz", desc: "Finish with a mixed quiz", icon: "🎯", action: () => startQuiz(), mins: 5 },
+      { name: "Quiz", desc: "Finish with a mixed quiz", icon: "🎯", action: () => startQuiz(), mins: 3 },
     ]
   },
   {
@@ -3955,13 +3366,12 @@ function renderRoutine() {
   const r = getRoutine();
   const totalMins = r.steps.reduce((a, s) => a + s.mins, 0);
   const doneMins  = routineState.stepDone.reduce((a, i) => a + r.steps[i].mins, 0);
+  const activeStep = currentStepIndex();
   document.getElementById('routine-title').textContent = r.title;
   document.getElementById('routine-subtitle').textContent = activeStep >= r.steps.length
     ? `~${totalMins} min total · All done today 🎉`
     : `~${totalMins} min total · ${routineState.stepDone.length}/${r.steps.length} steps done`;
   document.getElementById('ring-goal-label').textContent = `/ ${GOAL_SECS/60}min`;
-
-  const activeStep = currentStepIndex();
   const stepsEl = document.getElementById('routine-steps');
   stepsEl.innerHTML = r.steps.map((step, i) => {
     const done = routineState.stepDone.includes(i);
@@ -3982,13 +3392,7 @@ function renderRoutine() {
     startBtn.textContent = '↺ Reset';
     startBtn.disabled = false;
     startBtn.style.opacity = '1';
-    startBtn.onclick = () => {
-      if (confirm('Reset today\'s routine?')) {
-        routineState.stepDone = [];
-        saveRoutine();
-        renderRoutine();
-      }
-    };
+    startBtn.onclick = () => { if(confirm("Reset today's routine?")) { routineState.stepDone=[]; saveRoutine(); renderRoutine(); } };
   } else {
     startBtn.textContent = '▶ Start';
     startBtn.disabled = false;
@@ -4295,242 +3699,10 @@ function nudgeMessage(screen) {
 }
 
 // ═══════════════════════════════════════════
-//  PRACTICE — Diary + Reading
-// ═══════════════════════════════════════════
-const DIARY_KEY   = 'dylan_diary_v1';
-const READING_KEY = 'dylan_reading_v1';
-
-let currentPassageId  = null;
-let readingLevel      = 'all';
-let readingAnswers    = {};
-let hintsVisible      = false;
-
-// ── Sub-tab switching ────────────────────
-
-function switchPracticeTab(tab) {
-  document.getElementById('practice-diary').style.display   = tab === 'diary'   ? 'block' : 'none';
-  document.getElementById('practice-reading').style.display = tab === 'reading' ? 'block' : 'none';
-  document.querySelectorAll('.practice-tab').forEach(b => {
-    b.classList.toggle('active', b.id === 'ptab-' + tab);
-  });
-  if (tab === 'reading') renderReadingList();
-}
-
-// ── Diary ────────────────────────────────
-
-function loadDiary() {
-  try { return JSON.parse(localStorage.getItem(DIARY_KEY)) || []; } catch { return []; }
-}
-function saveDiary(entries) { localStorage.setItem(DIARY_KEY, JSON.stringify(entries)); }
-
-function newDiaryPrompt() {
-  if (!window.DIARY_PROMPTS || !DIARY_PROMPTS.length) return;
-  const p = DIARY_PROMPTS[Math.floor(Math.random() * DIARY_PROMPTS.length)];
-  document.getElementById('diary-topic').textContent    = p.topic;
-  document.getElementById('diary-topic-en').textContent = p.english;
-  document.getElementById('diary-grammar').textContent  = p.grammar;
-  // stash current prompt for saving
-  document._currentDiaryPrompt = p;
-  // reset hints
-  hintsVisible = false;
-  document.getElementById('vocab-hints').style.display = 'none';
-  document.getElementById('hint-toggle-btn').textContent = '💡 Vocab hints';
-}
-
-function toggleVocabHints() {
-  hintsVisible = !hintsVisible;
-  const box  = document.getElementById('vocab-hints');
-  const btn  = document.getElementById('hint-toggle-btn');
-  box.style.display = hintsVisible ? 'block' : 'none';
-  btn.textContent   = hintsVisible ? '💡 Hide hints' : '💡 Vocab hints';
-
-  if (hintsVisible) {
-    const p = document._currentDiaryPrompt;
-    const cats = (p && p.vocabCats) ? p.vocabCats : [];
-    const pool = getFilteredVocab()
-      .filter(v => cats.length === 0 || cats.some(c => v.cat.toLowerCase().includes(c.toLowerCase())))
-      .slice(0, 18);
-    const listEl = document.getElementById('vocab-hints-list');
-    listEl.innerHTML = pool.map(v =>
-      `<span class="vocab-hint-pill">${v.k}<span>${v.e}</span></span>`
-    ).join('');
-  }
-}
-
-function saveDiaryEntry() {
-  const text = document.getElementById('diary-textarea').value.trim();
-  if (!text) { alert('Write something first!'); return; }
-  const p = document._currentDiaryPrompt || {};
-  const entries = loadDiary();
-  entries.unshift({
-    date:    new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }),
-    topic:   p.topic   || '자유 일기',
-    topicEn: p.english || 'Free writing',
-    grammar: p.grammar || '',
-    text,
-  });
-  saveDiary(entries);
-  document.getElementById('diary-textarea').value = '';
-  newDiaryPrompt();
-  renderDiaryEntries();
-}
-
-function renderDiaryEntries() {
-  const entries = loadDiary();
-  const el = document.getElementById('diary-entries-list');
-  const countEl = document.getElementById('diary-count');
-  if (countEl) countEl.textContent = entries.length + ' entries';
-  if (!entries.length) { el.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;">No entries yet — write your first one above.</div>'; return; }
-  el.innerHTML = entries.map((e, i) => `
-    <div class="diary-entry">
-      <div class="diary-entry-header">
-        <div>
-          <div class="diary-entry-prompt">${e.topic}</div>
-          <div style="font-size:0.72rem;color:var(--muted);">${e.topicEn}</div>
-        </div>
-        <div style="text-align:right;">
-          <div class="diary-entry-date">${e.date}</div>
-          ${e.grammar ? `<span class="practice-badge" style="font-size:0.68rem;margin-top:3px;display:inline-block;">${e.grammar}</span>` : ''}
-        </div>
-      </div>
-      <div class="diary-entry-text">${e.text}</div>
-      <div style="margin-top:10px;">
-        <button class="btn secondary" style="padding:4px 10px;font-size:0.7rem;" onclick="deleteDiaryEntry(${i})">Delete</button>
-      </div>
-    </div>`).join('');
-}
-
-function deleteDiaryEntry(idx) {
-  if (!confirm('Delete this entry?')) return;
-  const entries = loadDiary();
-  entries.splice(idx, 1);
-  saveDiary(entries);
-  renderDiaryEntries();
-}
-
-// ── Reading ──────────────────────────────
-
-function loadReadingProgress() {
-  try { return JSON.parse(localStorage.getItem(READING_KEY)) || { completed: {} }; } catch { return { completed: {} }; }
-}
-function saveReadingProgress(p) { localStorage.setItem(READING_KEY, JSON.stringify(p)); }
-
-function setReadingLevel(level) {
-  readingLevel = level;
-  document.querySelectorAll('[data-level]').forEach(b => {
-    b.classList.toggle('active', b.dataset.level === level);
-  });
-  renderReadingList();
-}
-
-function renderReadingList() {
-  if (!window.PASSAGES) return;
-  const progress = loadReadingProgress();
-  const filtered = readingLevel === 'all' ? PASSAGES : PASSAGES.filter(p => p.level === readingLevel);
-  const el = document.getElementById('reading-passage-list');
-
-  el.innerHTML = filtered.map(p => {
-    const done = !!progress.completed[p.id];
-    const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[p.level] || p.level;
-    return `
-      <div class="passage-card ${done ? 'completed' : ''}" onclick="openPassage('${p.id}')">
-        <div>
-          <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;">${levelLabel} ${done ? '· ✓ completed' : ''}</div>
-          <div style="font-family:'DM Serif Display',serif;font-size:1rem;">${p.title}</div>
-          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">${p.text.slice(0,50)}…</div>
-        </div>
-        <span style="font-size:1.1rem;color:var(--subtle);">›</span>
-      </div>`;
-  }).join('') || '<div style="color:var(--muted);font-size:0.82rem;">No passages at this level yet.</div>';
-
-  document.getElementById('reading-list-view').style.display    = 'block';
-  document.getElementById('reading-passage-view').style.display = 'none';
-}
-
-function openPassage(id) {
-  const p = PASSAGES.find(p => p.id === id);
-  if (!p) return;
-  currentPassageId = id;
-  readingAnswers   = {};
-
-  const levelLabel = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }[p.level] || p.level;
-  document.getElementById('reading-level-badge').textContent = levelLabel;
-  document.getElementById('reading-title').textContent = p.title;
-  document.getElementById('reading-text').innerHTML =
-    p.text.split('。').filter(s => s.trim()).map(s => `<p style="margin-bottom:8px;">${s.trim()}。</p>`).join('') ||
-    `<p>${p.text}</p>`;
-  document.getElementById('reading-translation').textContent = p.translation;
-  document.getElementById('reading-translation').style.display = 'none';
-  document.getElementById('translation-toggle').textContent = 'Show translation';
-  document.getElementById('reading-result').style.display = 'none';
-
-  // Render questions
-  const qArea = document.getElementById('reading-questions-area');
-  qArea.innerHTML = p.questions.map((q, qi) => `
-    <div class="reading-question" id="rq-${qi}">
-      <div class="reading-q-text">${qi + 1}. ${q.q}</div>
-      ${q.options.map(opt => `
-        <button class="reading-option" onclick="answerReading(${qi},'${opt.replace(/'/g,"\\'")}','${q.correct.replace(/'/g,"\\'")}')">
-          ${opt}
-        </button>`).join('')}
-    </div>`).join('');
-
-  document.getElementById('reading-list-view').style.display    = 'none';
-  document.getElementById('reading-passage-view').style.display = 'block';
-}
-
-function toggleTranslation() {
-  const el  = document.getElementById('reading-translation');
-  const btn = document.getElementById('translation-toggle');
-  const showing = el.style.display !== 'none';
-  el.style.display  = showing ? 'none' : 'block';
-  btn.textContent   = showing ? 'Show translation' : 'Hide translation';
-}
-
-function answerReading(qIdx, chosen, correct) {
-  const p = PASSAGES.find(p => p.id === currentPassageId);
-  if (!p || readingAnswers[qIdx] !== undefined) return;
-  readingAnswers[qIdx] = chosen === correct;
-
-  const qEl = document.getElementById('rq-' + qIdx);
-  qEl.querySelectorAll('.reading-option').forEach(b => {
-    b.classList.add('disabled');
-    if (b.textContent.trim() === correct) b.classList.add('correct');
-    else if (b.textContent.trim() === chosen) b.classList.add('wrong');
-  });
-
-  // Show result when all answered
-  if (Object.keys(readingAnswers).length === p.questions.length) {
-    const score = Object.values(readingAnswers).filter(Boolean).length;
-    const total = p.questions.length;
-    const pct   = Math.round((score / total) * 100);
-    const el    = document.getElementById('reading-result');
-    el.style.display = 'block';
-    document.getElementById('reading-score').innerHTML =
-      `${score} / ${total}<small style="display:block;font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted);margin-top:4px;">${pct}% — ${pct === 100 ? '완벽해요! Perfect!' : pct >= 66 ? '잘했어요! Good work!' : '다시 읽어봐요. Read it again!'}</small>`;
-
-    // Mark completed
-    const progress = loadReadingProgress();
-    progress.completed[currentPassageId] = true;
-    saveReadingProgress(progress);
-  }
-}
-
-function showReadingList() {
-  currentPassageId = null;
-  renderReadingList();
-}
-
-function renderPractice() {
-  newDiaryPrompt();
-  renderDiaryEntries();
-  renderReadingList();
-}
-
-// ═══════════════════════════════════════════
 //  LESSON FILTER
 // ═══════════════════════════════════════════
 // Ordered unique lesson numbers in the vocab data
+const LESSON_SEQUENCE = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26,27,28,29,30,32,33,34,36,37,39,40,41,42,43,44,56,57,58,59,60,61,62];
 
 let lessonFilter = 'all'; // 'all' | 'recent5' | 'recent10' | 'recent15'
 
@@ -4561,8 +3733,14 @@ function updateFilterLabel() {
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
+loadTimer();
+loadRoutine();
+renderTimerUI();
+renderRoutine();
+updateHeader();
+updateFilterLabel();
 
-// Patch showScreen to drive timers — must be defined before any onclick fires
+// Patch showScreen to drive the timer automatically
 const _baseShowScreen = showScreen;
 showScreen = function(name) {
   _baseShowScreen(name);
@@ -4576,13 +3754,345 @@ showScreen = function(name) {
   }
 };
 
-// INIT — script is at bottom of body so DOM is already ready
-loadTimer();
-loadRoutine();
-renderTimerUI();
-renderRoutine();
-updateHeader();
-updateFilterLabel();
+
+// ═══════════════════════════════════════════
+//  PASSAGES + DIARY PROMPTS
+// ═══════════════════════════════════════════
+// Reading passages — built from Dylan's vocab with Jenna
+// Each passage: { id, title, level, text (Korean), translation (English), questions: [{q, options, correct}] }
+
+const PASSAGES = [
+
+  // ── BEGINNER (lessons 1-20) ──────────────────
+
+  {
+    id: 'p01',
+    level: 'beginner',
+    title: '주말 계획',
+    text: `이번 주말에 친구를 만나려고 해요. 친구는 집순이라서 보통 집에 있어요. 하지만 날씨가 좋으면 같이 공원에 가요. 공원에서 산책하고 커피도 마셔요. 저는 이번 주말이 기대돼요.`,
+    translation: `This weekend I'm planning to meet a friend. My friend is a homebody, so they're usually at home. But if the weather is nice, we go to the park together. We take a walk and drink coffee at the park. I'm looking forward to this weekend.`,
+    questions: [
+      { q: "Where do they go when the weather is nice?", options: ["A café", "The park", "A restaurant", "Home"], correct: "The park" },
+      { q: "What does 집순이 mean?", options: ["Night owl", "Morning person", "Homebody (female)", "Hard worker"], correct: "Homebody (female)" },
+      { q: "How does the writer feel about the weekend?", options: ["Nervous", "Bored", "Looking forward to it", "Worried"], correct: "Looking forward to it" },
+    ]
+  },
+
+  {
+    id: 'p02',
+    level: 'beginner',
+    title: '오늘 기분',
+    text: `오늘 많이 피곤해요. 어제 밤에 뒤척뒤척했어요. 아침에 일어나자마자 커피를 마셨어요. 지금은 조금 괜찮아요. 오늘 저녁에는 일찍 자려고 해요.`,
+    translation: `I'm very tired today. Last night I was tossing and turning. As soon as I woke up in the morning, I drank coffee. Now I feel a little okay. This evening I'm planning to sleep early.`,
+    questions: [
+      { q: "Why is the writer tired?", options: ["They worked late", "They were tossing and turning", "They forgot to sleep", "They drank too much coffee"], correct: "They were tossing and turning" },
+      { q: "What did they do as soon as they woke up?", options: ["Exercised", "Ate breakfast", "Drank coffee", "Checked their phone"], correct: "Drank coffee" },
+      { q: "What are they planning for this evening?", options: ["Meet a friend", "Watch a movie", "Sleep early", "Study Korean"], correct: "Sleep early" },
+    ]
+  },
+
+  {
+    id: 'p03',
+    level: 'beginner',
+    title: '날씨와 계절',
+    text: `저는 봄을 제일 좋아해요. 날씨가 따뜻하고 꽃이 많이 피어요. 여름은 너무 더워요. 가을은 선선하고 경치가 아름다워요. 겨울은 쌀쌀해서 별로 안 좋아해요.`,
+    translation: `I like spring the most. The weather is warm and many flowers bloom. Summer is too hot. Autumn is cool and the scenery is beautiful. I don't really like winter because it's chilly.`,
+    questions: [
+      { q: "Which season does the writer like most?", options: ["Summer", "Autumn", "Winter", "Spring"], correct: "Spring" },
+      { q: "Why don't they like winter?", options: ["Too much rain", "Too chilly", "Too cloudy", "Too dark"], correct: "Too chilly" },
+      { q: "How is autumn described?", options: ["Warm and rainy", "Hot and dry", "Cool with beautiful scenery", "Cold and cloudy"], correct: "Cool with beautiful scenery" },
+    ]
+  },
+
+  // ── INTERMEDIATE (lessons 21-44) ────────────
+
+  {
+    id: 'p04',
+    level: 'intermediate',
+    title: '건강 관리',
+    text: `요즘 건강에 관심이 많아요. 유산소 운동을 일주일에 세 번 하려고 해요. 음식도 신경 써요. 단백질을 충분히 먹고 탄수화물은 줄이고 있어요. 건강한 생활을 유지하는 게 쉽지 않지만 중요해요.`,
+    translation: `These days I'm very interested in health. I'm trying to do cardio exercise three times a week. I'm also paying attention to food. I'm eating enough protein and reducing carbohydrates. It's not easy to maintain a healthy lifestyle, but it's important.`,
+    questions: [
+      { q: "How often does the writer plan to do cardio?", options: ["Every day", "Twice a week", "Three times a week", "Once a week"], correct: "Three times a week" },
+      { q: "What are they reducing in their diet?", options: ["Protein", "Vegetables", "Carbohydrates", "Water"], correct: "Carbohydrates" },
+      { q: "How does the writer describe maintaining a healthy lifestyle?", options: ["Easy and fun", "Not easy but important", "Boring", "Very expensive"], correct: "Not easy but important" },
+    ]
+  },
+
+  {
+    id: 'p05',
+    level: 'intermediate',
+    title: '직장 생활',
+    text: `새 직업을 찾고 있어요. 지금 회사는 월급이 괜찮지만 워라벨이 별로예요. 출퇴근 시간도 너무 길어요. 장단점을 생각해 봤어요. 결국 더 좋은 기회를 찾기로 했어요.`,
+    translation: `I'm looking for a new job. The salary at my current company is okay, but the work-life balance isn't great. The commute is also too long. I've thought about the pros and cons. In the end, I decided to look for a better opportunity.`,
+    questions: [
+      { q: "What is okay about the current job?", options: ["Work-life balance", "Commute", "Salary", "The boss"], correct: "Salary" },
+      { q: "What does 워라벨 mean?", options: ["Overtime pay", "Work-life balance", "Commute time", "Office location"], correct: "Work-life balance" },
+      { q: "What did the writer decide to do?", options: ["Stay at their job", "Ask for a raise", "Look for a better opportunity", "Start their own business"], correct: "Look for a better opportunity" },
+    ]
+  },
+
+  {
+    id: 'p06',
+    level: 'intermediate',
+    title: '사진 취미',
+    text: `저는 흑백사진 찍는 걸 좋아해요. 좋은 사진을 찍기 위해서 천천히 기다려요. 빛과 경치가 중요해요. 필름 카메라를 써요. 현상소에 맡기는 게 번거롭지만 결과가 독특해요.`,
+    translation: `I like taking black-and-white photos. I wait patiently in order to take a good photo. Light and scenery are important. I use a film camera. Having it developed at a lab is inconvenient, but the results are unique.`,
+    questions: [
+      { q: "What type of photos does the writer like?", options: ["Portrait photos", "Black-and-white photos", "Landscape only", "Digital photos"], correct: "Black-and-white photos" },
+      { q: "What does the writer use to take photos?", options: ["Smartphone", "Digital camera", "Film camera", "Instant camera"], correct: "Film camera" },
+      { q: "How does the writer describe getting film developed?", options: ["Quick and easy", "Cheap", "Inconvenient but unique results", "Always perfect"], correct: "Inconvenient but unique results" },
+    ]
+  },
+
+  // ── ADVANCED (lessons 56+) ───────────────────
+
+  {
+    id: 'p07',
+    level: 'advanced',
+    title: '감정과 이성',
+    text: `사람들은 감정적으로 결정할 때가 많아요. 이성적으로 생각하는 게 항상 쉽지 않아요. 기대가 높으면 실망도 커요. 상황에 따라 감정을 조절하는 게 중요해요. 자신감이 있으면 어려운 상황에서도 더 잘 대처할 수 있어요.`,
+    translation: `People often make decisions emotionally. It's not always easy to think rationally. The higher the expectations, the greater the disappointment. It's important to manage your emotions depending on the situation. If you have confidence, you can handle difficult situations better.`,
+    questions: [
+      { q: "What does the passage say about high expectations?", options: ["They lead to success", "They lead to greater disappointment", "They are always good", "They should be avoided"], correct: "They lead to greater disappointment" },
+      { q: "What helps you handle difficult situations better?", options: ["Being emotional", "Having confidence", "Ignoring problems", "Asking for help"], correct: "Having confidence" },
+      { q: "What is described as 'not always easy'?", options: ["Being emotional", "Having high expectations", "Thinking rationally", "Making decisions"], correct: "Thinking rationally" },
+    ]
+  },
+
+  {
+    id: 'p08',
+    level: 'advanced',
+    title: '여행과 문화 충격',
+    text: `처음 한국에 왔을 때 문화 충격을 받았어요. 성격 차이뿐만 아니라 생활 방식도 달랐어요. 시간이 지나면서 점점 익숙해졌어요. 지금은 한국 생활이 아주 편해요. 외국에서 살면서 더 열린 마음을 갖게 됐어요.`,
+    translation: `When I first came to Korea, I experienced culture shock. Not only personality differences but also lifestyle was different. As time passed, I gradually got used to it. Now Korean life is very comfortable for me. Living abroad, I've come to have a more open mind.`,
+    questions: [
+      { q: "What did the writer experience when they first came to Korea?", options: ["Happiness immediately", "Culture shock", "Language barriers only", "No difficulties"], correct: "Culture shock" },
+      { q: "What changed as time passed?", options: ["They left Korea", "They got used to Korean life", "They missed home more", "They stopped learning Korean"], correct: "They got used to Korean life" },
+      { q: "What did living abroad help them develop?", options: ["A new job", "More open mind", "Better cooking skills", "Financial success"], correct: "More open mind" },
+    ]
+  },
+
+  {
+    id: 'p09',
+    level: 'advanced',
+    title: '충고하기',
+    text: `친구가 요즘 너무 스트레스를 많이 받고 있어요. 제 생각에는 먼저 충분히 쉬는 게 좋을 것 같아요. 나라면 잠깐 모든 걸 내려놓겠어요. 걱정을 많이 하면 몸에도 안 좋아요. 이성적으로 생각하면 해결책을 찾을 수 있어요.`,
+    translation: `My friend is under too much stress these days. In my opinion, I think it would be good to rest properly first. If I were them, I would put everything down for a moment. Worrying a lot is also bad for your health. If you think rationally, you can find a solution.`,
+    questions: [
+      { q: "What does the writer suggest their friend do first?", options: ["Exercise more", "Rest properly", "Change jobs", "Talk to a doctor"], correct: "Rest properly" },
+      { q: "What grammar pattern is 나라면 잠깐 모든 걸 내려놓겠어요 an example of?", options: ["나라면 -(으)겠어요", "-아/어야 해요", "-자마자", "-는 게 좋을 것 같아요"], correct: "나라면 -(으)겠어요" },
+      { q: "What does the writer say worrying a lot affects?", options: ["Work performance", "Relationships", "Health", "Finances"], correct: "Health" },
+    ]
+  },
+
+  {
+    id: 'p10',
+    level: 'advanced',
+    title: '언어 학습',
+    text: `한국어를 배운 지 꽤 됐어요. 처음에는 발음이 어려웠어요. 꾸준히 공부하다 보니 점점 늘었어요. 선생님과 매주 수업하는 게 가장 도움이 돼요. 언어를 배우면서 문화도 함께 이해하게 됐어요.`,
+    translation: `It's been quite a while since I started learning Korean. At first, pronunciation was difficult. As I kept studying consistently, I gradually improved. Having weekly lessons with a teacher is the most helpful. While learning the language, I've also come to understand the culture.`,
+    questions: [
+      { q: "What was difficult at first?", options: ["Grammar", "Writing", "Pronunciation", "Vocabulary"], correct: "Pronunciation" },
+      { q: "What does the writer find most helpful?", options: ["Watching dramas", "Reading books", "Weekly lessons with a teacher", "Using an app"], correct: "Weekly lessons with a teacher" },
+      { q: "What has learning the language helped them understand?", options: ["History", "Culture", "Politics", "Business"], correct: "Culture" },
+    ]
+  },
+
+];
+
+// ── Diary prompts ────────────────────────────
+// Each: { topic, grammar, hint (English), vocabCats }
+
+const DIARY_PROMPTS = [
+  { topic: "오늘 기분이 어때요?", english: "How are you feeling today?", grammar: "-아/어서 (because/so)", hint: "Try to explain why you feel that way.", vocabCats: ["Emotions","Mood"] },
+  { topic: "이번 주에 뭐 했어요?", english: "What did you do this week?", grammar: "-았/었어요 (past tense)", hint: "Describe 2-3 things you did.", vocabCats: ["Daily Life","Verbs"] },
+  { topic: "좋아하는 계절은 뭐예요?", english: "What is your favourite season?", grammar: "-(으)면 (if/when)", hint: "Explain what you like to do in that season.", vocabCats: ["Seasons","Weather"] },
+  { topic: "요즘 어떤 목표가 있어요?", english: "What goals do you have these days?", grammar: "-(으)려고 해요 (planning to)", hint: "Share one personal or professional goal.", vocabCats: ["Abstract","Work"] },
+  { topic: "가장 스트레스 받을 때가 언제예요?", english: "When do you get most stressed?", grammar: "-(으)ㄹ 때 (when)", hint: "Describe a situation that stresses you out.", vocabCats: ["Emotions","Daily Life"] },
+  { topic: "한국어를 왜 배우고 있어요?", english: "Why are you learning Korean?", grammar: "-기 위해서 (in order to)", hint: "Give one or two reasons.", vocabCats: ["Abstract","Conversation"] },
+  { topic: "가장 좋아하는 음식은 뭐예요?", english: "What is your favourite food?", grammar: "A보다 B를 선호해요 (I prefer B over A)", hint: "Compare two foods you like.", vocabCats: ["Food"] },
+  { topic: "친구에게 조언을 해주세요.", english: "Give some advice to a friend.", grammar: "-는 게 좋을 것 같아요 (I think it would be good to)", hint: "Imagine a friend is stressed or unhappy.", vocabCats: ["Conversation","Emotions"] },
+  { topic: "오늘 날씨가 어때요?", english: "What is the weather like today?", grammar: "-아/어지다 (becoming/getting)", hint: "Describe how the weather has been changing.", vocabCats: ["Weather","Seasons"] },
+  { topic: "지금 어떤 감정을 느끼고 있어요?", english: "What emotions are you feeling right now?", grammar: "-고 있어요 (currently doing)", hint: "Be honest — describe 2-3 feelings.", vocabCats: ["Emotions","감(感) Family"] },
+  { topic: "이번 주말에 뭐 할 거예요?", english: "What will you do this weekend?", grammar: "-(으)ㄹ 거예요 (going to/will)", hint: "Make at least 3 plans.", vocabCats: ["Time","Travel"] },
+  { topic: "학교에서 무슨 일이 있었어요?", english: "What happened at school?", grammar: "-아/어 버렸어요 (ended up doing)", hint: "Describe something unexpected that happened.", vocabCats: ["School","Daily Life"] },
+  { topic: "건강을 위해 뭘 해요?", english: "What do you do for your health?", grammar: "-기 위해서 (in order to)", hint: "Describe your health habits.", vocabCats: ["Health","Sports"] },
+  { topic: "가장 기억에 남는 여행은 뭐예요?", english: "What is your most memorable trip?", grammar: "-ㄴ/은 적 있어요 (have ever done)", hint: "Describe where you went and what you did.", vocabCats: ["Travel","Places"] },
+];
+
+
+// ═══════════════════════════════════════════
+//  PRACTICE — Diary + Reading
+// ═══════════════════════════════════════════
+const DIARY_KEY   = 'dylan_diary_v1';
+const READING_KEY = 'dylan_reading_v1';
+let currentPassageId = null;
+let readingLevel = 'all';
+let readingAnswers = {};
+let hintsVisible = false;
+
+function switchPracticeTab(tab) {
+  document.getElementById('practice-diary').style.display   = tab === 'diary'   ? 'block' : 'none';
+  document.getElementById('practice-reading').style.display = tab === 'reading' ? 'block' : 'none';
+  document.querySelectorAll('.practice-tab').forEach(b => {
+    b.classList.toggle('active', b.id === 'ptab-' + tab);
+  });
+  if (tab === 'reading') renderReadingList();
+}
+
+function loadDiary() { try { return JSON.parse(localStorage.getItem(DIARY_KEY)) || []; } catch { return []; } }
+function saveDiary(e) { localStorage.setItem(DIARY_KEY, JSON.stringify(e)); }
+
+function newDiaryPrompt() {
+  if (!DIARY_PROMPTS || !DIARY_PROMPTS.length) return;
+  const p = DIARY_PROMPTS[Math.floor(Math.random() * DIARY_PROMPTS.length)];
+  document.getElementById('diary-topic').textContent    = p.topic;
+  document.getElementById('diary-topic-en').textContent = p.english;
+  document.getElementById('diary-grammar').textContent  = p.grammar;
+  document._currentDiaryPrompt = p;
+  hintsVisible = false;
+  document.getElementById('vocab-hints').style.display = 'none';
+  document.getElementById('hint-toggle-btn').textContent = '💡 Vocab hints';
+}
+
+function toggleVocabHints() {
+  hintsVisible = !hintsVisible;
+  const box = document.getElementById('vocab-hints');
+  const btn = document.getElementById('hint-toggle-btn');
+  box.style.display = hintsVisible ? 'block' : 'none';
+  btn.textContent   = hintsVisible ? '💡 Hide hints' : '💡 Vocab hints';
+  if (hintsVisible) {
+    const p = document._currentDiaryPrompt;
+    const cats = (p && p.vocabCats) ? p.vocabCats : [];
+    const pool = getFilteredVocab()
+      .filter(v => cats.length === 0 || cats.some(c => v.cat.toLowerCase().includes(c.toLowerCase())))
+      .slice(0, 18);
+    document.getElementById('vocab-hints-list').innerHTML = pool.map(v =>
+      `<span class="vocab-hint-pill">${v.k}<span>${v.e}</span></span>`
+    ).join('');
+  }
+}
+
+function saveDiaryEntry() {
+  const text = document.getElementById('diary-textarea').value.trim();
+  if (!text) { alert('Write something first!'); return; }
+  const p = document._currentDiaryPrompt || {};
+  const entries = loadDiary();
+  entries.unshift({ date: new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}), topic: p.topic||'자유 일기', topicEn: p.english||'Free writing', grammar: p.grammar||'', text });
+  saveDiary(entries);
+  document.getElementById('diary-textarea').value = '';
+  newDiaryPrompt();
+  renderDiaryEntries();
+}
+
+function renderDiaryEntries() {
+  const entries = loadDiary();
+  const el = document.getElementById('diary-entries-list');
+  const countEl = document.getElementById('diary-count');
+  if (countEl) countEl.textContent = entries.length + ' entries';
+  if (!entries.length) { el.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;">No entries yet.</div>'; return; }
+  el.innerHTML = entries.map((e,i) => `
+    <div class="diary-entry">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
+        <div><div class="diary-entry-prompt">${e.topic}</div><div style="font-size:0.72rem;color:var(--muted);">${e.topicEn}</div></div>
+        <div style="text-align:right;"><div style="font-size:0.72rem;color:var(--muted);">${e.date}</div>${e.grammar?`<span class="practice-badge" style="font-size:0.68rem;margin-top:3px;display:inline-block;">${e.grammar}</span>`:''}</div>
+      </div>
+      <div class="diary-entry-text">${e.text}</div>
+      <div style="margin-top:10px;"><button class="btn secondary" style="padding:4px 10px;font-size:0.7rem;" onclick="deleteDiaryEntry(${i})">Delete</button></div>
+    </div>`).join('');
+}
+
+function deleteDiaryEntry(idx) {
+  if (!confirm('Delete this entry?')) return;
+  const entries = loadDiary(); entries.splice(idx,1); saveDiary(entries); renderDiaryEntries();
+}
+
+function loadReadingProgress() { try { return JSON.parse(localStorage.getItem(READING_KEY)) || {completed:{}}; } catch { return {completed:{}}; } }
+function saveReadingProgress(p) { localStorage.setItem(READING_KEY, JSON.stringify(p)); }
+
+function setReadingLevel(level) {
+  readingLevel = level;
+  document.querySelectorAll('[data-level]').forEach(b => b.classList.toggle('active', b.dataset.level === level));
+  renderReadingList();
+}
+
+function renderReadingList() {
+  if (!PASSAGES) return;
+  const progress = loadReadingProgress();
+  const filtered = readingLevel === 'all' ? PASSAGES : PASSAGES.filter(p => p.level === readingLevel);
+  const el = document.getElementById('reading-passage-list');
+  const labels = {beginner:'Beginner', intermediate:'Intermediate', advanced:'Advanced'};
+  el.innerHTML = filtered.map(p => {
+    const done = !!progress.completed[p.id];
+    return `<div class="passage-card ${done?'completed':''}" onclick="openPassage('${p.id}')">
+      <div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:3px;">${labels[p.level]||p.level} ${done?'· ✓ completed':''}</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:1rem;">${p.title}</div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">${p.text.slice(0,50)}…</div>
+      </div>
+      <span style="font-size:1.1rem;color:var(--subtle);">›</span>
+    </div>`;
+  }).join('') || '<div style="color:var(--muted);font-size:0.82rem;">No passages at this level yet.</div>';
+  document.getElementById('reading-list-view').style.display    = 'block';
+  document.getElementById('reading-passage-view').style.display = 'none';
+}
+
+function openPassage(id) {
+  const p = PASSAGES.find(p => p.id === id);
+  if (!p) return;
+  currentPassageId = id; readingAnswers = {};
+  const labels = {beginner:'Beginner', intermediate:'Intermediate', advanced:'Advanced'};
+  document.getElementById('reading-level-badge').textContent = labels[p.level]||p.level;
+  document.getElementById('reading-title').textContent = p.title;
+  document.getElementById('reading-text').innerHTML = p.text.split('。').filter(s=>s.trim()).map(s=>`<p style="margin-bottom:8px;">${s.trim()}。</p>`).join('') || `<p>${p.text}</p>`;
+  document.getElementById('reading-translation').textContent = p.translation;
+  document.getElementById('reading-translation').style.display = 'none';
+  document.getElementById('translation-toggle').textContent = 'Show translation';
+  document.getElementById('reading-result').style.display = 'none';
+  document.getElementById('reading-questions-area').innerHTML = p.questions.map((q,qi) => `
+    <div class="reading-question" id="rq-${qi}">
+      <div class="reading-q-text">${qi+1}. ${q.q}</div>
+      ${q.options.map(opt => `<button class="reading-option" onclick="answerReading(${qi},'${opt.replace(/'/g,"\'")}','${q.correct.replace(/'/g,"\'")}'">${opt}</button>`).join('')}
+    </div>`).join('');
+  document.getElementById('reading-list-view').style.display    = 'none';
+  document.getElementById('reading-passage-view').style.display = 'block';
+}
+
+function toggleTranslation() {
+  const el = document.getElementById('reading-translation');
+  const btn = document.getElementById('translation-toggle');
+  const showing = el.style.display !== 'none';
+  el.style.display = showing ? 'none' : 'block';
+  btn.textContent  = showing ? 'Show translation' : 'Hide translation';
+}
+
+function answerReading(qIdx, chosen, correct) {
+  const p = PASSAGES.find(p => p.id === currentPassageId);
+  if (!p || readingAnswers[qIdx] !== undefined) return;
+  readingAnswers[qIdx] = chosen === correct;
+  const qEl = document.getElementById('rq-' + qIdx);
+  qEl.querySelectorAll('.reading-option').forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+    else if (b.textContent.trim() === chosen) b.classList.add('wrong');
+  });
+  if (Object.keys(readingAnswers).length === p.questions.length) {
+    const score = Object.values(readingAnswers).filter(Boolean).length;
+    const pct = Math.round((score/p.questions.length)*100);
+    const el = document.getElementById('reading-result');
+    el.style.display = 'block';
+    document.getElementById('reading-score').innerHTML = `${score} / ${p.questions.length}<small style="display:block;font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted);margin-top:4px;">${pct}% — ${pct===100?'완벽해요!':pct>=66?'잘했어요!':'다시 읽어봐요.'}</small>`;
+    const progress = loadReadingProgress(); progress.completed[currentPassageId] = true; saveReadingProgress(progress);
+  }
+}
+
+function showReadingList() { currentPassageId = null; renderReadingList(); }
+function renderPractice() { newDiaryPrompt(); renderDiaryEntries(); renderReadingList(); }
+
+// ═══════════════════════════════════════════
+//  ROUTINE FIXES
+// ═══════════════════════════════════════════
 </script>
 </body>
 </html>
