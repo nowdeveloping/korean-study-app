@@ -1025,9 +1025,9 @@
 <footer>Dylan's Korean Study App · Lessons with Jenna · SRS powered · v1.0</footer>
 
 <script>
-// ═══════════════════════════════════════════
-//  DATA — all vocab + grammar from the MD file
-// ═══════════════════════════════════════════
+// ===========================================
+//  DATA -- all vocab + grammar from the MD file
+// ===========================================
 const VOCAB = [
   // Emotions & Feelings
   {k:"신나요",e:"excited / thrilling",cat:"Emotions",lesson:41},
@@ -1346,7 +1346,7 @@ const VOCAB = [
   {k:"유사점",e:"similarity",cat:"Abstract",lesson:41},
   {k:"차이점",e:"difference",cat:"Abstract",lesson:41},
 
-  // ── CLASS 001 — Feelings & Mood ──
+  // -- CLASS 001 -- Feelings & Mood --
   {k:"오늘 기분 어때요?",e:"How is your mood today?",cat:"Mood",lesson:1},
   {k:"좋아요",e:"good",cat:"Mood",lesson:1},
   {k:"괜찮아요",e:"okay",cat:"Mood",lesson:1},
@@ -1359,7 +1359,7 @@ const VOCAB = [
   {k:"짜증나요",e:"annoying / irritating",cat:"Mood",lesson:1},
   {k:"답답해요",e:"frustrating / suffocating feeling",cat:"Mood",lesson:1},
 
-  // ── CLASS 001 — How Often ──
+  // -- CLASS 001 -- How Often --
   {k:"항상",e:"always",cat:"Frequency",lesson:1},
   {k:"보통",e:"usually",cat:"Frequency",lesson:1},
   {k:"자주",e:"often",cat:"Frequency",lesson:1},
@@ -1367,7 +1367,7 @@ const VOCAB = [
   {k:"거의 안",e:"seldom / hardly",cat:"Frequency",lesson:1},
   {k:"절대로 안",e:"never",cat:"Frequency",lesson:1},
 
-  // ── CLASS 001 — Transitions ──
+  // -- CLASS 001 -- Transitions --
   {k:"하고",e:"and (nouns)",cat:"Transitions",lesson:1},
   {k:"이/랑",e:"and (nouns, casual)",cat:"Transitions",lesson:1},
   {k:"그리고",e:"and (connecting sentences/verbs)",cat:"Transitions",lesson:1},
@@ -1376,7 +1376,7 @@ const VOCAB = [
   {k:"하지만",e:"but",cat:"Transitions",lesson:1},
   {k:"왜냐하면",e:"because",cat:"Transitions",lesson:1},
 
-  // ── CLASS 001 — Vocab ──
+  // -- CLASS 001 -- Vocab --
   {k:"어제",e:"yesterday",cat:"Time",lesson:1},
   {k:"드디어",e:"finally",cat:"Conversation",lesson:1},
   {k:"사진작가",e:"photo artist / photographer",cat:"Arts",lesson:1},
@@ -1387,7 +1387,7 @@ const VOCAB = [
   {k:"추천해요",e:"recommend",cat:"Conversation",lesson:1},
   {k:"무슨",e:"what kind of",cat:"Conversation",lesson:1},
 
-  // ── CLASS 002 — Weather ──
+  // -- CLASS 002 -- Weather --
   {k:"비",e:"rain",cat:"Weather",lesson:2},
   {k:"눈",e:"snow",cat:"Weather",lesson:2},
   {k:"맑아요",e:"sunny / clear",cat:"Weather",lesson:2},
@@ -1395,15 +1395,15 @@ const VOCAB = [
   {k:"습도 높아요",e:"the humidity is high / humid",cat:"Weather",lesson:2},
   {k:"찐득해요",e:"sticky / muggy",cat:"Weather",lesson:2},
 
-  // ── CLASS 002 — Transportation ──
+  // -- CLASS 002 -- Transportation --
   {k:"차",e:"car",cat:"Transport",lesson:2},
   {k:"지하철",e:"subway",cat:"Transport",lesson:2},
 
-  // ── CLASS 002 — Comparisons ──
+  // -- CLASS 002 -- Comparisons --
   {k:"같아요",e:"same",cat:"Comparison",lesson:2},
   {k:"달라요",e:"different",cat:"Comparison",lesson:2},
 
-  // ── CLASS 002 — Expressions ──
+  // -- CLASS 002 -- Expressions --
   {k:"시간 빨리 가요",e:"time goes fast",cat:"Expressions",lesson:2},
   {k:"시간 천천히 가요",e:"time goes slow",cat:"Expressions",lesson:2},
   {k:"특별한 거 없어요",e:"nothing special",cat:"Expressions",lesson:2},
@@ -1415,14 +1415,14 @@ const VOCAB = [
   {k:"부러워요",e:"I'm jealous / envious",cat:"Emotions",lesson:2},
   {k:"죽겠다",e:"...that I'm dying (hyperbole)",cat:"Expressions",lesson:2},
 
-  // ── CLASS 002 — Time ──
+  // -- CLASS 002 -- Time --
   {k:"주말",e:"weekend",cat:"Time",lesson:2},
   {k:"학기",e:"semester",cat:"School",lesson:2},
   {k:"이번",e:"this (time/week/month)",cat:"Time",lesson:2},
   {k:"지난",e:"last (time period)",cat:"Time",lesson:2},
   {k:"다음",e:"next",cat:"Time",lesson:2},
 
-  // ── CLASS 002 — Food ──
+  // -- CLASS 002 -- Food --
   {k:"음식",e:"food",cat:"Food",lesson:2},
   {k:"아침",e:"breakfast / morning",cat:"Food",lesson:2},
   {k:"점심",e:"lunch / afternoon",cat:"Food",lesson:2},
@@ -1431,39 +1431,39 @@ const VOCAB = [
   {k:"해물",e:"seafood",cat:"Food",lesson:2},
   {k:"물고기",e:"fish",cat:"Food",lesson:2},
 
-  // ── CLASS 002 — Intensifiers ──
+  // -- CLASS 002 -- Intensifiers --
   {k:"엄청",e:"super / extremely / very much",cat:"Intensifiers",lesson:2},
   {k:"제일",e:"most / number one",cat:"Intensifiers",lesson:2},
   {k:"다",e:"all / everything",cat:"Intensifiers",lesson:2},
   {k:"진짜",e:"really / truly",cat:"Intensifiers",lesson:2},
 
-  // ── CLASS 002 — Vocab ──
+  // -- CLASS 002 -- Vocab --
   {k:"질문",e:"question",cat:"Abstract",lesson:2},
   {k:"문제",e:"problem",cat:"Abstract",lesson:2},
   {k:"고향",e:"hometown",cat:"People",lesson:2},
 
-  // ── CLASS 003 — Sick ──
+  // -- CLASS 003 -- Sick --
   {k:"감기 걸렸어요?",e:"Did you catch a cold?",cat:"Health",lesson:3},
   {k:"걸렸어요",e:"caught (an illness)",cat:"Health",lesson:3},
 
-  // ── CLASS 003 — Countries ──
+  // -- CLASS 003 -- Countries --
   {k:"나라",e:"country",cat:"Places",lesson:3},
   {k:"인도",e:"India",cat:"Places",lesson:3},
   {k:"독일",e:"Germany",cat:"Places",lesson:3},
   {k:"태국",e:"Thailand",cat:"Places",lesson:3},
 
-  // ── CLASS 003 — Location Particles ──
+  // -- CLASS 003 -- Location Particles --
   {k:"에",e:"to (place) / at (place) / on (time)",cat:"Grammar Particles",lesson:3},
   {k:"에서",e:"from / at (place where action happens)",cat:"Grammar Particles",lesson:3},
 
-  // ── CLASS 003 — Sleep/Wake Up ──
+  // -- CLASS 003 -- Sleep/Wake Up --
   {k:"밤",e:"night",cat:"Time",lesson:3},
   {k:"어제 밤",e:"last night",cat:"Time",lesson:3},
   {k:"일찍",e:"early",cat:"Time",lesson:3},
   {k:"늦게",e:"late",cat:"Time",lesson:3},
   {k:"일어나다",e:"to get up",cat:"Daily Life",conj:"일어나요",lesson:3},
 
-  // ── CLASS 003 — Vocab ──
+  // -- CLASS 003 -- Vocab --
   {k:"요즘",e:"these days / lately",cat:"Time",lesson:3},
   {k:"글쎄요",e:"well... / hmm...",cat:"Conversation",lesson:3},
   {k:"전",e:"ex (boyfriend/girlfriend)",cat:"People",lesson:3},
@@ -1476,7 +1476,7 @@ const VOCAB = [
   {k:"교육",e:"education",cat:"School",lesson:3},
   {k:"느낌",e:"feeling / vibe",cat:"Emotions",lesson:3},
 
-  // ── CLASS 004 — Days of the Week ──
+  // -- CLASS 004 -- Days of the Week --
   {k:"일요일",e:"Sunday",cat:"Days",lesson:4},
   {k:"월요일",e:"Monday",cat:"Days",lesson:4},
   {k:"화요일",e:"Tuesday",cat:"Days",lesson:4},
@@ -1486,13 +1486,13 @@ const VOCAB = [
   {k:"토요일",e:"Saturday",cat:"Days",lesson:4},
   {k:"월요병",e:"Monday blues",cat:"Days",lesson:4},
 
-  // ── CLASS 004 — Particles ──
+  // -- CLASS 004 -- Particles --
   {k:"전에",e:"before (nouns + verbs)",cat:"Grammar Particles",lesson:4},
   {k:"후에",e:"after (nouns + verbs)",cat:"Grammar Particles",lesson:4},
   {k:"부터",e:"from (starting point)",cat:"Grammar Particles",lesson:4},
   {k:"까지",e:"until / up to",cat:"Grammar Particles",lesson:4},
 
-  // ── CLASS 004 — Vocab ──
+  // -- CLASS 004 -- Vocab --
   {k:"물론",e:"of course",cat:"Conversation",lesson:4},
   {k:"호수",e:"lake",cat:"Nature",lesson:4},
   {k:"돈",e:"money",cat:"Daily Life",lesson:4},
@@ -1501,7 +1501,7 @@ const VOCAB = [
   {k:"왕자병",e:"prince complex",cat:"Personality",lesson:4},
   {k:"마음에 들어요",e:"I like it (enters my heart)",cat:"Expressions",lesson:4},
 
-  // ── CLASS 005 — Sports ──
+  // -- CLASS 005 -- Sports --
   {k:"야구",e:"baseball",cat:"Sports",lesson:5},
   {k:"축구",e:"soccer",cat:"Sports",lesson:5},
   {k:"미식축구",e:"American football",cat:"Sports",lesson:5},
@@ -1516,7 +1516,7 @@ const VOCAB = [
   {k:"이번 주말 계획 있어요?",e:"Do you have plans this weekend?",cat:"Expressions",lesson:5},
   {k:"직업",e:"job / occupation",cat:"Work",lesson:5},
 
-  // ── CLASS 005 — Seasons ──
+  // -- CLASS 005 -- Seasons --
   {k:"여름",e:"summer",cat:"Seasons",lesson:5},
   {k:"가을",e:"fall / autumn",cat:"Seasons",lesson:5},
   {k:"겨울",e:"winter",cat:"Seasons",lesson:5},
@@ -1527,7 +1527,7 @@ const VOCAB = [
   {k:"우산",e:"umbrella",cat:"Daily Life",lesson:5},
   {k:"더워요",e:"hot / it's hot",cat:"Weather",lesson:5},
 
-  // ── CLASS 005 — Vocab ──
+  // -- CLASS 005 -- Vocab --
   {k:"중에서",e:"among / out of",cat:"Grammar Particles",lesson:5},
   {k:"인기",e:"popularity",cat:"Abstract",lesson:5},
   {k:"근처에",e:"around / near / nearby",cat:"Places",lesson:5},
@@ -1536,23 +1536,23 @@ const VOCAB = [
   {k:"싫어요",e:"hate / dislike",cat:"Emotions",lesson:5},
   {k:"걷다",e:"to walk",cat:"Verbs",conj:"걸어요",note:"ㄷ irregular",lesson:5},
 
-  // ── CLASS 006 — Food/Drink ──
+  // -- CLASS 006 -- Food/Drink --
   {k:"신선한",e:"fresh",cat:"Food",lesson:6},
   {k:"술집",e:"bar / pub",cat:"Food",lesson:6},
   {k:"주문하다",e:"to order",cat:"Food",conj:"주문해요",lesson:6},
   {k:"계란",e:"egg",cat:"Food",lesson:6},
 
-  // ── CLASS 006 — Slang ──
+  // -- CLASS 006 -- Slang --
   {k:"음치",e:"tone-deaf / music idiot",cat:"Slang",lesson:6},
   {k:"몸치",e:"can't dance / body idiot",cat:"Slang",lesson:6},
   {k:"길치",e:"bad with directions / street idiot",cat:"Slang",lesson:6},
 
-  // ── CLASS 006 — Activity ──
+  // -- CLASS 006 -- Activity --
   {k:"산책하다",e:"to take a stroll",cat:"Daily Life",conj:"산책해요",lesson:6},
   {k:"놀다",e:"to hang out / play",cat:"Daily Life",conj:"놀아요",lesson:6},
   {k:"수업 후에",e:"after class",cat:"School",lesson:6},
 
-  // ── CLASS 006 — Vocab ──
+  // -- CLASS 006 -- Vocab --
   {k:"분위기",e:"ambience / atmosphere / vibe",cat:"Abstract",lesson:6},
   {k:"마다",e:"every / each",cat:"Grammar Particles",lesson:6},
   {k:"처음",e:"first time / beginning",cat:"Time",lesson:6},
@@ -1563,18 +1563,18 @@ const VOCAB = [
   {k:"어색해요",e:"awkward",cat:"Emotions",lesson:6},
   {k:"멋있어요",e:"cool / stylish / awesome",cat:"Adjectives",lesson:6},
 
-  // ── CLASS 007 — Open/Close ──
+  // -- CLASS 007 -- Open/Close --
   {k:"몇 시에",e:"at what time",cat:"Time",lesson:7},
   {k:"열어요",e:"open",cat:"Daily Life",lesson:7},
   {k:"닫아요",e:"close",cat:"Daily Life",lesson:7},
 
-  // ── CLASS 007 — Days relative to today ──
+  // -- CLASS 007 -- Days relative to today --
   {k:"그저께",e:"two days ago",cat:"Time",lesson:7},
   {k:"오늘",e:"today",cat:"Time",lesson:7},
   {k:"내일",e:"tomorrow",cat:"Time",lesson:7},
   {k:"모레",e:"two days later / the day after tomorrow",cat:"Time",lesson:7},
 
-  // ── CLASS 007 — Vocab ──
+  // -- CLASS 007 -- Vocab --
   {k:"전시회",e:"exhibition",cat:"Arts",lesson:7},
   {k:"하루 종일",e:"all day long",cat:"Time",lesson:7},
   {k:"중요해요",e:"important",cat:"Adjectives",lesson:7},
@@ -1584,31 +1584,31 @@ const VOCAB = [
   {k:"돌다",e:"to go around / return",cat:"Verbs",conj:"돌아요",lesson:7},
   {k:"제 생각에는",e:"in my opinion / I think...",cat:"Conversation",lesson:7},
 
-  // ── CLASS 008 — Start/Finish ──
+  // -- CLASS 008 -- Start/Finish --
   {k:"시작하다",e:"to start",cat:"Verbs",conj:"시작해요",lesson:8},
   {k:"끝나다",e:"to finish / end",cat:"Verbs",conj:"끝나요",lesson:8},
   {k:"잘하다",e:"to do well",cat:"Verbs",conj:"잘해요",lesson:8},
   {k:"연습하다",e:"to practice",cat:"Verbs",conj:"연습해요",lesson:8},
 
-  // ── CLASS 008 — Negation ──
+  // -- CLASS 008 -- Negation --
   {k:"안",e:"don't / not (choice)",cat:"Grammar Particles",lesson:8},
   {k:"못",e:"can't (inability)",cat:"Grammar Particles",lesson:8},
   {k:"잘못해요",e:"can't do well / do poorly",cat:"Expressions",lesson:8},
 
-  // ── CLASS 008 — Reactions ──
+  // -- CLASS 008 -- Reactions --
   {k:"잘됐어요",e:"good for you! / that worked out well",cat:"Expressions",lesson:8},
   {k:"안됐어요",e:"sorry to hear / that's too bad",cat:"Expressions",lesson:8},
 
-  // ── CLASS 008 — Estimation ──
+  // -- CLASS 008 -- Estimation --
   {k:"로",e:"by (means of transport)",cat:"Grammar Particles",lesson:8},
   {k:"쯤",e:"about / approximately",cat:"Grammar Particles",lesson:8},
 
-  // ── CLASS 008 — Verbs ──
+  // -- CLASS 008 -- Verbs --
   {k:"고장났어요",e:"broken / out of order",cat:"Daily Life",lesson:8},
   {k:"살다",e:"to live",cat:"Verbs",conj:"살아요",lesson:8},
   {k:"받다",e:"to get / receive",cat:"Verbs",conj:"받아요",lesson:8},
 
-  // ── CLASS 008 — Vocab ──
+  // -- CLASS 008 -- Vocab --
   {k:"우리 둘다",e:"both of us",cat:"People",lesson:8},
   {k:"작가",e:"artist / author / writer",cat:"Arts",lesson:8},
   {k:"문자",e:"text message",cat:"Daily Life",lesson:8},
@@ -1616,24 +1616,24 @@ const VOCAB = [
   {k:"시간 많이 걸리다",e:"takes a long time",cat:"Expressions",lesson:8},
   {k:"뭐에 관심있어요?",e:"What are you interested in?",cat:"Expressions",lesson:8},
 
-  // ── CLASS 009 — Demonstratives ──
+  // -- CLASS 009 -- Demonstratives --
   {k:"이런",e:"like this / this kind of",cat:"Conversation",lesson:9},
   {k:"그런",e:"like that / that kind of",cat:"Conversation",lesson:9},
   {k:"저런",e:"like that over there",cat:"Conversation",lesson:9},
 
-  // ── CLASS 009 — Directions ──
+  // -- CLASS 009 -- Directions --
   {k:"북",e:"north",cat:"Places",lesson:9},
   {k:"남",e:"south",cat:"Places",lesson:9},
   {k:"동",e:"east",cat:"Places",lesson:9},
   {k:"서",e:"west",cat:"Places",lesson:9},
 
-  // ── CLASS 009 — Verbs ──
+  // -- CLASS 009 -- Verbs --
   {k:"기억나요",e:"I remember",cat:"Verbs",lesson:9},
   {k:"기억 안 나요",e:"I don't remember",cat:"Verbs",lesson:9},
   {k:"축하합니다",e:"congratulations",cat:"Expressions",lesson:9},
   {k:"이상하다",e:"strange / weird",cat:"Adjectives",conj:"이상해요",lesson:9},
 
-  // ── CLASS 009 — Vocab ──
+  // -- CLASS 009 -- Vocab --
   {k:"다른",e:"other / another / different",cat:"Conversation",lesson:9},
   {k:"숙제",e:"homework",cat:"School",lesson:9},
   {k:"단골",e:"regular customer",cat:"Conversation",lesson:9},
@@ -1643,40 +1643,40 @@ const VOCAB = [
   {k:"냉장고",e:"fridge / refrigerator",cat:"Daily Life",lesson:9},
   {k:"까지",e:"until / up to / by (deadline)",cat:"Grammar Particles",lesson:9},
 
-  // ── CLASS 010 — Beach ──
+  // -- CLASS 010 -- Beach --
   {k:"파도",e:"waves",cat:"Nature",lesson:10},
   {k:"차가워요",e:"cold (to the touch / temperature)",cat:"Adjectives",lesson:10},
 
-  // ── CLASS 010 — Personality ──
+  // -- CLASS 010 -- Personality --
   {k:"취향",e:"taste / preference (in things)",cat:"Personality",lesson:10},
   {k:"유명해요",e:"famous",cat:"Adjectives",lesson:10},
   {k:"인기 있어요",e:"popular",cat:"Adjectives",lesson:10},
   {k:"서양사람",e:"Westerner",cat:"People",lesson:10},
 
-  // ── CLASS 010 — Talking ──
+  // -- CLASS 010 -- Talking --
   {k:"특히",e:"especially / particularly",cat:"Conversation",lesson:10},
   {k:"솔직히",e:"honestly / frankly",cat:"Conversation",lesson:10},
   {k:"솔직히 말하면",e:"if I speak honestly / to be frank",cat:"Expressions",lesson:10},
 
-  // ── CLASS 010 — Sounds ──
+  // -- CLASS 010 -- Sounds --
   {k:"바삭바삭",e:"crispy (sound/texture)",cat:"Food",lesson:10},
   {k:"아삭아삭",e:"crunchy (sound/texture)",cat:"Food",lesson:10},
 
-  // ── CLASS 010 — Numbers ──
+  // -- CLASS 010 -- Numbers --
   {k:"하나, 둘, 셋",e:"1, 2, 3 (native Korean numbers)",cat:"Numbers",lesson:10},
   {k:"일, 이, 삼",e:"1, 2, 3 (Sino-Korean numbers)",cat:"Numbers",lesson:10},
 
-  // ── CLASS 010 — Verbs ──
+  // -- CLASS 010 -- Verbs --
   {k:"걸리다",e:"to take (time)",cat:"Verbs",conj:"걸려요",lesson:10},
   {k:"말하다",e:"to speak / tell / say",cat:"Verbs",conj:"말해요",lesson:10},
   {k:"이야기하다",e:"to talk / chat",cat:"Verbs",conj:"이야기해요",lesson:10},
   {k:"기대하다",e:"to look forward to",cat:"Verbs",conj:"기대해요",lesson:10},
 
-  // ── CLASS 010 — Vocab ──
+  // -- CLASS 010 -- Vocab --
   {k:"우체국",e:"post office",cat:"Places",lesson:10},
   {k:"만",e:"only (after nouns)",cat:"Grammar Particles",lesson:10},
 
-  // ── CLASS 010 — Verb table ──
+  // -- CLASS 010 -- Verb table --
   {k:"가다",e:"to go",cat:"Verbs",conj:"가요",lesson:10},
   {k:"사다",e:"to buy",cat:"Verbs",conj:"사요",lesson:10},
   {k:"자다",e:"to sleep",cat:"Verbs",conj:"자요",lesson:10},
@@ -1700,14 +1700,14 @@ const VOCAB = [
   {k:"원하다",e:"to want",cat:"Verbs",conj:"원해요",lesson:10},
   {k:"끝나다",e:"to finish / be over",cat:"Verbs",conj:"끝나요",lesson:10},
 
-  // ── CLASS 011 — Smart/Stupid ──
+  // -- CLASS 011 -- Smart/Stupid --
   {k:"똑똑해요",e:"smart / clever",cat:"Adjectives",lesson:11},
   {k:"버릇없어요",e:"spoiled / rude / bad-mannered",cat:"Adjectives",lesson:11},
   {k:"무례해요",e:"rude / impolite",cat:"Adjectives",lesson:11},
   {k:"실수",e:"mistake",cat:"Abstract",lesson:11},
   {k:"다시",e:"again",cat:"Conversation",lesson:11},
 
-  // ── CLASS 011 — Age ──
+  // -- CLASS 011 -- Age --
   {k:"나이",e:"age",cat:"People",lesson:11},
   {k:"몇 살이에요?",e:"How old are you?",cat:"Expressions",lesson:11},
   {k:"살",e:"age counter (years old)",cat:"Grammar Particles",lesson:11},
@@ -1716,13 +1716,13 @@ const VOCAB = [
   {k:"서른",e:"30 (native Korean)",cat:"Numbers",lesson:11},
   {k:"마흔",e:"40 (native Korean)",cat:"Numbers",lesson:11},
 
-  // ── CLASS 011 — Vocab ──
+  // -- CLASS 011 -- Vocab --
   {k:"에너지",e:"energy",cat:"Abstract",lesson:11},
   {k:"선택",e:"choice",cat:"Abstract",lesson:11},
   {k:"주인",e:"owner",cat:"People",lesson:11},
   {k:"경우에 따라 달라요",e:"it depends on the case/situation",cat:"Expressions",lesson:11},
 
-  // ── CLASS 012 — Body ──
+  // -- CLASS 012 -- Body --
   {k:"가슴",e:"chest",cat:"Body",lesson:12},
   {k:"다리",e:"legs",cat:"Body",lesson:12},
   {k:"귀",e:"ears",cat:"Body",lesson:12},
@@ -1745,7 +1745,7 @@ const VOCAB = [
   {k:"발가락",e:"toes",cat:"Body",lesson:12},
   {k:"-에 끌려요",e:"attracted to (body part)",cat:"Expressions",lesson:12},
 
-  // ── CLASS 012 — Sweat / Clothes ──
+  // -- CLASS 012 -- Sweat / Clothes --
   {k:"땀",e:"sweat",cat:"Health",lesson:12},
   {k:"땀 나요",e:"sweating",cat:"Health",lesson:12},
   {k:"깎다",e:"to cut (hair)",cat:"Verbs",conj:"깎아요",lesson:12},
@@ -1755,11 +1755,11 @@ const VOCAB = [
   {k:"아직 안 했어요",e:"not yet done / not decided yet",cat:"Expressions",lesson:12},
   {k:"해봐요",e:"try it / give it a try",cat:"Expressions",lesson:12},
 
-  // ── CLASS 012 — Vocab ──
+  // -- CLASS 012 -- Vocab --
   {k:"전화하다",e:"to call (phone)",cat:"Verbs",conj:"전화해요",lesson:12},
   {k:"전화",e:"phone / phone call",cat:"Daily Life",lesson:12},
 
-  // ── CLASS 013 — Travel ──
+  // -- CLASS 013 -- Travel --
   {k:"불편하다",e:"uncomfortable",cat:"Travel",conj:"불편해요",lesson:13},
   {k:"편하다",e:"comfortable / convenient",cat:"Travel",conj:"편해요",lesson:13},
   {k:"비행기",e:"airplane",cat:"Transport",lesson:13},
@@ -1777,7 +1777,7 @@ const VOCAB = [
   {k:"벌레",e:"bug / insect / worm",cat:"Nature",lesson:13},
   {k:"자정",e:"midnight",cat:"Time",lesson:13},
 
-  // ── CLASS 014 — Gym/Health ──
+  // -- CLASS 014 -- Gym/Health --
   {k:"탄수화물",e:"carbohydrates / carbs",cat:"Health",lesson:14},
   {k:"지방",e:"fat (dietary)",cat:"Health",lesson:14},
   {k:"행복해요",e:"happy",cat:"Emotions",conj:"행복해요",lesson:14},
@@ -1787,7 +1787,7 @@ const VOCAB = [
   {k:"의자",e:"chair",cat:"Daily Life",lesson:14},
   {k:"늦어서 죄송합니다",e:"sorry I'm late (formal)",cat:"Expressions",lesson:14},
 
-  // ── CLASS 015 — Believe/Trust ──
+  // -- CLASS 015 -- Believe/Trust --
   {k:"믿다",e:"to believe / trust",cat:"Verbs",conj:"믿어요",lesson:15},
   {k:"믿을 수 없어요",e:"I can't believe it",cat:"Expressions",lesson:15},
   {k:"제일 친한 친구",e:"best friend",cat:"People",lesson:15},
@@ -1806,7 +1806,7 @@ const VOCAB = [
   {k:"태어나다",e:"to be born",cat:"Verbs",conj:"태어나요",lesson:15},
   {k:"생각 많이 하지 마",e:"stop overthinking (casual)",cat:"Expressions",lesson:15},
 
-  // ── CLASS 016 — Scary/House ──
+  // -- CLASS 016 -- Scary/House --
   {k:"무서워요",e:"scary / scared",cat:"Adjectives",lesson:16},
   {k:"위험해요",e:"dangerous",cat:"Adjectives",lesson:16},
   {k:"화분",e:"potted plant",cat:"Daily Life",lesson:16},
@@ -1820,7 +1820,7 @@ const VOCAB = [
   {k:"과/와",e:"and / with (formal)",cat:"Grammar Particles",lesson:16},
   {k:"랑/이랑",e:"and / with (casual)",cat:"Grammar Particles",lesson:16},
 
-  // ── CLASS 017 — Know/Don't Know ──
+  // -- CLASS 017 -- Know/Don't Know --
   {k:"알아요",e:"I know",cat:"Expressions",lesson:17},
   {k:"알겠어요",e:"I got it / I understand",cat:"Expressions",lesson:17},
   {k:"이해해요",e:"I understand / I know what you mean",cat:"Expressions",lesson:17},
@@ -1828,13 +1828,13 @@ const VOCAB = [
   {k:"모르겠어요",e:"I don't understand / I have no idea",cat:"Expressions",lesson:17},
   {k:"이해 못 해요",e:"I can't understand",cat:"Expressions",lesson:17},
 
-  // ── CLASS 017 — Family ──
+  // -- CLASS 017 -- Family --
   {k:"부모님",e:"parents",cat:"People",lesson:17},
   {k:"아버님",e:"father (formal)",cat:"People",lesson:17},
   {k:"어머님",e:"mother (formal)",cat:"People",lesson:17},
   {k:"형제",e:"brothers / siblings",cat:"People",lesson:17},
 
-  // ── CLASS 017 — Vocab ──
+  // -- CLASS 017 -- Vocab --
   {k:"반반",e:"half and half",cat:"Conversation",lesson:17},
   {k:"안경",e:"glasses / spectacles",cat:"Daily Life",lesson:17},
   {k:"시계",e:"watch / clock",cat:"Daily Life",lesson:17},
@@ -1842,7 +1842,7 @@ const VOCAB = [
   {k:"결혼하다",e:"to marry / get married",cat:"Verbs",conj:"결혼해요",lesson:17},
   {k:"마트",e:"supermarket / mart",cat:"Places",lesson:17},
 
-  // ── CLASS 018 ──
+  // -- CLASS 018 --
   {k:"하이킹",e:"hiking",cat:"Sports",lesson:18},
   {k:"아름다워요",e:"beautiful",cat:"Adjectives",lesson:18},
   {k:"특별한 날",e:"special day",cat:"Time",lesson:18},
@@ -1852,7 +1852,7 @@ const VOCAB = [
   {k:"시골",e:"countryside / rural area",cat:"Places",lesson:18},
   {k:"도시",e:"city",cat:"Places",lesson:18},
 
-  // ── CLASS 019 — Wedding ──
+  // -- CLASS 019 -- Wedding --
   {k:"신랑",e:"groom",cat:"People",lesson:19},
   {k:"신부",e:"bride",cat:"People",lesson:19},
   {k:"주례",e:"wedding officiant",cat:"People",lesson:19},
@@ -1869,7 +1869,7 @@ const VOCAB = [
   {k:"벗다",e:"to take off (clothes)",cat:"Verbs",conj:"벗어요",lesson:19},
   {k:"떠나다",e:"to leave / depart",cat:"Verbs",conj:"떠나요",lesson:19},
 
-  // ── CLASS 020 ──
+  // -- CLASS 020 --
   {k:"설명하다",e:"to explain",cat:"Verbs",conj:"설명해요",lesson:20},
   {k:"친절하다",e:"to be kind / friendly",cat:"Adjectives",conj:"친절해요",lesson:20},
   {k:"필요하다",e:"to need / be necessary",cat:"Verbs",conj:"필요해요",lesson:20},
@@ -1877,7 +1877,7 @@ const VOCAB = [
   {k:"현재",e:"currently / the present",cat:"Time",lesson:20},
   {k:"원래",e:"originally / by nature",cat:"Conversation",lesson:20},
 
-  // ── CLASS 021 — Dyeing Hair ──
+  // -- CLASS 021 -- Dyeing Hair --
   {k:"염색하다",e:"to dye (hair)",cat:"Daily Life",conj:"염색해요",lesson:21},
   {k:"갑자기",e:"suddenly",cat:"Conversation",lesson:21},
   {k:"어울리다",e:"to suit / match / go well",cat:"Verbs",conj:"어울려요",lesson:21},
@@ -1888,7 +1888,7 @@ const VOCAB = [
   {k:"자세히",e:"in detail",cat:"Conversation",lesson:21},
   {k:"마지막으로",e:"lastly / finally",cat:"Conversation",lesson:21},
 
-  // ── CLASS 024 — Adjectives / Taste ──
+  // -- CLASS 024 -- Adjectives / Taste --
   {k:"크다",e:"big / large",cat:"Adjectives",conj:"커요",lesson:24},
   {k:"많다",e:"many / a lot",cat:"Adjectives",conj:"많아요",lesson:24},
   {k:"단어",e:"word / vocabulary item",cat:"Abstract",lesson:24},
@@ -1912,7 +1912,7 @@ const VOCAB = [
   {k:"행복하다",e:"to be happy",cat:"Emotions",conj:"행복해요",lesson:24},
   {k:"친근하다",e:"friendly / approachable",cat:"Adjectives",conj:"친근해요",lesson:24},
 
-  // ── CLASS 025 ──
+  // -- CLASS 025 --
   {k:"젖다",e:"to get wet",cat:"Verbs",conj:"젖어요",lesson:25},
   {k:"병원",e:"hospital / clinic",cat:"Health",lesson:25},
   {k:"신문",e:"newspaper",cat:"Daily Life",lesson:25},
@@ -1921,14 +1921,14 @@ const VOCAB = [
   {k:"수제",e:"handmade",cat:"Adjectives",lesson:25},
   {k:"즐거운 시간",e:"enjoyable time / fun time",cat:"Expressions",lesson:25},
 
-  // ── CLASS 026 ──
+  // -- CLASS 026 --
   {k:"아내",e:"wife",cat:"People",lesson:26},
   {k:"남편",e:"husband",cat:"People",lesson:26},
   {k:"연어",e:"salmon",cat:"Food",lesson:26},
   {k:"도와주다",e:"to help",cat:"Verbs",conj:"도와줘요",lesson:26},
   {k:"그런데",e:"but / by the way / however",cat:"Transitions",lesson:26},
 
-  // ── CLASS 027 ──
+  // -- CLASS 027 --
   {k:"잡지",e:"magazine",cat:"Arts",lesson:27},
   {k:"대부분",e:"mostly / the majority",cat:"Intensifiers",lesson:27},
   {k:"보수적",e:"conservative",cat:"Abstract",lesson:27},
@@ -1937,12 +1937,12 @@ const VOCAB = [
   {k:"늘리다",e:"to extend / expand / increase",cat:"Verbs",conj:"늘려요",lesson:27},
   {k:"착하다",e:"good-hearted / kind / nice",cat:"Adjectives",conj:"착해요",lesson:27},
 
-  // ── CLASS 028 ──
+  // -- CLASS 028 --
   {k:"공공장소",e:"public place",cat:"Places",lesson:28},
   {k:"세대 차이",e:"generation gap",cat:"Abstract",lesson:28},
   {k:"나이 차이",e:"age difference",cat:"Abstract",lesson:28},
 
-  // ── CLASS 029 ──
+  // -- CLASS 029 --
   {k:"학년",e:"school year / grade level",cat:"School",lesson:29},
   {k:"어린이집",e:"daycare",cat:"School",lesson:29},
   {k:"유치원",e:"kindergarten",cat:"School",lesson:29},
@@ -1957,7 +1957,7 @@ const VOCAB = [
   {k:"보조금",e:"subsidy / grant",cat:"Politics",lesson:29},
   {k:"정규",e:"regular / standard",cat:"Abstract",lesson:29},
 
-  // ── CLASS 030 — Weather/Photography ──
+  // -- CLASS 030 -- Weather/Photography --
   {k:"태풍",e:"typhoon",cat:"Weather",lesson:30},
   {k:"바람",e:"wind",cat:"Weather",lesson:30},
   {k:"바람 불어요",e:"it's windy",cat:"Weather",lesson:30},
@@ -1972,13 +1972,13 @@ const VOCAB = [
   {k:"전문가",e:"expert / specialist",cat:"Work",lesson:30},
   {k:"점수",e:"score / points",cat:"Sports",lesson:30},
 
-  // ── CLASS 032 ──
+  // -- CLASS 032 --
   {k:"잊다",e:"to forget",cat:"Verbs",conj:"잊어요",lesson:32},
   {k:"잃다",e:"to lose (something)",cat:"Verbs",conj:"잃어요",lesson:32},
   {k:"길다",e:"long",cat:"Adjectives",conj:"길어요",lesson:32},
   {k:"짧다",e:"short",cat:"Adjectives",conj:"짧아요",lesson:32},
 
-  // ── CLASS 033 ──
+  // -- CLASS 033 --
   {k:"추천서",e:"recommendation letter",cat:"School",lesson:33},
   {k:"규정",e:"rules / policy / regulation",cat:"Abstract",lesson:33},
   {k:"숫자",e:"number / digit / figure",cat:"Abstract",lesson:33},
@@ -1987,7 +1987,7 @@ const VOCAB = [
   {k:"코 풀다",e:"to blow one's nose",cat:"Health",conj:"코 풀어요",lesson:33},
   {k:"짐작하다",e:"to guess / make an educated guess",cat:"Verbs",conj:"짐작해요",lesson:33},
 
-  // ── CLASS 034 — Work/Commute ──
+  // -- CLASS 034 -- Work/Commute --
   {k:"출퇴근하다",e:"to commute",cat:"Work",conj:"출퇴근해요",lesson:34},
   {k:"편리하다",e:"convenient",cat:"Adjectives",conj:"편리해요",lesson:34},
   {k:"참여하다",e:"to participate",cat:"Verbs",conj:"참여해요",lesson:34},
@@ -2001,12 +2001,12 @@ const VOCAB = [
   {k:"구두",e:"dress shoes",cat:"Daily Life",lesson:34},
   {k:"전자제품",e:"electronics",cat:"Daily Life",lesson:34},
 
-  // ── CLASS 036 — Looks ──
+  // -- CLASS 036 -- Looks --
   {k:"못생겼어요",e:"ugly / unattractive",cat:"Adjectives",lesson:36},
   {k:"내성적",e:"introverted",cat:"Personality",lesson:36},
   {k:"외향적",e:"extroverted",cat:"Personality",lesson:36},
 
-  // ── CLASS 037 ──
+  // -- CLASS 037 --
   {k:"미루다",e:"to postpone / put off",cat:"Verbs",conj:"미뤄요",note:"ㅜ contraction",lesson:37},
   {k:"놀라다",e:"to be surprised",cat:"Emotions",conj:"놀라요",lesson:37},
   {k:"끔찍하다",e:"terrible / awful / horrific",cat:"Adjectives",conj:"끔찍해요",lesson:37},
@@ -2014,24 +2014,24 @@ const VOCAB = [
   {k:"모임",e:"meeting / gathering / get-together",cat:"Daily Life",lesson:37},
   {k:"어느 정도",e:"to a certain extent / somewhat",cat:"Conversation",lesson:37},
 
-  // ── CLASS 039 — Weather ──
+  // -- CLASS 039 -- Weather --
   {k:"선선하다",e:"cool (weather)",cat:"Weather",conj:"선선해요",lesson:39},
   {k:"쌀쌀하다",e:"chilly",cat:"Weather",conj:"쌀쌀해요",lesson:39},
   {k:"가치",e:"value / worth",cat:"Abstract",lesson:39},
   {k:"얼룩",e:"stain / spot",cat:"Daily Life",lesson:39},
 
-  // ── CLASS 040 ──
+  // -- CLASS 040 --
   {k:"정돈하다",e:"to tidy up / organize",cat:"Daily Life",conj:"정돈해요",lesson:40},
   {k:"복도",e:"hallway / corridor",cat:"Places",lesson:40},
   {k:"여가 시간",e:"free time / leisure time",cat:"Daily Life",lesson:40},
 
-  // ── CLASS 041 ──
+  // -- CLASS 041 --
   {k:"체육",e:"P.E. / physical education",cat:"School",lesson:41},
   {k:"노동절",e:"Labor Day",cat:"Time",lesson:41},
   {k:"어린이날",e:"Children's Day",cat:"Time",lesson:41},
   {k:"부처님 오신 날",e:"Buddha's Birthday (public holiday)",cat:"Time",lesson:41},
 
-  // ── CLASS 042 ──
+  // -- CLASS 042 --
   {k:"여름 방학",e:"summer break / summer vacation",cat:"School",lesson:42},
   {k:"날씨 예보",e:"weather forecast",cat:"Weather",lesson:42},
   {k:"시험 기간",e:"exam period",cat:"School",lesson:42},
@@ -2046,16 +2046,16 @@ const VOCAB = [
   {k:"같이 살다",e:"to live together",cat:"Daily Life",conj:"같이 살아요",lesson:42},
   {k:"럭셔리",e:"luxury",cat:"Adjectives",lesson:42},
 
-  // ── CLASS 043 ──
+  // -- CLASS 043 --
   {k:"감동적인",e:"moving / touching / emotional",cat:"Adjectives",lesson:43},
   {k:"유명해지다",e:"to become famous",cat:"Verbs",conj:"유명해져요",lesson:43},
 
-  // ── CLASS 044 ──
+  // -- CLASS 044 --
   {k:"나빠졌어요",e:"got worse",cat:"Expressions",lesson:44},
   {k:"예뻐졌어요",e:"got prettier",cat:"Expressions",lesson:44},
   {k:"바빠졌어요",e:"got busy",cat:"Expressions",lesson:44},
 
-  // ── CLASS 056 — Time/Travel ──
+  // -- CLASS 056 -- Time/Travel --
   {k:"한파",e:"cold wave / cold snap",cat:"Weather",lesson:56},
   {k:"난기류",e:"turbulence",cat:"Travel",lesson:56},
   {k:"항공사",e:"airline",cat:"Travel",lesson:56},
@@ -2068,7 +2068,7 @@ const VOCAB = [
   {k:"이해하다",e:"to understand",cat:"Verbs",conj:"이해해요",lesson:56},
   {k:"보장하다",e:"to guarantee",cat:"Verbs",conj:"보장해요",lesson:56},
 
-  // ── CLASS 057 ──
+  // -- CLASS 057 --
   {k:"말이 없다",e:"tight-lipped / quiet / reserved",cat:"Personality",lesson:57},
   {k:"관련이 있다",e:"related / connected",cat:"Conversation",lesson:57},
   {k:"초대하다",e:"to invite",cat:"Verbs",conj:"초대해요",lesson:57},
@@ -2077,11 +2077,11 @@ const VOCAB = [
   {k:"재료",e:"materials / ingredients",cat:"Abstract",lesson:57},
   {k:"담당",e:"in charge of / responsible for",cat:"Work",lesson:57},
 
-  // ── CLASS 058 ──
+  // -- CLASS 058 --
   {k:"채식주의자",e:"vegetarian",cat:"People",lesson:58},
   {k:"긴 하루",e:"long / hard day",cat:"Expressions",lesson:58},
 
-  // ── CLASS 059 — Personality/Traits ──
+  // -- CLASS 059 -- Personality/Traits --
   {k:"섭씨",e:"Celsius",cat:"Weather",lesson:59},
   {k:"화씨",e:"Fahrenheit",cat:"Weather",lesson:59},
   {k:"질기다",e:"tough (food or personality)",cat:"Adjectives",conj:"질겨요",lesson:59},
@@ -2105,7 +2105,7 @@ const VOCAB = [
   {k:"대략",e:"approximately / roughly",cat:"Intensifiers",lesson:59},
   {k:"~에 관해 말하자면",e:"speaking of... / on the topic of...",cat:"Conversation",lesson:59},
 
-  // ── CLASS 060 ──
+  // -- CLASS 060 --
   {k:"습관의 동물",e:"creature of habit",cat:"Personality",lesson:60},
   {k:"심리",e:"psychology / mindset",cat:"Abstract",lesson:60},
   {k:"자연스럽게",e:"naturally",cat:"Conversation",lesson:60},
@@ -2114,7 +2114,7 @@ const VOCAB = [
   {k:"우연히",e:"by chance / coincidentally",cat:"Conversation",lesson:60},
   {k:"이루다",e:"to achieve / accomplish",cat:"Verbs",conj:"이뤄요",note:"ㅜ contraction",lesson:60},
 
-  // ── CLASS 061 ──
+  // -- CLASS 061 --
   {k:"제목",e:"title (of a work)",cat:"Arts",lesson:61},
   {k:"건축가",e:"architect",cat:"People",lesson:61},
   {k:"십대",e:"teenager",cat:"People",lesson:61},
@@ -2124,7 +2124,7 @@ const VOCAB = [
   {k:"혼자 사는 것",e:"living alone",cat:"Daily Life",lesson:61},
   {k:"나만의 공간",e:"my own space / personal space",cat:"Daily Life",lesson:61},
 
-  // ── CLASS 062 (2026.03.26) — Travel, Quality, Health, Abstract ──
+  // -- CLASS 062 (2026.03.26) -- Travel, Quality, Health, Abstract --
   {k:"배경",e:"background / setting",cat:"Abstract",lesson:62},
   {k:"설명하기 어려워요",e:"it's hard to explain",cat:"Expressions",lesson:62},
   {k:"몇 박 며칠",e:"how many nights and days",cat:"Travel",lesson:62},
@@ -2165,7 +2165,7 @@ const VOCAB = [
   {k:"먹기 대회",e:"eating competition",cat:"Expressions",lesson:62},
   {k:"애교",e:"cuteness / affectionate behavior",cat:"Personality",lesson:62},
 
-  // ── CLASS 063 (2026.04.20) — Emotions, Personality, Time, Life, Verbs ──
+  // -- CLASS 063 (2026.04.20) -- Emotions, Personality, Time, Life, Verbs --
   {k:"지쳤어요",e:"I'm exhausted",cat:"Emotions",lesson:63},
   {k:"지긋지긋해요",e:"I'm fed up / sick of it",cat:"Emotions",lesson:63},
   {k:"우울해요",e:"I'm depressed / gloomy",cat:"Emotions",lesson:63},
@@ -2415,8 +2415,8 @@ const GRAMMAR = [
     {k:"고의로 그런 건 아니에요.",e:"I didn't do it on purpose."}
   ]},
   {pattern:"초/중/말", meaning:"Early / Mid / Late (periods)", examples:[
-    {k:"11월 초 — early November",e:"11월 말 — late November"},
-    {k:"20대 초반 — early 20s",e:"30대 중반 — mid-30s"}
+    {k:"11월 초 -- early November",e:"11월 말 -- late November"},
+    {k:"20대 초반 -- early 20s",e:"30대 중반 -- mid-30s"}
   ]},
   {pattern:"-ㄴ/는/ㄹ 줄 알다/모르다", meaning:"I thought / I didn't know (assumption)", examples:[
     {k:"캐나다 사람인 줄 알았어요.",e:"I thought you were Canadian."},
@@ -2438,7 +2438,7 @@ const GRAMMAR = [
   ]},
 ];
 const LESSON_SEQUENCE = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26,27,28,29,30,32,33,34,36,37,39,40,41,42,43,44,56,57,58,59,60,61,62,63];
-_korean_srs_v2';
+const STORAGE_KEY = 'dylan_korean_srs_v2';
 const STREAK_KEY  = 'dylan_korean_streak_v2';
 
 function loadSRS() {
@@ -2523,9 +2523,9 @@ function getNewItems(pool, limit=5) {
   return pool.filter(item => !srs[cardId(item)]).slice(0, limit);
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  APP STATE
-// ═══════════════════════════════════════════
+// ===========================================
 let state = {
   mode: 'ko-en',
   queue: [],
@@ -2535,9 +2535,9 @@ let state = {
   quizQ: [], quizIdx: 0, quizScore: 0,
 };
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  NAV
-// ═══════════════════════════════════════════
+// ===========================================
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
@@ -2551,9 +2551,9 @@ function showScreen(name) {
   updateHeader();
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  HEADER
-// ═══════════════════════════════════════════
+// ===========================================
 function updateHeader() {
   const all = VOCAB;
   const srs = loadSRS();
@@ -2567,9 +2567,9 @@ function updateHeader() {
   document.getElementById('streak-badge').textContent = `🔥 ${streak} day streak`;
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  FLASHCARDS
-// ═══════════════════════════════════════════
+// ===========================================
 function startFlashcards(mode, customQueue) {
   state.mode = mode || 'ko-en';
   state.flipped = false;
@@ -2618,8 +2618,8 @@ function renderCard() {
   document.getElementById('fc-counter').textContent = `${state.qIdx + 1} / ${state.queue.length}`;
   document.getElementById('fc-progress-fill').style.width = pct + '%';
 
-  document.getElementById('fc-category').textContent = item.cat || '—';
-  document.getElementById('fc-category-back').textContent = item.cat || '—';
+  document.getElementById('fc-category').textContent = item.cat || '--';
+  document.getElementById('fc-category-back').textContent = item.cat || '--';
 
   const ci = document.getElementById('card-inner');
   ci.classList.remove('flipped');
@@ -2672,7 +2672,7 @@ function flipCard() {
   if (state.qIdx >= state.queue.length) return;
   const ci = document.getElementById('card-inner');
   if (!state.flipped) {
-    // First flip — reveal back and show rating buttons
+    // First flip -- reveal back and show rating buttons
     ci.classList.add('flipped');
     state.flipped = true;
     setTimeout(() => setSRSButtonsVisible(true), 550);
@@ -2698,9 +2698,9 @@ function rateSRS(rating) {
   setTimeout(() => { _cardBusy = false; }, 600);
 }
 
-// ═══════════════════════════════════════════
-//  GRAMMAR — word-bank drill
-// ═══════════════════════════════════════════
+// ===========================================
+//  GRAMMAR -- word-bank drill
+// ===========================================
 function startGrammar() {
   state.grammarIdx = Math.floor(Math.random() * GRAMMAR.length);
   _drillState = null;
@@ -2872,7 +2872,7 @@ function drillCheck() {
     _drillAdvanceTimer = setTimeout(() => nextGrammar(), 1100);
   } else {
     if (slotsEl) slotsEl.className = 'drill-answer-slots wrong';
-    if (fb) { fb.className = 'feedback wrong'; fb.textContent = '✗ Not quite — try again'; }
+    if (fb) { fb.className = 'feedback wrong'; fb.textContent = '✗ Not quite -- try again'; }
     setTimeout(() => {
       if (_drillState && !_drillState.done) {
         _drillState.placed = [];
@@ -2890,9 +2890,9 @@ function nextGrammar() {
   renderGrammarCard();
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  QUIZ
-// ═══════════════════════════════════════════
+// ===========================================
 
 // Build one question of a given type
 function buildVocabQuestion(direction) {
@@ -2961,7 +2961,7 @@ function buildGrammarFillQuestion() {
   }).filter((w, i, arr) => w !== answer && arr.indexOf(w) === i).slice(0,3);
 
   // Pad if not enough unique wrongs
-  while (wrongs.length < 3) wrongs.push(correctG.pattern.slice(-3) + ['요','어요','해요'][wrongs.length] || '—');
+  while (wrongs.length < 3) wrongs.push(correctG.pattern.slice(-3) + ['요','어요','해요'][wrongs.length] || '--');
 
   return {
     type: 'grammar-fill',
@@ -3011,7 +3011,7 @@ function renderQuizQ() {
     document.getElementById('quiz-result').style.display = 'block';
     const pct = Math.round((state.quizScore / state.quizQ.length) * 100);
     const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '📚';
-    document.getElementById('qz-score').innerHTML = `${emoji} ${state.quizScore} / ${state.quizQ.length}<small>${pct}% — ${pct >= 80 ? '잘했어요! Great job!' : pct >= 60 ? '괜찮아요. Keep going!' : '계속 공부해요. Keep studying!'}</small>`;
+    document.getElementById('qz-score').innerHTML = `${emoji} ${state.quizScore} / ${state.quizQ.length}<small>${pct}% -- ${pct >= 80 ? '잘했어요! Great job!' : pct >= 60 ? '괜찮아요. Keep going!' : '계속 공부해요. Keep studying!'}</small>`;
     return;
   }
 
@@ -3072,9 +3072,9 @@ function answerQuiz(btn, chosen, correct) {
   setTimeout(() => { state.quizIdx++; renderQuizQ(); }, 900);
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  PROGRESS
-// ═══════════════════════════════════════════
+// ===========================================
 function renderProgress() {
   const srs = loadSRS();
   const today = todayStr();
@@ -3121,7 +3121,7 @@ function resetProgress() {
   renderProgress();
 }
 
-// ── Nav tab handlers ──
+// -- Nav tab handlers --
 function navFlashcards() {
   // Show mode picker, not a running session
   showScreen('flashcard');
@@ -3143,9 +3143,9 @@ function pickMode(mode) {
   startFlashcards(mode);
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  UTILS
-// ═══════════════════════════════════════════
+// ===========================================
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length-1; i > 0; i--) {
@@ -3155,9 +3155,9 @@ function shuffle(arr) {
   return a;
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  STUDY TIMER
-// ═══════════════════════════════════════════
+// ===========================================
 const TIMER_KEY   = 'dylan_timer_v1';
 const STATS_KEY   = 'dylan_stats_v1';
 const GOAL_SECS   = 15 * 60;
@@ -3248,7 +3248,7 @@ function renderTimerUI() {
     badge.title = '🎉 Daily goal reached!';
   } else {
     badge.classList.remove('goal-done');
-    badge.title = `Today's study time — click to pause/resume`;
+    badge.title = `Today's study time -- click to pause/resume`;
   }
 }
 
@@ -3259,12 +3259,12 @@ document.addEventListener('visibilitychange', () => {
 
 document.getElementById('timer-badge').addEventListener('click', timerToggle);
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  DAILY ROUTINE ENGINE
-// ═══════════════════════════════════════════
+// ===========================================
 const ROUTINE_KEY = 'dylan_routine_v1';
 
-// 7 rotating routines — one per day of week
+// 7 rotating routines -- one per day of week
 const ROUTINES = [
   {
     title: "SRS Focus Day",
@@ -3277,7 +3277,7 @@ const ROUTINES = [
   {
     title: "Active Recall Day",
     steps: [
-      { name: "Flashcards (English → Korean)", desc: "The hard direction — builds output", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 6 },
+      { name: "Flashcards (English → Korean)", desc: "The hard direction -- builds output", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 6 },
       { name: "Grammar Drill", desc: "Focus on fill-in-the-blank", icon: "📐", action: () => startGrammar(), mins: 4 },
       { name: "Quiz", desc: "Finish with a mixed quiz", icon: "🎯", action: () => startQuiz(), mins: 3 },
     ]
@@ -3300,14 +3300,14 @@ const ROUTINES = [
   {
     title: "Production Focus",
     steps: [
-      { name: "Flashcards (English → Korean)", desc: "Active recall — say it in Korean", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 7 },
+      { name: "Flashcards (English → Korean)", desc: "Active recall -- say it in Korean", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 7 },
       { name: "Quiz", desc: "Reinforce with multiple choice", icon: "🎯", action: () => startQuiz(), mins: 5 },
     ]
   },
   {
     title: "Quick Review Day",
     steps: [
-      { name: "Flashcards (Korean → English)", desc: "Light review — just due cards", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 5 },
+      { name: "Flashcards (Korean → English)", desc: "Light review -- just due cards", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 5 },
       { name: "Grammar Drill", desc: "Browse 2-3 patterns casually", icon: "📐", action: () => startGrammar(), mins: 4 },
     ]
   },
@@ -3315,7 +3315,7 @@ const ROUTINES = [
     title: "Full Workout",
     steps: [
       { name: "Flashcards (Korean → English)", desc: "Warm up with recognition", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 4 },
-      { name: "Flashcards (English → Korean)", desc: "Push harder — produce Korean", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 4 },
+      { name: "Flashcards (English → Korean)", desc: "Push harder -- produce Korean", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 4 },
       { name: "Grammar Drill", desc: "Two new grammar patterns", icon: "📐", action: () => startGrammar(), mins: 3 },
       { name: "Quiz", desc: "Finish strong", icon: "🎯", action: () => startQuiz(), mins: 3 },
     ]
@@ -3332,7 +3332,7 @@ function loadRoutine() {
       routineState.dayIndex = d.dayIndex;
       routineState.stepDone = d.stepDone || [];
     } else {
-      // New day — advance routine
+      // New day -- advance routine
       const prevIdx = (d.dayIndex !== undefined) ? d.dayIndex : -1;
       routineState.dayIndex = (prevIdx + 1) % ROUTINES.length;
       routineState.stepDone = [];
@@ -3445,9 +3445,9 @@ function onReturnHome() {
   updateHeader();
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  IMPORT ENGINE
-// ═══════════════════════════════════════════
+// ===========================================
 const IMPORT_KEY = 'dylan_imported_vocab_v1';
 
 function loadImported() {
@@ -3487,7 +3487,7 @@ function previewImport() {
   const fallbackLesson = parseInt(document.getElementById('import-lesson-num').value) || getNextLessonNumber();
 
   if (!raw) {
-    alert('Nothing to preview — paste some vocab first.');
+    alert('Nothing to preview -- paste some vocab first.');
     return;
   }
 
@@ -3525,7 +3525,7 @@ function previewImport() {
         </div>
       </div>
     </div>`;
-  }).join('') + (errors.length ? `<div style="margin-top:10px;font-size:0.75rem;color:var(--err);">Skipped ${errors.length} line(s) — missing Korean or English field.</div>` : '');
+  }).join('') + (errors.length ? `<div style="margin-top:10px;font-size:0.75rem;color:var(--err);">Skipped ${errors.length} line(s) -- missing Korean or English field.</div>` : '');
 
   previewDiv.style.display = 'block';
   previewDiv._parsed = parsed;
@@ -3617,9 +3617,9 @@ function clearImport() {
   document.getElementById('import-preview').style.display = 'none';
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  ACTIVITY TIMER
-// ═══════════════════════════════════════════
+// ===========================================
 const ACTIVITY_TARGETS = {
   flashcard: 5 * 60,   // 5 minutes
   grammar:   5 * 60,   // 5 minutes
@@ -3692,17 +3692,16 @@ function activityTimerRender() {
 }
 
 function nudgeMessage(screen) {
-  if (screen === 'flashcard') return "5 minutes done — nice work! Ready to switch to Grammar? 📐";
-  if (screen === 'grammar')   return "5 minutes done — time for the Quiz! 🎯";
-  if (screen === 'quiz')      return "5 minutes done — session complete! Great studying today 🎉";
-  return "Time's up — ready to move on?";
+  if (screen === 'flashcard') return "5 minutes done -- nice work! Ready to switch to Grammar? 📐";
+  if (screen === 'grammar')   return "5 minutes done -- time for the Quiz! 🎯";
+  if (screen === 'quiz')      return "5 minutes done -- session complete! Great studying today 🎉";
+  return "Time's up -- ready to move on?";
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  LESSON FILTER
-// ═══════════════════════════════════════════
+// ===========================================
 // Ordered unique lesson numbers in the vocab data
-const LESSON_SEQUENCE = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26,27,28,29,30,32,33,34,36,37,39,40,41,42,43,44,56,57,58,59,60,61,62];
 
 let lessonFilter = 'all'; // 'all' | 'recent5' | 'recent10' | 'recent15'
 
@@ -3730,9 +3729,9 @@ function updateFilterLabel() {
   if (countEl) countEl.textContent = active ? `${filtered.length} cards` : '';
 }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  INIT
-// ═══════════════════════════════════════════
+// ===========================================
 loadTimer();
 loadRoutine();
 renderTimerUI();
@@ -3755,15 +3754,15 @@ showScreen = function(name) {
 };
 
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  PASSAGES + DIARY PROMPTS
-// ═══════════════════════════════════════════
-// Reading passages — built from Dylan's vocab with Jenna
+// ===========================================
+// Reading passages -- built from Dylan's vocab with Jenna
 // Each passage: { id, title, level, text (Korean), translation (English), questions: [{q, options, correct}] }
 
 const PASSAGES = [
 
-  // ── BEGINNER (lessons 1-20) ──────────────────
+  // -- BEGINNER (lessons 1-20) ------------------
 
   {
     id: 'p01',
@@ -3804,7 +3803,7 @@ const PASSAGES = [
     ]
   },
 
-  // ── INTERMEDIATE (lessons 21-44) ────────────
+  // -- INTERMEDIATE (lessons 21-44) ------------
 
   {
     id: 'p04',
@@ -3845,7 +3844,7 @@ const PASSAGES = [
     ]
   },
 
-  // ── ADVANCED (lessons 56+) ───────────────────
+  // -- ADVANCED (lessons 56+) -------------------
 
   {
     id: 'p07',
@@ -3901,7 +3900,7 @@ const PASSAGES = [
 
 ];
 
-// ── Diary prompts ────────────────────────────
+// -- Diary prompts ----------------------------
 // Each: { topic, grammar, hint (English), vocabCats }
 
 const DIARY_PROMPTS = [
@@ -3914,7 +3913,7 @@ const DIARY_PROMPTS = [
   { topic: "가장 좋아하는 음식은 뭐예요?", english: "What is your favourite food?", grammar: "A보다 B를 선호해요 (I prefer B over A)", hint: "Compare two foods you like.", vocabCats: ["Food"] },
   { topic: "친구에게 조언을 해주세요.", english: "Give some advice to a friend.", grammar: "-는 게 좋을 것 같아요 (I think it would be good to)", hint: "Imagine a friend is stressed or unhappy.", vocabCats: ["Conversation","Emotions"] },
   { topic: "오늘 날씨가 어때요?", english: "What is the weather like today?", grammar: "-아/어지다 (becoming/getting)", hint: "Describe how the weather has been changing.", vocabCats: ["Weather","Seasons"] },
-  { topic: "지금 어떤 감정을 느끼고 있어요?", english: "What emotions are you feeling right now?", grammar: "-고 있어요 (currently doing)", hint: "Be honest — describe 2-3 feelings.", vocabCats: ["Emotions","감(感) Family"] },
+  { topic: "지금 어떤 감정을 느끼고 있어요?", english: "What emotions are you feeling right now?", grammar: "-고 있어요 (currently doing)", hint: "Be honest -- describe 2-3 feelings.", vocabCats: ["Emotions","감(感) Family"] },
   { topic: "이번 주말에 뭐 할 거예요?", english: "What will you do this weekend?", grammar: "-(으)ㄹ 거예요 (going to/will)", hint: "Make at least 3 plans.", vocabCats: ["Time","Travel"] },
   { topic: "학교에서 무슨 일이 있었어요?", english: "What happened at school?", grammar: "-아/어 버렸어요 (ended up doing)", hint: "Describe something unexpected that happened.", vocabCats: ["School","Daily Life"] },
   { topic: "건강을 위해 뭘 해요?", english: "What do you do for your health?", grammar: "-기 위해서 (in order to)", hint: "Describe your health habits.", vocabCats: ["Health","Sports"] },
@@ -3922,9 +3921,9 @@ const DIARY_PROMPTS = [
 ];
 
 
-// ═══════════════════════════════════════════
-//  PRACTICE — Diary + Reading
-// ═══════════════════════════════════════════
+// ===========================================
+//  PRACTICE -- Diary + Reading
+// ===========================================
 const DIARY_KEY   = 'dylan_diary_v1';
 const READING_KEY = 'dylan_reading_v1';
 let currentPassageId = null;
@@ -4082,7 +4081,7 @@ function answerReading(qIdx, chosen, correct) {
     const pct = Math.round((score/p.questions.length)*100);
     const el = document.getElementById('reading-result');
     el.style.display = 'block';
-    document.getElementById('reading-score').innerHTML = `${score} / ${p.questions.length}<small style="display:block;font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted);margin-top:4px;">${pct}% — ${pct===100?'완벽해요!':pct>=66?'잘했어요!':'다시 읽어봐요.'}</small>`;
+    document.getElementById('reading-score').innerHTML = `${score} / ${p.questions.length}<small style="display:block;font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted);margin-top:4px;">${pct}% -- ${pct===100?'완벽해요!':pct>=66?'잘했어요!':'다시 읽어봐요.'}</small>`;
     const progress = loadReadingProgress(); progress.completed[currentPassageId] = true; saveReadingProgress(progress);
   }
 }
@@ -4090,9 +4089,9 @@ function answerReading(qIdx, chosen, correct) {
 function showReadingList() { currentPassageId = null; renderReadingList(); }
 function renderPractice() { newDiaryPrompt(); renderDiaryEntries(); renderReadingList(); }
 
-// ═══════════════════════════════════════════
+// ===========================================
 //  ROUTINE FIXES
-// ═══════════════════════════════════════════
+// ===========================================
 </script>
 </body>
 </html>
