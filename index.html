@@ -358,7 +358,7 @@
     cursor: pointer;
   }
   .routine-step.active-step { border-color: var(--ink); background: var(--surface); }
-  .routine-step.done-step { opacity: 0.45; }
+  .routine-step.done-step { opacity: 0.45; pointer-events: none; }
   .step-check { font-size: 0.9rem; width: 18px; text-align: center; flex-shrink: 0; }
   .step-info { flex: 1; }
   .step-name { font-size: 0.8rem; font-weight: 500; }
@@ -2378,8 +2378,9 @@ function renderRoutine() {
   const totalMins = r.steps.reduce((a, s) => a + s.mins, 0);
   const doneMins  = routineState.stepDone.reduce((a, i) => a + r.steps[i].mins, 0);
   document.getElementById('routine-title').textContent = r.title;
-  document.getElementById('routine-subtitle').textContent =
-    `~${totalMins} min total · ${routineState.stepDone.length}/${r.steps.length} steps done`;
+  document.getElementById('routine-subtitle').textContent = activeStep >= r.steps.length
+    ? `~${totalMins} min total · All done today 🎉`
+    : `~${totalMins} min total · ${routineState.stepDone.length}/${r.steps.length} steps done`;
   document.getElementById('ring-goal-label').textContent = `/ ${GOAL_SECS/60}min`;
 
   const activeStep = currentStepIndex();
@@ -2400,13 +2401,21 @@ function renderRoutine() {
 
   const startBtn = document.getElementById('routine-start-btn');
   if (activeStep >= r.steps.length) {
-    startBtn.textContent = '✓ Done';
-    startBtn.disabled = true;
-    startBtn.style.opacity = '0.6';
+    startBtn.textContent = '↺ Reset';
+    startBtn.disabled = false;
+    startBtn.style.opacity = '1';
+    startBtn.onclick = () => {
+      if (confirm('Reset today\'s routine?')) {
+        routineState.stepDone = [];
+        saveRoutine();
+        renderRoutine();
+      }
+    };
   } else {
     startBtn.textContent = '▶ Start';
     startBtn.disabled = false;
     startBtn.style.opacity = '1';
+    startBtn.onclick = startRoutineStep;
   }
 
   updateRoutineRing();
