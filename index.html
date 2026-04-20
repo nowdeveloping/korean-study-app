@@ -2282,7 +2282,7 @@ const ROUTINES = [
     steps: [
       { name: "Flashcards (Korean → English)", desc: "Work through all due cards", icon: "🃏", action: () => startFlashcards('ko-en'), mins: 5 },
       { name: "Grammar Drill", desc: "Review 3 grammar patterns", icon: "📐", action: () => startGrammar(), mins: 5 },
-      { name: "Quiz", desc: "Test yourself with 10 questions", icon: "🎯", action: () => startQuiz(), mins: 3 },
+      { name: "Quiz", desc: "Test yourself with 10 questions", icon: "🎯", action: () => startQuiz(), mins: 5 },
     ]
   },
   {
@@ -2290,7 +2290,7 @@ const ROUTINES = [
     steps: [
       { name: "Flashcards (English → Korean)", desc: "The hard direction — builds output", icon: "✍️", action: () => startFlashcards('en-ko'), mins: 6 },
       { name: "Grammar Drill", desc: "Focus on fill-in-the-blank", icon: "📐", action: () => startGrammar(), mins: 4 },
-      { name: "Quiz", desc: "Finish with a mixed quiz", icon: "🎯", action: () => startQuiz(), mins: 3 },
+      { name: "Quiz", desc: "Finish with a mixed quiz", icon: "🎯", action: () => startQuiz(), mins: 5 },
     ]
   },
   {
@@ -2983,14 +2983,8 @@ function updateFilterLabel() {
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
-loadTimer();
-loadRoutine();
-renderTimerUI();
-renderRoutine();
-updateHeader();
-updateFilterLabel();
 
-// Patch showScreen to drive the timer automatically
+// Patch showScreen to drive timers — must be defined before any onclick fires
 const _baseShowScreen = showScreen;
 showScreen = function(name) {
   _baseShowScreen(name);
@@ -3003,6 +2997,16 @@ showScreen = function(name) {
     if (name === 'home') onReturnHome();
   }
 };
+
+// DOM-dependent init — run after page is fully parsed
+document.addEventListener('DOMContentLoaded', () => {
+  loadTimer();
+  loadRoutine();
+  renderTimerUI();
+  renderRoutine();
+  updateHeader();
+  updateFilterLabel();
+});
 </script>
 </body>
 </html>
